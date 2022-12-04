@@ -32,14 +32,20 @@
     <script src="/assets/plugins/select2/js/select2.min.js"></script>
     <script src="/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
     <script src="/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
-
-
+    <style href="/assets/css/global.css" rel="stylesheet"></style>
+    <script src="/assets/js/Global.js"></script>
     <!--app JS-->
     <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/Global.js"></script>
+    <link href="/assets/plugins/datetimepicker/css/classic.css" rel="stylesheet" />
+    <link href="/assets/plugins/datetimepicker/css/classic.time.css" rel="stylesheet" />
+    <link href="/assets/plugins/datetimepicker/css/classic.date.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hanuman&display=swap');
+    </style>
     <style>
         body {
-            font-family: 'Acme-Regular', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Hanuman', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .select2-container .select2-selection--single {
@@ -49,6 +55,7 @@
             border: 1px solid red !important;
         }
     </style>
+
 </head>
 <body>
 
@@ -216,6 +223,13 @@
 
     </script>
     <script src="/assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <!--datetimepicker js -->
+    <script src="/assets/plugins/datetimepicker/js/legacy.js"></script>
+    <script src="/assets/plugins/datetimepicker/js/picker.js"></script>
+    <script src="/assets/plugins/datetimepicker/js/picker.time.js"></script>
+    <script src="/assets/plugins/datetimepicker/js/picker.date.js"></script>
+    <script src="/assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js"></script>
+    <script src="/assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js"></script>
 </div>
 <!--end wrapper-->
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\GroupModuleController;
+use App\Http\Controllers\EMRDeathController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,6 +38,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UserController::class);
     Route::get('/UserGetData',[UserController::class, 'getData'])->name('users.GetData');
     Route::get('/UserGetInitPage',[UserController::class, 'getInitPage'])->name('users.GetInitPage');
+    Route::post('/UserGetDistrict',[UserController::class, 'getDistrict'])->name('users.getDistrict');
+    Route::post('/UserGetHF',[UserController::class, 'getHF'])->name('users.getHF');
     Route::post('/UserSave',[UserController::class, 'Save'])->name('users.Save');
     Route::post('/UserUpdateActive',[UserController::class, 'Update'])->name('users.Update');
     Route::post('/ResetPassword',[UserController::class, 'ResetPassword'])->name('users.ResetPassword');
@@ -50,4 +53,15 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('group_modules', GroupModuleController::class);
     Route::get('/GroupModuleGetData',[GroupModuleController::class, 'getData'])->name('group_modules.GetData');
     Route::post('/GroupModuleSave',[GroupModuleController::class, 'Save'])->name('group_modules.Save');
+
+    //Death Notification
+    Route::resource('emr_death', EMRDeathController::class);
+    Route::get('/EMRDeath_GetData',[EMRDeathController::class, 'getData'])->name('emr_death.GetData');
+    Route::get('/EMRDeath_GetInitPage',[EMRDeathController::class, 'getInitPage'])->name('emr_death.GetInitPage');
+    Route::post('/EMRDeath_GetDistrict',[EMRDeathController::class, 'getDistrict'])->name('emr_death.getDistrict');
+    Route::post('/EMRDeath_GetCommune',[EMRDeathController::class, 'getCommune'])->name('emr_death.getCommune');
+    Route::post('/EMRDeath_GetVillage',[EMRDeathController::class, 'getVillage'])->name('emr_death.getVillage');
+    Route::post('/EMRDeathSave',[EMRDeathController::class, 'Save'])->name('emr_death.Save');
+//    Route::post('/EMRDeathPrint',[EMRDeathController::class, 'PrintGetData'])->name('emr_death.Print');
+    Route::get('/emr_death_print', [EMRDeathController::class, 'Print'])->name('emr_print.Print');
 });

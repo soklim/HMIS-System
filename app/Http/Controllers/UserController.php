@@ -19,13 +19,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-//    function __construct()
-//    {
-//        $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
-//        $this->middleware('permission:product-create', ['only' => ['create','store']]);
-//        $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
-//        $this->middleware('permission:product-delete', ['only' => ['destroy']]);
-//    }
+
     public function index(Request $request)
     {
         $rolde_id = Auth::user()->role_id;
@@ -52,6 +46,11 @@ class UserController extends Controller
             $input['name'] = $request->name;
             $input['email'] = $request->email;
             $input['role_id'] = $request->role_id;
+            $input['sex'] = $request->sex;
+            $input['phone'] = $request->phone;
+            $input['province_id'] = $request->province_id;
+            $input['district_id'] = $request->district_id;
+            $input['hf_id'] = $request->hf_id;
             $input['password'] = Hash::make('123123');
             User::create($input);
         }
@@ -101,31 +100,6 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-//    public function update(Request $request, $id)
-//    {
-//        $this->validate($request, [
-//            'name' => 'required',
-//            'email' => 'required|email|unique:users,email,'.$id,
-//            'password' => 'same:confirm-password',
-//            'roles' => 'required'
-//        ]);
-//
-//        $input = $request->all();
-//        if(!empty($input['password'])){
-//            $input['password'] = Hash::make($input['password']);
-//        }else{
-//            $input = Arr::except($input,array('password'));
-//        }
-//
-//        $user = User::find($id);
-//        $user->update($input);
-//        DB::table('model_has_roles')->where('model_id',$id)->delete();
-//
-//        $user->assignRole($request->input('roles'));
-//
-//        return redirect()->route('users.index')
-//            ->with('success','User updated successfully');
-//    }
 
     /**
      * Remove the specified resource from storage.
@@ -133,31 +107,70 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-            ->with('success','User deleted successfully');
-    }
 
     public function  getData(){
 
         $data = DB::table('users')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.*', 'roles.name as role_name')
+            ->join('setting_items as s1', 'users.sex', '=', 's1.item_id')
+            ->where('s1.type_id',1)
+            ->select('users.*', 'roles.name as role_name','s1.name_kh as sex_name')
             ->get();
         return response()->json($data->toArray());
 
     }
 
+    public function  getDistrict(Request $request ){
+
+        $od = DB::table('opdistrict')
+            ->where('opdistrict.PRO_CODE',$request->pro_code)
+            ->select('opdistrict.OD_CODE as id', 'opdistrict.OD_NAME_KH as text')
+            ->get();
+        return Response()->json(array(
+            'district' => $od,
+
+        ));
+    }
+
+    public function  getHF(Request $request ){
+
+        $hf = DB::table('healthfacility')
+            ->where('healthfacility.OD_CODE',$request->district_code)
+            ->select('healthfacility.HFAC_CODE as id',DB::raw("CONCAT(healthfacility.HFAC_Label,'-',healthfacility.HFAC_NAMEKh) AS text"))
+            ->get();
+        return Response()->json(array(
+            'HF' => $hf,
+
+        ));
+    }
+
     public function  getInitPage(){
         $roleList = DB::table('roles')
             ->select('roles.id as id', 'roles.name as text')
+            ->orderBy('roles.id')
             ->get();
+
+        $gender = DB::table('setting_items')
+            ->where('setting_items.type_id',1)
+            ->select('setting_items.item_id as id', 'setting_items.name_kh as text')
+            ->get();
+
+        $province = DB::table('province')
+            ->select('province.PROCODE as id', 'province.PROVINCE_KH as text')
+            ->get();
+
+        $email = DB::table('users')
+            ->select('users.email')
+            ->get();
+
 
         return Response()->json(array(
             'role' => $roleList,
+            'gender'=>$gender,
+            'province' => $province,
+            'email' => $email,
+
         ));
-//        return response()->json($data->toArray());
     }
+
 }
