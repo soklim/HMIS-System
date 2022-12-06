@@ -8,7 +8,6 @@
 
     <title>{{ config('app.name', 'SL Laravel') }}</title>
     <link rel="icon" href="/assets/images/logo.png" type="image/png" />
-{{--    @vite(['resources/js/app.js'])--}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

@@ -100,7 +100,7 @@
         function AddNew(){
             clearForm();
             $("#frmAddNew").modal("show");
-            $('#frmAddNew').on('shown.bs.modal', function () {
+            $('#frmAddNew').on('.shownbs.modal', function () {
                 $('#txtName').focus();
             })
         }

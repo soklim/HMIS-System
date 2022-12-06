@@ -72,7 +72,7 @@ class RoleController extends Controller
     public function  getData(){
 
         $data = DB::table('roles')
-            ->select('roles.*')
+            ->select('roles.id','roles.name')
             ->get();
         return response()->json($data->toArray());
 
