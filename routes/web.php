@@ -8,6 +8,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\GroupModuleController;
 use App\Http\Controllers\EMRDeathController;
+use App\Http\Controllers\SettingTypeController;
+use App\Http\Controllers\SettingItemController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,6 +55,22 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('group_modules', GroupModuleController::class);
     Route::get('/GroupModuleGetData',[GroupModuleController::class, 'getData'])->name('group_modules.GetData');
     Route::post('/GroupModuleSave',[GroupModuleController::class, 'Save'])->name('group_modules.Save');
+
+    //Group Module
+    Route::resource('modules', ModuleController::class);
+    Route::get('/ModuleGetData',[ModuleController::class, 'getData'])->name('modules.GetData');
+    Route::post('/ModuleSave',[ModuleController::class, 'Save'])->name('modules.Save');
+
+    //Setting Type
+    Route::resource('setting_types', SettingTypeController::class);
+    Route::get('/SettingTypeGetData',[SettingTypeController::class, 'getData'])->name('setting_types.GetData');
+    Route::post('/SettingTypeSave',[SettingTypeController::class, 'Save'])->name('setting_types.Save');
+
+
+    //Setting Item
+    Route::resource('setting_items', SettingItemController::class);
+    Route::get('/SettingItemGetData',[SettingItemController::class, 'getData'])->name('setting_items.GetData');
+    Route::post('/SettingItemSave',[SettingItemController::class, 'Save'])->name('setting_items.Save');
 
     //Death Notification
     Route::resource('emr_death', EMRDeathController::class);

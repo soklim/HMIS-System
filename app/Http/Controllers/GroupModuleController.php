@@ -21,7 +21,7 @@ class GroupModuleController extends Controller
     public function index(Request $request)
     {
         $rolde_id = Auth::user()->role_id;
-        $module_id = 1;
+        $module_id = 3;
         $permission = DB::table('module_permissions')->where('role_id', $rolde_id)->where('module_id', $module_id)->first();
         if ($permission->a_read != 1){
             return view('error.error404');

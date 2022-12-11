@@ -20,6 +20,11 @@
             font-family: 'Hanuman';
             display: inline;
         }
+        .smallest {
+            font-size: 8pt;
+            font-family: 'Hanuman';
+            display: inline;
+        }
         .small_bold {
             font-size: 10pt;
             font-family: 'Hanuman';
@@ -47,6 +52,7 @@
         }
         #tblBody td{
             border: 1px solid;
+            padding: 5px;
         }
 
         #tblBody {
@@ -55,9 +61,12 @@
             margin-top: 50px;
             border-collapse: collapse;
         }
+
+        input[type='checkbox'] {
+            accent-color: blue;
+        }
     </style>
     <script>
-        var _death_id = "{{$death_id}}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -89,32 +98,194 @@
 
         </tbody>
     </table>
+    @foreach($data as $item1)
     <table style="width: 100%" class="header">
         <tbody>
             <tr>
                 <td style="width:55%"></td>
                 <td style="text-align:center;width:45%">
-                    <p class="small">លេខចេញ៖ </p>
+                    <p class="small">លេខចេញ៖ <p class="small_bold">{{$item1->issue_no}}</p></p>
                 </td>
             </tr>
         </tbody>
     </table>
     <table id="tblBody">
+        @foreach($hf_info as $item)
         <tr>
-            <td style="width: 45%"><p class="small_bold">ឈ្មោះមូលដ្ឋានសុខាភិបាល</p><p class="small_bold" id="hf_name"></p></td>
-            <td style="width: 15%"><p class="small">ស្លាប់ករណីធម្មតា</p><p class="small"></p></td>
-            <td style="width: 40%"><p class="small_bold">លេខកូដមូលដ្ឋានសុខាភិបាល</p><p class="small_bold" id="hmis_code"></p></td>
+            <td style="width: 45%"><p class="small_bold">ឈ្មោះមូលដ្ឋានសុខាភិបាល៖ </p><p class="small_bold" id="hf_name">{{$item->hfac_namekh}}</p></td>
+            <td style="width: 15%">
+                @foreach($death_type as $death_type)
+                    @if($death_type->id == $item1->death_type)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked id="chb_death_type" disabled>
+                            <label class="form-check-label small" for="chb_death_type">{{$death_type->text}}</label>
+                        </div>
+                    @else
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="chb_death_type" disabled>
+                            <label class="form-check-label small" for="chb_death_type">{{$death_type->text}}</label>
+                        </div>
+                    @endif
+                @endforeach
+            </td>
+            <td style="width: 40%" colspan="2">
+                <p class="small_bold">លេខកូដមូលដ្ឋានសុខាភិបាល(HMIS)៖ </p>
+                @foreach(str_split($item->hfac_label) as $value)
+                    <span style="border: solid 1px black;width:15px;height: 20px;display: inline-block;
+                        background-color: white;padding-left:7px;padding-top: 8px;font-weight: bold;">
+                            {{$value}}
+                        </span>
+                @endforeach
+            </td>
+        </tr>
+        @endforeach
+        <tr>
+            <td style="width: 45%"><p class="small_bold">ព័ត៌មានមរណភាព៖ </p>
+                @foreach($death_info as $death_info)
+                    @if($death_info->id == $item1->death_info)
+                        <input class="form-check-input" type="checkbox" checked id="chb_death_type" disabled>
+                        <label class="form-check-label small" for="chb_death_type">{{$death_info->text}}</label>
+                    @else
+                        <input class="form-check-input" type="checkbox" id="chb_death_type" disabled>
+                        <label class="form-check-label small" for="chb_death_type">{{$death_info->text}}</label>
+                    @endif
+                @endforeach
+            </td>
+            <td colspan="3" style="width: 55%"><p class="small_bold">ទីតាំងមូលដ្ឋានសុខាភិបាល៖ </p>
+                <p class="small">ឃុំ/សង្កាត់: <span class="small_bold"></span></p>
+                <p class="small">ស្រុក/ខណ្ឌ: <span class="small_bold">{{$item->od_name_kh}}</span></p>
+                <p class="small">រាជធានី/ខេត្ត: <span class="small_bold">{{$item->province_kh}}</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 45%">
+                <p class="small_bold">ឈ្មោះអ្នកស្លាប់៖ </p>
+                <span class="small_bold">{{$item1->deceased_name}}</span>
+                <br><br><br>
+                <p class="smallest">ប្រសិនបើអ្នកស្លាប់ទើបនឹងកើត ដោយគ្មានឈ្មោះ ចូរសរសេរ កូនរបស់ "ឈ្មោះម្ដាយ"</p>
+            </td>
+            <td style="width: 40%" colspan="2"><p class="small_bold">ថ្ងៃខែឆ្នាំកំណើត៖ </p>
+                <span class="small_bold">{{date('d-m-Y', strtotime($item1->date_of_birth))}}</span>
+                <br><br><br>
+                <p class="small_bold">អាយុ៖</p>
+            </td>
+            <td style="width: 15%"><p class="small_bold">ភេទ៖ </p>
+                @foreach($sex as $sex)
+                    @if($sex->id == $item1->sex)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked id="chb_sex" disabled>
+                            <label class="form-check-label small" for="chb_death_type">{{$sex->text}}</label>
+                        </div>
+                    @else
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="chb_sex" disabled>
+                            <label class="form-check-label small" for="chb_death_type">{{$sex->text}}</label>
+                        </div>
+                    @endif
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 45%">
+                <p class="small_bold">អត្តលេខឯកសារពេទ្យ៖</p><br>
+                <div>
+                    @foreach(str_split($item1->medical_file_id) as $value)
+                        <span style="border: solid 1px black;width:20px;height: 30px;display: inline-block;
+                        background-color: white;padding-left:10px;padding-top: 15px;font-weight: bold;">
+                            {{$value}}
+                        </span>
+                    @endforeach
+
+                    <br><br><br>
+                    <p class="smallest" style="font-style: italic">ប្រសិនបើគ្មាន សូមបំពេញ អត្តលេខអ្នកជំងឺ ឬអត្តលេខ PMRS(របស់ម្ដាយសម្រាប់ទារកទើបតែកើត)</p>
+                </div>
+            <td style="width: 40%" colspan="2">
+                <p class="small_bold">ថ្ងៃខែឆ្នាំមរណភាព៖ </p>
+                <span class="small_bold">{{date('d-m-Y', strtotime($item1->date_of_death))}}</span>
+                <br><br><br>
+                <p class="small_bold">ពេលវេលាមរណភាព៖ </p>
+                <span class="small_bold">{{$item1->time_of_death}}</span>
+            </td>
+            <td style="width: 15%"><p class="small_bold">ស្ថានភាពគ្រួសារ៖ </p>
+                @foreach($married_status as $married_status)
+                    @if($married_status->id == $item1->married_status)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked id="chb_sex" disabled>
+                            <label class="form-check-label small" for="chb_death_type">{{$married_status->text}}</label>
+                        </div>
+                    @else
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="chb_sex" disabled>
+                            <label class="form-check-label small" for="chb_death_type">{{$married_status->text}}</label>
+                        </div>
+                    @endif
+                @endforeach
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="width: 100%">
+                <p class="small_bold">ទីលំនៅប្រក្រតីរបស់អ្នកស្លាប់ (ឬទីលំនៅរបស់ម្ដាយមរណជនជាទារក)៖
+
+                </p>
+                <span class="small">ផ្ទះលេខ៖<span class="small_bold"> {{$item1->deceased_house}}</span></span>
+                <span class="small">ផ្លូវ៖<span class="small_bold"> {{$item1->deceased_street}}</span></span>
+                <span class="small">ភូមិ៖<span class="small_bold"> {{$item1->deceased_village}}</span></span>
+                <span class="small">ឃុំ/សង្កាត៖<span class="small_bold"> {{$item1->deceased_commune_code}}</span></span>
+                <span class="small">ក្រុង/ស្រុក/ខណ្ឌ៖<span class="small_bold"> {{$item1->deceased_district_code}}</span></span>
+                <span class="small">រាជធានី/ខេត្ត៖<span class="small_bold"> {{$item1->deceased_province_code}}</span></span>
+            </td>
+        </tr>
+    </table>
+    @endforeach
+    <table style="width: 100%">
+        <tr>
+            <td colspan="3" style="text-align: center;width: 100%">
+                <p class="small">
+                    សូមកាត់ចេញ មុនពេលបំពេញកាលបរិច្ឆេទ និងចុះហត្ថលេខា។ សូមផ្ដល់សំណៅចម្លងនៃទម្រង់ដែលបានចុះហត្ថលេខា និងចុះកាលបរិច្ឆេទរួចទៅកាន់គ្រួសារនៃសព។
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: left;width: 100%">
+                <br><br>
+                <p class="small_bold">
+                    ទម្រង់បានចេញនៅ៖
+                </p><br><br>
+                <p class="small">
+                    កាលបរិច្ឆទជាអក្សរខ្មែរ៖
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: left;width: 70%">
+            </td>
+            <td style="text-align: left;width: 30%">
+                <p class="small">
+                    កាលបរិច្ឆេទ (ថ្ងៃ/ខែ/ឆ្នាំ)៖
+                </p><br><br>
+                <p class="small">
+                    ឈ្មោះគ្រូពេទ្យ៖
+                </p><br><br>
+                <p class="small">
+                    ហេត្ថលេខ៖
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: left;width: 100%">
+                <br><br>
+                <p class="small_bold">
+                    បានឃើញ និង ឯកភាព
+                </p><br><br>
+                <p class="small">
+                    នាយកមន្ទីរពេទ្យ៖
+                </p>
+                <p class="small"><br><br>
+                    ហត្ថលេខនាយកមន្ទីរពេទ្យ៖
+                </p>
+            </td>
         </tr>
     </table>
 </div>
-{{--<div style="width: 25cm; border: 1px solid #fff; margin: 0 auto !important; padding-left: 48px; padding-right: 48px; padding-bottom: 20px;">--}}
-
-{{--    <div style="width:100%;text-align:right;"><p style="font-size:13pt;font-family:'Khmer OS Battambang';" id="fdate">រាជធានីភ្នំពេញថ្ងៃទី..02......ខែ...12.....ឆ្នាំ....2021............</p></div>--}}
-{{--    <div style="width:100%;">--}}
-{{--        <div style="width: 40%;float: left;"><p class="big">យល់ព្រមតម្កល់ទុកនៅការិយាល័យមេធាវី</p></div>--}}
-{{--        <div style="width: 30%;float: left;text-align: center;"><p class="big">ស្នាមមេដៃអ្នកទិញ</p><br /><br /><br /><br /><br /><br /><br /><p class="small" id="sname">......................................</p></div>--}}
-{{--        <div style="width: 30%;float: left;text-align: center;"><p class="big">ស្នាមមេដៃតំណាងអ្នកលក់</p><br /><br /><br /><br /><br /><br /><br /><p class="small">........</p><p class="big">ឃាវ សែលឹម </p><p class="small">..........</p></div>--}}
-{{--    </div>--}}
-{{--</div>--}}
 </body>
 </html>

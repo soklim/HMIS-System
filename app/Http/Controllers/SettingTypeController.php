@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\SettingType;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use DB;
+use Hash;
 class SettingTypeController extends Controller
 {
     /**
@@ -12,9 +14,43 @@ class SettingTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $rolde_id = Auth::user()->role_id;
+        $module_id = 5;
+        $permission = DB::table('module_permissions')->where('role_id', $rolde_id)->where('module_id', $module_id)->first();
+        if ($permission->a_read != 1){
+            return view('error.error404');
+        }
+        else{
+            return view('setting_types.index');
+        }
+    }
+
+    public function Save(Request $request)
+    {
+        if ($request->id == 0){
+            $input['name'] = $request->name;
+            $input['name_kh'] = $request->name_kh;
+            $input['description'] = $request->description;
+            SettingType::create($input);
+        }
+        else{
+            $input = $request->all();
+            $data = SettingType::find($request->id);
+            $data->update($input);
+        }
+        return Response()->json(array(
+            'code' => 0,
+        ));
+    }
+    public function  getData(){
+
+        $data = DB::table('setting_types')
+            ->select('setting_types.*')
+            ->get();
+        return response()->json($data->toArray());
+
     }
 
     /**

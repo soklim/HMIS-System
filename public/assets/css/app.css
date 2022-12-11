@@ -10,8 +10,9 @@ body {
 	font-size: 14px;
 	color: #4c5258;
 	letter-spacing: .5px;
-	background: #f7f7ff;
+	/*background: #f7f7ff;*/
 	overflow-x: hidden;
+    background: #FFFFFF;
 	font-family: Roboto, sans-serif
 }
 
@@ -31,8 +32,9 @@ a {
     top: 0;
     bottom: 0;
     left: 0;
+    background: #ffffff;
     /*background: #7fc37e;*/
-    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(127,195,126,1) 50%);
+    /*background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(127,195,126,1) 50%);*/
     border-right: 0 solid #e4e4e4;
     z-index: 11;
     box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%) !important;
@@ -809,7 +811,7 @@ a {
 	color: #32393f;
   }
 
-  
+
   .w_chart canvas {
 	position: absolute;
 	top: 0;
@@ -1724,11 +1726,11 @@ a {
 .text-facebook{
 	color: #3b5998!important
  }
- 
+
  .text-twitter{
 	 color: #55acee!important
   }
- 
+
   .text-youtube{
 	 color: #e52d27!important
   }

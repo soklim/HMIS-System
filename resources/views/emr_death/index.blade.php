@@ -16,7 +16,9 @@
     <!--end breadcrumb-->
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-primary" id="btnAdd" onclick="AddNew()"><i class="bx bx-plus"></i>Add</button>
+            <a href="{{route('emr_death.create')}}">
+                <button type="button" class="btn btn-primary" id="btnAdd"><i class="bx bx-plus"></i>Add</button>
+            </a>
         </div>
     </div>
     <hr />
@@ -35,7 +37,24 @@
                         <th class="text-center">កាលបរិច្ឆេទស្លាប់</th>
                         <th class="text-center"></th>
                     </tr>
-                    <tbody id="bodyDeath"></tbody>
+                    <tbody id="bodyDeath">
+                        @foreach($data as $item)
+                            <tr>
+                                <td class="text-center">{{$item->issue_no}}</td>
+                                <td class="text-left">{{$item->hfac_label}}</td>
+                                <td class="text-center">{{$item->medical_file_id}}</td>
+                                <td class="text-left">{{$item->deceased_name}}</td>
+                                <td class="text-center">{{$item->sex}}</td>
+                                <td class="text-center">{{$item->married_status}}</td>
+                                <td class="text-center"></td>
+                                <td class="text-center">{{$item->date_of_death}} | {{$item->time_of_death}}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('emr_death.edit', $item->death_id) }}" class="text-primary" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>
+                                    <a href="{{ route('emr_death.show', $item->death_id) }}" class="text-warning" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </table>
         </div>
@@ -206,36 +225,36 @@
                 format: 'HH:mm'
             });
 
-            $.ajax({
-                type:'GET',
-                url:"{{ route('emr_death.GetInitPage') }}",
-                data:{},
-                success:function(result){
+            {{--$.ajax({--}}
+            {{--    type:'GET',--}}
+            {{--    url:"{{ route('emr_death.GetInitPage') }}",--}}
+            {{--    data:{},--}}
+            {{--    success:function(result){--}}
 
-                    var province = result.province;
-                    province.unshift({ id: 0, text:'-- select --'});
-                    $('#death_province_code').select2({data: province, width: '100%', dropdownParent: $("#frmAddNew") });
-                    $('#deceased_province_code').select2({data: province, width: '100%', dropdownParent: $("#frmAddNew") });
+            {{--        var province = result.province;--}}
+            {{--        province.unshift({ id: 0, text:'-- select --'});--}}
+            {{--        $('#death_province_code').select2({data: province, width: '100%', dropdownParent: $("#frmAddNew") });--}}
+            {{--        $('#deceased_province_code').select2({data: province, width: '100%', dropdownParent: $("#frmAddNew") });--}}
 
-                    var gender = result.gender;
-                    gender.unshift({ id: 0, text:'-- select --'});
-                    $('#sex').select2({data: gender, width: '100%', dropdownParent: $("#frmAddNew") });
+            {{--        var gender = result.gender;--}}
+            {{--        gender.unshift({ id: 0, text:'-- select --'});--}}
+            {{--        $('#sex').select2({data: gender, width: '100%', dropdownParent: $("#frmAddNew") });--}}
 
-                    var death_info = result.death_info;
-                    death_info.unshift({ id: 0, text:'-- select --'});
-                    $('#death_info').select2({data: death_info, width: '100%', dropdownParent: $("#frmAddNew") });
+            {{--        var death_info = result.death_info;--}}
+            {{--        death_info.unshift({ id: 0, text:'-- select --'});--}}
+            {{--        $('#death_info').select2({data: death_info, width: '100%', dropdownParent: $("#frmAddNew") });--}}
 
-                    var death_type = result.death_type;
-                    death_type.unshift({ id: 0, text:'-- select --'});
-                    $('#death_type').select2({data: death_type, width: '100%', dropdownParent: $("#frmAddNew") });
+            {{--        var death_type = result.death_type;--}}
+            {{--        death_type.unshift({ id: 0, text:'-- select --'});--}}
+            {{--        $('#death_type').select2({data: death_type, width: '100%', dropdownParent: $("#frmAddNew") });--}}
 
-                    var married_status = result.married_status;
-                    married_status.unshift({ id: 0, text:'-- select --'});
-                    $('#married_status').select2({data: married_status, width: '100%', dropdownParent: $("#frmAddNew") });
+            {{--        var married_status = result.married_status;--}}
+            {{--        married_status.unshift({ id: 0, text:'-- select --'});--}}
+            {{--        $('#married_status').select2({data: married_status, width: '100%', dropdownParent: $("#frmAddNew") });--}}
 
-                }
-            });
-            LoadData();
+            {{--    }--}}
+            {{--});--}}
+            // LoadData();
         })
         function GetDistrict(PCode){
             $.ajax({
@@ -322,32 +341,33 @@
                 }
             });
         }
-        function LoadData(){
-            $("#bodyUser").html("");
-            $.ajax({
-                type:'GET',
-                url:"{{ route('emr_death.GetData') }}",
-                data:{},
-                success:function(data){
-                    console.log(data);
-                    var item =data;
-                    for (var i = 0; i < item.length; i++) {
-                        var btnPrint ='<a href="/emr_death_print" class="text-info" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>';
-                        $("#bodyDeath").append('<tr>'+
-                            '<td class="text-center">'+item[i].issue_no+'</td>'+
-                            '<td class="text-left">'+item[i].hfac_label+'</td>'+
-                            '<td class="text-center">'+item[i].medical_file_id+'</td>'+
-                            '<td class="text-left">'+(item[i].deceased_name  || "")+'</td>'+
-                            '<td class="text-center">'+(item[i].sex || "")+'</td>'+
-                            '<td class="text-center">'+(item[i].married_status || "")+'</td>'+
-                            '<td class="text-center">'+(item[i].age || "")+'</td>'+
-                            '<td class="text-center">'+(item[i].date_of_death || "")+' | '+(item[i].time_of_death || "")+'</td>'+
-                            '<td class="text-center">'+btnPrint+'</td>'+
-                            '</tr>');
-                    }
-                }
-            });
-        }
+        {{--function LoadData(){--}}
+        {{--    $("#bodyUser").html("");--}}
+        {{--    $.ajax({--}}
+        {{--        type:'GET',--}}
+        {{--        url:"{{ route('emr_death.GetData') }}",--}}
+        {{--        data:{},--}}
+        {{--        success:function(data){--}}
+        {{--            console.log(data);--}}
+        {{--            var item =data;--}}
+        {{--            for (var i = 0; i < item.length; i++) {--}}
+        {{--                var btnEdit='<a href="{{route("emr_death.edit",item[i].death_id+')}}" s="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';--}}
+        {{--                var btnPrint ='<a href="/emr_death_print" class="text-warning" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>';--}}
+        {{--                $("#bodyDeath").append('<tr>'+--}}
+        {{--                    '<td class="text-center">'+item[i].issue_no+'</td>'+--}}
+        {{--                    '<td class="text-left">'+item[i].hfac_label+'</td>'+--}}
+        {{--                    '<td class="text-center">'+item[i].medical_file_id+'</td>'+--}}
+        {{--                    '<td class="text-left">'+(item[i].deceased_name  || "")+'</td>'+--}}
+        {{--                    '<td class="text-center">'+(item[i].sex || "")+'</td>'+--}}
+        {{--                    '<td class="text-center">'+(item[i].married_status || "")+'</td>'+--}}
+        {{--                    '<td class="text-center">'+(item[i].age || "")+'</td>'+--}}
+        {{--                    '<td class="text-center">'+(item[i].date_of_death || "")+' | '+(item[i].time_of_death || "")+'</td>'+--}}
+        {{--                    '<td class="text-center">'+btnEdit+btnPrint+'</td>'+--}}
+        {{--                    '</tr>');--}}
+        {{--            }--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--}--}}
         function clearForm(){
             $('#frmAddNew input').each(function(){
                 $(this).val('');

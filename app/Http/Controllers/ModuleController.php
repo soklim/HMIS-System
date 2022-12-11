@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupModule;
 use App\Models\Module;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use DB;
+use Hash;
 class ModuleController extends Controller
 {
     /**
@@ -12,11 +15,46 @@ class ModuleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $rolde_id = Auth::user()->role_id;
+        $module_id = 4;
+        $permission = DB::table('module_permissions')->where('role_id', $rolde_id)->where('module_id', $module_id)->first();
+        if ($permission->a_read != 1){
+            return view('error.error404');
+        }
+        else{
+            $group = GroupModule::all();
+            return view('modules.index',['group' => $group]);
+        }
     }
 
+    public function Save(Request $request)
+    {
+        if ($request->id == 0){
+            $input['name'] = $request->name;
+            $input['group_id'] = $request->route_name;
+            $input['route_name'] = $request->route_name;
+            Module::create($input);
+        }
+        else{
+            $input = $request->all();
+            $data = Module::find($request->id);
+            $data->update($input);
+        }
+        return Response()->json(array(
+            'code' => 0,
+        ));
+    }
+    public function  getData(){
+
+        $data = DB::table('modules as m')
+            ->join('group_modules as g', 'm.group_id', '=', 'g.id')
+            ->select('m.*', 'g.name as group_name')
+            ->get();
+        return response()->json($data->toArray());
+
+    }
     /**
      * Show the form for creating a new resource.
      *

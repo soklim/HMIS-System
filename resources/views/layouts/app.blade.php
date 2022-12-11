@@ -6,7 +6,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'SL Laravel') }}</title>
+    <title>{{ config('app.name', 'HMIS') }}</title>
     <link rel="icon" href="/assets/images/logo.png" type="image/png" />
 
     <!-- Fonts -->
@@ -45,6 +45,11 @@
     <style>
         body {
             font-family: 'Hanuman', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 12px;
+        }
+        .form-select{
+            font-size: 12px;
+            height: 38px;
         }
 
         .select2-container .select2-selection--single {
@@ -64,10 +69,10 @@
     <div class="sidebar-wrapper" data-simplebar="true">
         <div class="sidebar-header">
             <div>
-                <img src="/assets/images/logo.png" class="logo-icon" alt="logo icon" />
+                <img src="/assets/images/MOH_logo.png" class="logo-icon" alt="logo icon" />
             </div>
             <div>
-                <h4 class="logo-text text-success" style="font-weight:bold;">SL Laravel</h4>
+                <h4 class="logo-text text-center text-success" style="font-weight:bold;">HMIS</h4>
             </div>
             <div class="toggle-icon ms-auto text-success">
                 <i class='bx bx-arrow-to-left'></i>
@@ -98,7 +103,7 @@
 
                 ?>
                 @foreach($groupModule as $item)
-                    <li>
+                    <li style="border-top: solid 1px #d6d6d6;border-bottom: solid 1px #d6d6d6">
                         <a class="has-arrow" href="javascript:;">
                             <div class="parent-icon"><i class='bx bx-{{$item->icon}}'></i>
                             </div>
@@ -158,7 +163,7 @@
                         <img src="/assets/images/user.png" class="user-img" alt="user avatar"/>
                         <div class="user-info ps-3">
                             @guest
-                                <p class="user-name mb-0"> SL Laravel</p>
+                                <p class="user-name mb-0"> HMIS</p>
                             @else
                                 <p class="user-name mb-0"> {{ Auth::user()->role->name }}</p>
                             @endguest
@@ -211,7 +216,7 @@
     <!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
     <!--End Back To Top Button-->
     <footer class="page-footer">
-        <p class="mb-0">Copyright © All right reserved By KSL v.1.0.</p>
+        <p class="mb-0">Copyright © All right reserved By HMIS v.1.0.</p>
     </footer>
     <script type="text/javascript">
         $.ajaxSetup({
