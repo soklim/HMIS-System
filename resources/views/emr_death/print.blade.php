@@ -9,42 +9,24 @@
         @import url('https://fonts.googleapis.com/css2?family=Hanuman&display=swap');
     </style>
     <style type="text/css">
-        .big {
-            font-size: 13pt;
-            font-family: 'Khmer OS Muol Light';
-            display: inline;
-        }
 
         .small {
-            font-size: 10pt;
+            font-size: 13pt;
             font-family: 'Hanuman';
             display: inline;
         }
         .smallest {
-            font-size: 8pt;
+            font-size: 10pt;
             font-family: 'Hanuman';
             display: inline;
         }
         .small_bold {
-            font-size: 10pt;
+            font-size: 13pt;
             font-family: 'Hanuman';
             display: inline;
             font-weight: bold;
         }
-        .small_underline {
-            font-size: 11pt;
-            font-family: 'Hanuman';
-            display: inline;
-            text-decoration: underline;
-        }
-        .small_over {
-            display: inline;
-            position: absolute;
-            z-index: 100;
-            margin-top: 0px;
-            font-size: 13pt;
-            font-family: 'Hanuman';
-        }
+
         .header {
             border-collapse: collapse;
             border-spacing: 0;
@@ -112,8 +94,8 @@
     <table id="tblBody">
         @foreach($hf_info as $item)
         <tr>
-            <td style="width: 45%"><p class="small_bold">ឈ្មោះមូលដ្ឋានសុខាភិបាល៖ </p><p class="small_bold" id="hf_name">{{$item->hfac_namekh}}</p></td>
-            <td style="width: 15%">
+            <td style="width: 40%"><p class="small_bold">ឈ្មោះមូលដ្ឋានសុខាភិបាល៖ </p><p class="small_bold" id="hf_name">{{$item->hfac_namekh}}</p></td>
+            <td style="width: 20%">
                 @foreach($death_type as $death_type)
                     @if($death_type->id == $item1->death_type)
                         <div class="form-check">
@@ -131,8 +113,8 @@
             <td style="width: 40%" colspan="2">
                 <p class="small_bold">លេខកូដមូលដ្ឋានសុខាភិបាល(HMIS)៖ </p>
                 @foreach(str_split($item->hfac_label) as $value)
-                    <span style="border: solid 1px black;width:15px;height: 20px;display: inline-block;
-                        background-color: white;padding-left:7px;padding-top: 8px;font-weight: bold;">
+                    <span style="border: solid 1px black;width:12px;height: 16px;display: inline-block;
+                        background-color: white;padding-left:3px;padding-top: 5px;font-weight: bold;">
                             {{$value}}
                         </span>
                 @endforeach
@@ -140,7 +122,7 @@
         </tr>
         @endforeach
         <tr>
-            <td style="width: 45%"><p class="small_bold">ព័ត៌មានមរណភាព៖ </p>
+            <td style="width: 40%"><p class="small_bold">ព័ត៌មានមរណភាព៖ </p>
                 @foreach($death_info as $death_info)
                     @if($death_info->id == $item1->death_info)
                         <input class="form-check-input" type="checkbox" checked id="chb_death_type" disabled>
@@ -151,14 +133,14 @@
                     @endif
                 @endforeach
             </td>
-            <td colspan="3" style="width: 55%"><p class="small_bold">ទីតាំងមូលដ្ឋានសុខាភិបាល៖ </p>
+            <td colspan="3" style="width: 60%"><p class="small_bold">ទីតាំងមូលដ្ឋានសុខាភិបាល៖ </p>
                 <p class="small">ឃុំ/សង្កាត់: <span class="small_bold"></span></p>
                 <p class="small">ស្រុក/ខណ្ឌ: <span class="small_bold">{{$item->od_name_kh}}</span></p>
                 <p class="small">រាជធានី/ខេត្ត: <span class="small_bold">{{$item->province_kh}}</span></p>
             </td>
         </tr>
         <tr>
-            <td style="width: 45%">
+            <td style="width: 40%">
                 <p class="small_bold">ឈ្មោះអ្នកស្លាប់៖ </p>
                 <span class="small_bold">{{$item1->deceased_name}}</span>
                 <br><br><br>
@@ -167,9 +149,9 @@
             <td style="width: 40%" colspan="2"><p class="small_bold">ថ្ងៃខែឆ្នាំកំណើត៖ </p>
                 <span class="small_bold">{{date('d-m-Y', strtotime($item1->date_of_birth))}}</span>
                 <br><br><br>
-                <p class="small_bold">អាយុ៖</p>
+                <p class="small_bold">អាយុ៖ <span class="small_bold">{{$item1->age}}</span></p>
             </td>
-            <td style="width: 15%"><p class="small_bold">ភេទ៖ </p>
+            <td style="width: 20%"><p class="small_bold">ភេទ៖ </p>
                 @foreach($sex as $sex)
                     @if($sex->id == $item1->sex)
                         <div class="form-check">
@@ -186,7 +168,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 45%">
+            <td style="width: 40%">
                 <p class="small_bold">អត្តលេខឯកសារពេទ្យ៖</p><br>
                 <div>
                     @foreach(str_split($item1->medical_file_id) as $value)
@@ -206,7 +188,7 @@
                 <p class="small_bold">ពេលវេលាមរណភាព៖ </p>
                 <span class="small_bold">{{$item1->time_of_death}}</span>
             </td>
-            <td style="width: 15%"><p class="small_bold">ស្ថានភាពគ្រួសារ៖ </p>
+            <td style="width: 20%"><p class="small_bold">ស្ថានភាពគ្រួសារ៖ </p>
                 @foreach($married_status as $married_status)
                     @if($married_status->id == $item1->married_status)
                         <div class="form-check">

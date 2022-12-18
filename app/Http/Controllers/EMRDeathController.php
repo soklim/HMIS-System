@@ -28,6 +28,7 @@ class EMRDeathController extends Controller
         }
         else{
             $userId = Auth::user()->id;
+            $role_id = Auth::user()->role_id;
             $hf_id = User::where('id',$userId)->first(['hf_id'])->hf_id;
 
             $hf_name = HealthFacility::where('HFAC_CODE', $hf_id)->first(['HFAC_NAMEKh'])->HFAC_NAMEKh;
@@ -65,6 +66,7 @@ class EMRDeathController extends Controller
                     $join->on("d.married_status", "=", "s4.item_id")
                         ->where("s4.type_id", "=", 4);
                 })
+                ->where("d.is_deleted",0)
                 ->select("d.death_id","d.issue_no", "h.hfac_namekh as hfac_label", "s1.name_kh as death_info",
                     "s2.name_kh as death_type", "s3.name_kh as sex", "s4.name_kh as married_status","d.deceased_name",
                     "d.medical_file_id", "d.date_of_death", "d.time_of_death",
@@ -92,17 +94,14 @@ class EMRDeathController extends Controller
                 ->join("opdistrict as od", function($join){
                     $join->on("h.od_code", "=", "od.od_code");
                 })
-                ->join("province as p", function($join){
-                    $join->on("od.pro_code", "=", "p.procode");
-                })
-                ->select("h.hfac_label", "h.hfac_name", "h.hfac_namekh", "od.od_name", "od.od_name_kh", "p.province", "p.province_kh")
+                ->select("h.hfac_label", "h.OD_CODE", "od.PRO_CODE")
                 ->where("hfac_code", "=", $hf_id)
                 ->get();
 
             $data = DB::table("emr_death as e")
                 ->select("e.death_id","e.deceased_name", "e.death_info", "e.death_type", "e.date_of_birth", "e.date_of_death", "e.time_of_death", "e.sex", "e.married_status"
                     , "medical_file_id", "e.deceased_province_code", "e.deceased_district_code", "e.deceased_commune_code", "e.deceased_village", "e.deceased_street"
-                    , "e.deceased_house")
+                    , "e.deceased_house","e.age","e.is_baby")
                 ->where("e.death_id", "=", $id)
                 ->get();
             return view('emr_death.edit',['hf_info' => $hfInfo,'data'=>$data]);
@@ -171,9 +170,9 @@ class EMRDeathController extends Controller
                     $join->on("e.deceased_village", "=", "v.vcode");
                 })
                 ->select("e.death_id","e.issue_no","e.deceased_name", "e.death_info", "e.death_type"
-                    , "e.date_of_birth", "e.date_of_death", "e.time_of_death", "e.sex", "e.married_status"
-                    , "medical_file_id", "e.deceased_street"
-                    , "e.deceased_house", "p1.province_kh as deceased_province_code","dt1.DName_kh as deceased_district_code",
+                    ,"e.date_of_birth", "e.date_of_death", "e.time_of_death", "e.sex", "e.married_status"
+                    ,"medical_file_id", "e.deceased_street","e.age"
+                    ,"e.deceased_house", "p1.province_kh as deceased_province_code","dt1.DName_kh as deceased_district_code",
                     "c1.CName_kh as deceased_commune_code", "v.VName_kh as deceased_village")
                 ->where("e.death_id", "=", $id)
                 ->get();
@@ -287,12 +286,18 @@ class EMRDeathController extends Controller
             ->select('setting_items.item_id as id', 'setting_items.name_kh as text')
             ->get();
 
+        $hf_type = DB::table('setting_items')
+            ->where('setting_items.type_id',5)
+            ->select('setting_items.item_id as id', 'setting_items.name_kh as text')
+            ->get();
+
         return Response()->json(array(
             'gender'=>$gender,
             'province' => $province,
             'married_status'=>$married_status,
             'death_info'=>$death_info,
             'death_type'=>$death_type,
+            'hf_type' => $hf_type
         ));
     }
 
@@ -341,7 +346,7 @@ class EMRDeathController extends Controller
 
             $emr = DB::select( DB::raw("SELECT CONCAT('D',LPAD((SELECT (IFNULL((select max(`death_id`) from emr_death),0)))+1, 10, 0)) as issue_no"));
             $input['death_type'] = $request->death_type;
-            $input['hmis_code'] = $hf_id;
+            $input['hmis_code'] = $request->hmis_code;
             $input['issue_no'] = $emr[0]->issue_no;
             $input['death_info'] = $request->death_info;
             $input['medical_file_id'] = $request->medical_file_id;
@@ -350,6 +355,8 @@ class EMRDeathController extends Controller
             $input['deceased_name'] = $request->deceased_name;
             $input['date_of_birth'] = $request->date_of_birth;
             $input['sex'] = $request->sex;
+            $input['age'] = $request->age;
+            $input['is_baby'] = $request->is_baby;
             $input['married_status'] = $request->married_status;
             $input['deceased_province_code'] = $request->deceased_province_code;
             $input['deceased_district_code'] = $request->deceased_district_code;
@@ -358,13 +365,11 @@ class EMRDeathController extends Controller
             $input['deceased_street'] = $request->deceased_street;
             $input['deceased_house'] = $request->deceased_house;
             $input['created_by'] = Auth::user()->id;
-
             EMRDeath::create($input);
         }
         else{
             $input = $request->all();
             $emr_death = EMRDeath::where('death_id',$request->death_id);
-//            $emr_death = EMRDeath::find($request->death_id);
             $emr_death->update($input);
         }
         return Response()->json(array(

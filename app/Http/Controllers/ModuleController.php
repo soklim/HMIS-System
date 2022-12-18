@@ -33,8 +33,9 @@ class ModuleController extends Controller
     {
         if ($request->id == 0){
             $input['name'] = $request->name;
-            $input['group_id'] = $request->route_name;
+            $input['group_id'] = $request->group_id;
             $input['route_name'] = $request->route_name;
+            $input['active'] = 1;
             Module::create($input);
         }
         else{

@@ -18,48 +18,45 @@
             <input type="hidden" id="death_id" value="0" data-required="0">
             <h6 style="font-weight: bold;text-decoration: underline">ព័ត៌មានមរណៈភាព</h6>
             <hr>
-            @foreach($hf_info as $item)
             <div class="row">
                 <div class="col-md-4">
-                    <label>ឈ្មោះមូលដ្ឋានសុខាភិបាល: <span style="font-weight: bold">{{$item->hfac_namekh}}</span></label>
+                    <div class="form-group mb-3">
+                        <label>រាជធានី-ខេត្ត <span class="text-danger">(*)</span></label>
+                        <select class="form-select select2" id="txtHF_Province" data-required="0" onchange="GetOD(this.value)"></select>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group mb-3">
-{{--                        <label>ករណីស្លាប់ <span class="text-danger">(*)</span></label>--}}
+                        <label>ក្រុង/ស្រុក/ខណ្ឌ <span class="text-danger">(*)</span></label>
+                        <select class="form-select select2" id="txtHF_District" data-required="0" onchange="GetHF(this.value)">
+                            <option value="0">-- select --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label>មណ្ឌលសុខភាព <span class="text-danger">(*)</span></label>
+                        <select class="form-select select2" id="hmis_code" data-required="0">
+                            <option value="0">-- select --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-3" style="border: solid 1px black;border-radius: 10px;padding-top:10px;padding-left:10px">
+                        <label>ករណីស្លាប់ <span class="text-danger">(*)</span></label>
                         <div id="div_death_type">
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group mb-3">
-                        <label>លេខកូដមូលដ្ឋានសុខាភិបាល(HMIS) <span id="hmis_code" style="font-weight: bold">{{$item->hfac_label}}</span></label>
-                    </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group mb-3">
+                <div class="col-md-8">
+                    <div class="form-group mb-3" style="border: solid 1px black;border-radius: 10px;padding-top:10px;padding-left:10px">
                         <label>ព័ត៌មានមរណភាព <span class="text-danger">(*)</span></label>
                         <div id="div_death_info">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <br>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label>ឃុំ/សង្កាត់: <span style="font-weight: bold"></span></label>
-                        </div>
-                        <div class="col-md-4">
-                            <label>ក្រុង/ស្រុក/ខណ្ឌ: <span style="font-weight: bold">{{$item->od_name_kh}}</span></label>
-                        </div>
-                        <div class="col-md-4">
-                            <label>រាជធានី-ខេត្ត: <span style="font-weight: bold">{{$item->province_kh}}</span></label>
                         </div>
                     </div>
                 </div>
             </div>
-            @endforeach
         </div>
         <div class="col-md-12">
             <h6 style="font-weight: bold;text-decoration: underline">ព័ត៌មានអ្នកស្លាប់</h6>
@@ -70,8 +67,10 @@
                     <input type="text" id="deceased_name" class="form-control"/>
                 </div>
                 <div class="col-md-4">
-                    <label>ថ្ងៃខែឆ្នាំកំណើត <span class="text-danger">(*)</span></label>
-                    <input type="text" id="date_of_birth" class="form-control datefield" placeholder="YYYY-MM-DD" />
+                    <div class="form-group mb-3">
+                        <label>អត្តលេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
+                        <input type="text" class="form-control" id="medical_file_id" data-required="1">
+                    </div>
                 </div>
                 <div class="col-md-2">
                     <label>ភេទ <span class="text-danger">(*)</span></label>
@@ -88,21 +87,26 @@
             </div>
             <div class="row" style="padding-top: 10px;">
                 <div class="col-md-4">
-                    <div class="form-group mb-3">
-                        <label>អត្តលេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control" id="medical_file_id" data-required="1">
-                    </div>
+                    <label>ថ្ងៃខែឆ្នាំកំណើត <span class="text-danger">(*)</span></label>
+                    <input type="text" id="date_of_birth" class="form-control datefield" onchange="getAge()" placeholder="YYYY-MM-DD" />
                 </div>
                 <div class="col-md-4">
                     <div class="form-group mb-3">
                         <label>ថ្ងៃខែឆ្នាំ-មរណភាព <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control datefield" id="date_of_death" data-required="1" placeholder="YYYY-MM-DD">
+                        <input type="text" class="form-control datefield" id="date_of_death" onchange="getAge()" data-required="1" placeholder="YYYY-MM-DD">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ម៉ោង-មរណភាព <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control timefield" id="time_of_death" data-required="1" placeholder="MM:HH">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group mb-3">
+                        <label>អាយុ <span class="text-danger">(*)</span> <input type="checkbox" id="txtCheckAge" onchange="isBaby(this.checked)"/> ទារក </label>
+                        <input type="text" class="form-control" id="age_year" data-required="1" readonly>
+                        <input type="text" class="form-control timefield" id="age_day" data-required="1" style="display: none">
                     </div>
                 </div>
             </div>
@@ -180,7 +184,7 @@
 
                     var province = result.province;
                     province.unshift({ id: 0, text:'-- select --'});
-                    // $('#death_province_code').select2({data: province, width: '100%'});
+                    $('#txtHF_Province').select2({data: province, width: '100%'});
                     $('#deceased_province_code').select2({data: province, width: '100%'});
 
                     var gender = result.gender;
@@ -206,6 +210,14 @@
                         '</div>');
                     }
 
+                    // var hf_type = result.hf_type;
+                    // for(i=0; i<hf_type.length; i++){
+                    //     $("#div_hf_type").append('<div class="form-check form-check-inline">'+
+                    //         '<input class="form-check-input" type="radio" name="hf_type" value="'+hf_type[i].id+'" id="hf_type'+i+'">'+
+                    //         '<label class="form-check-label" for="hf_type'+i+'">'+hf_type[i].text+'</label>'+
+                    //         '</div>');
+                    // }
+
                     var married_status = result.married_status;
                     for(i=0; i<married_status.length; i++){
                         $("#div_married_status").append('<div class="form-check form-check-inline">'+
@@ -217,7 +229,44 @@
             });
         })
 
+        function isBaby(checked){
+            if(checked == true){
+                $("#age_year").hide();
+                $("#age_day").show();
+            }
+            else{
+                $("#age_year").show();
+                $("#age_day").hide();
+            }
 
+        }
+        function getAge() {
+
+            if($('#date_of_birth').val() != "" && $('#date_of_death').val() != ""){
+
+                var start = new Date($('#date_of_birth').val());
+                var end = new Date($('#date_of_death').val());
+                if(start.getTime() > end.getTime()){
+                    MSG.Error("ថ្ងៃខែឆ្នាំកំណើត មិនអាចធំជាង ថ្ងៃខែឆ្នាំ-មរណភាព បានទេ !!!");
+                    $('#date_of_birth').val("");
+                    $('#date_of_death').val("");
+                    $('#age_year').val("");
+                    return false;
+                }
+                // end - start returns difference in milliseconds
+                var diff = new Date(end - start);
+                // get days
+                var days = diff/1000/60/60/24;
+                var year = Math.floor(days/365)+"ឆ្នាំ ";
+                var month = Math.floor((parseInt(days)%365)/30)+"ខែ ";
+                var day = Math.floor((parseInt(days)%365)%30)+"ថ្ងៃ";
+                $("#age_year").val(year+month+day);
+            }
+            else{
+                $("#age_year").val("");
+            }
+
+        }
         function GetDistrict_Deceased(PCode){
             $.ajax({
                 type:'POST',
@@ -272,6 +321,7 @@
 
         function Save(){
             var death_id = $("#death_id").val();
+            var hmis_code = $("#hmis_code").val();
             var death_type = $("input[name='death_type']:checked");
             var death_info = $("input[name='death_info']:checked");
             var medical_file_id = $("#medical_file_id").val();
@@ -288,7 +338,17 @@
             var deceased_street = $("#deceased_street").val();
             var deceased_house = $("#deceased_house").val();
 
-            if(death_type.length == 0){
+            var age = $("#age_year").val();
+            var is_baby =0;
+            if($("#txtCheckAge").is(':checked')){
+                age = $("#age_day").val();
+                is_baby =1;
+            }
+
+            if(hmis_code == 0){
+                MSG.Validation("សូមជ្រើសរើស មណ្ឌលសុខភាព !!!");
+            }
+            else if(death_type.length == 0){
                 MSG.Validation("សូមបញ្ចូល ករណីស្លាប់ !!!");
             }
             else if(death_info.length == 0){
@@ -297,8 +357,8 @@
             else if(deceased_name == ""){
                 MSG.Validation("សូមបញ្ចូល ឈ្មោះអ្នកស្លាប់ !!!");
             }
-            else if(date_of_birth == ""){
-                MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំកំណើត !!!");
+            else if(medical_file_id == ""){
+                MSG.Validation("សូមបញ្ចូល អត្តលេខឯកសារពេទ្យ !!!");
             }
             else if(sex.length == 0){
                 MSG.Validation("សូមបញ្ចូល ភេទ !!!");
@@ -306,8 +366,8 @@
             else if(married_status.length == 0){
                 MSG.Validation("សូមបញ្ចូល ស្ថានភាពគ្រួសារ !!!");
             }
-            else if(medical_file_id == ""){
-                MSG.Validation("សូមបញ្ចូល អត្តលេខឯកសារពេទ្យ !!!");
+            else if(date_of_birth == ""){
+                MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំកំណើត !!!");
             }
             else if(date_of_death == ""){
                 MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំ-មរណភាព !!!");
@@ -318,23 +378,26 @@
             else if(deceased_province_code == 0){
                 MSG.Validation("សូមបញ្ចូល រាជធានី-ខេត្ត !!!");
             }
+            else if(age == ""){
+                MSG.Validation("សូមបញ្ចូល អាយុ !!!");
+            }
             else{
                 $.ajax({
                     type:'POST',
                     url:"{{ route('emr_death.Save') }}",
                     data:{
                         death_id:death_id,
+                        hmis_code: hmis_code,
                         death_type:death_type[0].value,
                         death_info:death_info[0].value,
                         medical_file_id:medical_file_id,
                         date_of_death:date_of_death,
                         time_of_death:time_of_death,
-                        // death_province_code:death_province_code,
-                        // death_district_code:death_district_code,
-                        // death_commune_code:death_commune_code,
                         deceased_name:deceased_name,
                         date_of_birth:date_of_birth,
                         sex:sex[0].value,
+                        age: age,
+                        is_baby: is_baby,
                         married_status:married_status[0].value,
                         deceased_province_code:deceased_province_code,
                         deceased_district_code:deceased_district_code,
@@ -354,6 +417,42 @@
                     }
                 });
             }
+        }
+
+        function GetOD(province_code){
+
+            $.ajax({
+                type:'POST',
+                url:"{{ route('users.getDistrict') }}",
+                data:{
+                    pro_code:province_code
+                },
+                success:function(result){
+                    console.log(result);
+                    $('#txtHF_District').html("");
+                    var district = result.district;
+                    district.unshift({ id: 0, text:'-- select --'});
+                    $('#txtHF_District').select2({data: district, width: '100%'});
+
+                }
+            });
+        }
+        function GetHF(district_code){
+            $.ajax({
+                type:'POST',
+                url:"{{ route('users.getHF') }}",
+                data:{
+                    district_code:district_code
+                },
+                success:function(result){
+                    console.log(result);
+                    $('#hmis_code').html("");
+                    var HF = result.HF;
+                    HF.unshift({ id: 0, text:'-- select --'});
+                    $('#hmis_code').select2({data: HF, width: '100%'});
+
+                }
+            });
         }
     </script>
 @endsection
