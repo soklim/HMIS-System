@@ -28,55 +28,16 @@ class EMRDeathController extends Controller
         }
         else{
             $userId = Auth::user()->id;
-            $role_id = Auth::user()->role_id;
-            $hf_id = User::where('id',$userId)->first(['hf_id'])->hf_id;
+            $user = User::where('id',$userId)->take(1)->get();
+            $province = DB::table("province as p")->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+            if ($user[0]->province_id != 0){
+                $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+            }
+            return view('emr_death.index',[
+                'user'=>$user,
+                'province'=>$province
+            ]);
 
-            $hf_name = HealthFacility::where('HFAC_CODE', $hf_id)->first(['HFAC_NAMEKh'])->HFAC_NAMEKh;
-            $hf_label = HealthFacility::where('HFAC_CODE', $hf_id)->first(['HFAC_Label'])->HFAC_Label;
-
-            $data = DB::table("emr_death as d")
-                ->leftJoin("healthfacility as h", function($join){
-                    $join->on("d.hmis_code", "=", "h.hfac_code");
-                })
-                ->leftJoin("province as p1", function($join){
-                    $join->on("d.deceased_province_code", "=", "p1.procode");
-                })
-                ->leftJoin("district as dt1", function($join){
-                    $join->on("d.deceased_district_code", "=", "dt1.dcode");
-                })
-                ->leftJoin("commune as c1", function($join){
-                    $join->on("d.deceased_commune_code", "=", "c1.ccode");
-                })
-                ->leftJoin("village as v", function($join){
-                    $join->on("d.deceased_village", "=", "v.vcode");
-                })
-                ->leftJoin("setting_items as s1", function($join){
-                    $join->on("d.death_info", "=", "s1.item_id")
-                        ->where("s1.type_id", "=", 2);
-                })
-                ->leftJoin("setting_items as s2", function($join){
-                    $join->on("d.death_type", "=", "s2.item_id")
-                        ->where("s2.type_id", "=", 3);
-                })
-                ->leftJoin("setting_items as s3", function($join){
-                    $join->on("d.sex", "=", "s3.item_id")
-                        ->where("s3.type_id", "=", 1);
-                })
-                ->leftJoin("setting_items as s4", function($join){
-                    $join->on("d.married_status", "=", "s4.item_id")
-                        ->where("s4.type_id", "=", 4);
-                })
-                ->where("d.is_deleted",0)
-                ->select("d.death_id","d.issue_no", "h.hfac_namekh as hfac_label", "s1.name_kh as death_info",
-                    "s2.name_kh as death_type", "s3.name_kh as sex", "s4.name_kh as married_status","d.deceased_name",
-                    "d.medical_file_id", "d.date_of_death", "d.time_of_death",
-                    "p1.province_kh as deceased_province_code","dt1.DName_kh as deceased_district_code",
-                    "c1.CName_kh as deceased_commune_code", "v.VName_kh as deceased_village",
-                    "d.deceased_street", "d.deceased_house",
-                )
-                ->orderByRaw('d.death_id DESC')
-                ->get();
-            return view('emr_death.index',['hf_name' => $hf_name,'hf_label'=>$hf_label,'hf_id'=>$hf_id,'data'=>$data]);
         }
 
     }
@@ -104,7 +65,18 @@ class EMRDeathController extends Controller
                     , "e.deceased_house","e.age","e.is_baby")
                 ->where("e.death_id", "=", $id)
                 ->get();
-            return view('emr_death.edit',['hf_info' => $hfInfo,'data'=>$data]);
+            $userId = Auth::user()->id;
+            $user = User::where('id',$userId)->take(1)->get();
+            $province = DB::table("province as p")->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+            if ($user[0]->province_id != 0){
+                $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+            }
+            return view('emr_death.edit',[
+                'hf_info' => $hfInfo,
+                'data'=>$data,
+                'user'=>$user,
+                'province'=>$province
+            ]);
         }
     }
     public function create(Request $request)
@@ -129,7 +101,17 @@ class EMRDeathController extends Controller
             ->select("h.hfac_label", "h.hfac_name", "h.hfac_namekh", "od.od_name", "od.od_name_kh", "p.province", "p.province_kh")
             ->where("hfac_code", "=", $hf_id)
             ->get();
-            return view('emr_death.create',['hf_info' => $hfInfo]);
+
+            $user = User::where('id',$userId)->take(1)->get();
+            $province = DB::table("province as p")->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+            if ($user[0]->province_id != 0){
+                $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+            }
+            return view('emr_death.create',[
+                'hf_info' => $hfInfo,
+                'province'=>$province,
+                'user'=>$user
+            ]);
         }
 
     }
@@ -377,49 +359,79 @@ class EMRDeathController extends Controller
         ));
     }
 
-    public function  getData(){
+//    public function  getData(){
+//
+//        $data = DB::table("emr_death as d")
+//            ->leftJoin("healthfacility as h", function($join){
+//                $join->on("d.hmis_code", "=", "h.hfac_code");
+//            })
+//            ->leftJoin("province as p1", function($join){
+//                $join->on("d.deceased_province_code", "=", "p1.procode");
+//            })
+//            ->leftJoin("district as dt1", function($join){
+//                $join->on("d.deceased_district_code", "=", "dt1.dcode");
+//            })
+//            ->leftJoin("commune as c1", function($join){
+//                $join->on("d.deceased_commune_code", "=", "c1.ccode");
+//            })
+//            ->leftJoin("village as v", function($join){
+//                $join->on("d.deceased_village", "=", "v.vcode");
+//            })
+//            ->leftJoin("setting_items as s1", function($join){
+//                $join->on("d.death_info", "=", "s1.item_id")
+//                    ->where("s1.type_id", "=", 2);
+//            })
+//            ->leftJoin("setting_items as s2", function($join){
+//                $join->on("d.death_type", "=", "s2.item_id")
+//                    ->where("s2.type_id", "=", 3);
+//            })
+//            ->leftJoin("setting_items as s3", function($join){
+//                $join->on("d.sex", "=", "s3.item_id")
+//                    ->where("s3.type_id", "=", 1);
+//            })
+//            ->leftJoin("setting_items as s4", function($join){
+//                $join->on("d.married_status", "=", "s4.item_id")
+//                    ->where("s4.type_id", "=", 4);
+//            })
+//            ->select("d.death_id","d.issue_no", "h.hfac_namekh as hfac_label", "s1.name_kh as death_info",
+//                "s2.name_kh as death_type", "s3.name_kh as sex", "s4.name_kh as married_status","d.deceased_name",
+//                "d.medical_file_id", "d.date_of_death", "d.time_of_death",
+//                "p1.province_kh as deceased_province_code","dt1.DName_kh as deceased_district_code",
+//                "c1.CName_kh as deceased_commune_code", "v.VName_kh as deceased_village",
+//                "d.deceased_street", "d.deceased_house",
+//            )
+//            ->get();
+//        return response()->json($data->toArray());
+//
+//    }
 
-        $data = DB::table("emr_death as d")
-            ->leftJoin("healthfacility as h", function($join){
-                $join->on("d.hmis_code", "=", "h.hfac_code");
-            })
-            ->leftJoin("province as p1", function($join){
-                $join->on("d.deceased_province_code", "=", "p1.procode");
-            })
-            ->leftJoin("district as dt1", function($join){
-                $join->on("d.deceased_district_code", "=", "dt1.dcode");
-            })
-            ->leftJoin("commune as c1", function($join){
-                $join->on("d.deceased_commune_code", "=", "c1.ccode");
-            })
-            ->leftJoin("village as v", function($join){
-                $join->on("d.deceased_village", "=", "v.vcode");
-            })
-            ->leftJoin("setting_items as s1", function($join){
-                $join->on("d.death_info", "=", "s1.item_id")
-                    ->where("s1.type_id", "=", 2);
-            })
-            ->leftJoin("setting_items as s2", function($join){
-                $join->on("d.death_type", "=", "s2.item_id")
-                    ->where("s2.type_id", "=", 3);
-            })
-            ->leftJoin("setting_items as s3", function($join){
-                $join->on("d.sex", "=", "s3.item_id")
-                    ->where("s3.type_id", "=", 1);
-            })
-            ->leftJoin("setting_items as s4", function($join){
-                $join->on("d.married_status", "=", "s4.item_id")
-                    ->where("s4.type_id", "=", 4);
-            })
-            ->select("d.death_id","d.issue_no", "h.hfac_namekh as hfac_label", "s1.name_kh as death_info",
-                "s2.name_kh as death_type", "s3.name_kh as sex", "s4.name_kh as married_status","d.deceased_name",
-                "d.medical_file_id", "d.date_of_death", "d.time_of_death",
-                "p1.province_kh as deceased_province_code","dt1.DName_kh as deceased_district_code",
-                "c1.CName_kh as deceased_commune_code", "v.VName_kh as deceased_village",
-                "d.deceased_street", "d.deceased_house",
-            )
-            ->get();
-        return response()->json($data->toArray());
+    public function getData(Request $request){
 
+        $province = $request->province;
+        $district = $request->district;
+        $hf_code = $request->hf_code;
+        $deceased_name = $request->deceased_name;
+        $medical_id = $request->medical_id;
+        $issue_no = $request->issue_no;
+        $results = DB::select("SELECT b.death_id,b.issue_no,b.medical_file_id, b.deceased_name,t3.name_kh as death_type,t2.name_kh as death_info
+                ,t1.name_kh as sex,b.date_of_death,b.time_of_death,h.HFAC_NAMEKh,t4.name_kh as married_status,b.age
+            FROM emr_death b
+            INNER JOIN healthfacility h ON b.hmis_code = h.HFAC_CODE
+            INNER JOIN opdistrict od ON h.OD_CODE = od.OD_CODE
+            INNER JOIN province p ON od.PRO_CODE = p.PROCODE
+            INNER JOIN setting_items t2 ON b.death_info = t2.item_id AND t2.type_id = 2
+            INNER JOIN setting_items t3 ON b.death_type = t3.item_id AND t3.type_id = 3
+            INNER JOIN setting_items t1 ON b.sex = t1.item_id AND t1.type_id = 1
+             INNER JOIN setting_items t4 ON b.married_status = t4.item_id AND t4.type_id = 4
+            WHERE b.is_deleted =0
+            AND (p.PROCODE = $province OR $province=0)
+            AND (od.OD_CODE = $district OR $district=0)
+            AND (h.HFAC_CODE = $hf_code OR $hf_code=0)
+            AND b.deceased_name LIKE '%$deceased_name%'
+            AND b.medical_file_id LIKE '%$medical_id%'
+            AND b.issue_no LIKE '%$issue_no%'
+            ORDER BY b.issue_no DESC LIMIT 100");
+
+        return response()->json($results);
     }
 }

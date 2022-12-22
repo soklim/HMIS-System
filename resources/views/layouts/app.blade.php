@@ -35,6 +35,7 @@
     <script src="/assets/js/Global.js"></script>
     <!--app JS-->
     <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/xlsx.full.min.js"/></script>
     <link href="/assets/plugins/datetimepicker/css/classic.css" rel="stylesheet" />
     <link href="/assets/plugins/datetimepicker/css/classic.time.css" rel="stylesheet" />
     <link href="/assets/plugins/datetimepicker/css/classic.date.css" rel="stylesheet" />
@@ -57,6 +58,12 @@
         }
         .highlight {
             border: 1px solid red !important;
+        }
+        .btn{
+            font-size: 12px;
+        }
+        .table{
+            font-size: 13px;
         }
     </style>
 

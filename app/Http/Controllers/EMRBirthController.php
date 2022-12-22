@@ -27,45 +27,17 @@ class EMRBirthController extends Controller
         }
         else{
 
-            $data = DB::table("emr_birth as d")
-                ->leftJoin("healthfacility as h", function($join){
-                    $join->on("d.hfac_code", "=", "h.hfac_code");
-                })
-                ->leftJoin("province as p1", function($join){
-                    $join->on("d.PCode", "=", "p1.procode");
-                })
-                ->leftJoin("district as dt1", function($join){
-                    $join->on("d.DCode", "=", "dt1.dcode");
-                })
-                ->leftJoin("commune as c1", function($join){
-                    $join->on("d.CCode", "=", "c1.ccode");
-                })
-                ->leftJoin("setting_items as s1", function($join){
-                    $join->on("d.birth_info", "=", "s1.item_id")
-                        ->where("s1.type_id", "=", 6);
-                })
-                ->leftJoin("setting_items as s2", function($join){
-                    $join->on("d.typeofbirth", "=", "s2.item_id")
-                        ->where("s2.type_id", "=", 7);
-                })
-                ->leftJoin("setting_items as s3", function($join){
-                    $join->on("d.Atdelivery", "=", "s3.item_id")
-                        ->where("s3.type_id", "=", 8);
-                })
-                ->leftJoin("setting_items as s4", function($join){
-                    $join->on("d.sex", "=", "s4.item_id")
-                        ->where("s4.type_id", "=", 1);
-                })
-                ->where("d.is_deleted",0)
-                ->select("d.bid","d.birth_no", "h.hfac_namekh as hfac_label", "s1.name_kh as birth_info",
-                    "s2.name_kh as birth_type", "s3.name_kh as attendant_at_delivery","d.babyname",
-                    "d.medicalid", "d.dateofbirth", "d.time_of_birth",'s4.name_kh as sex',
-                    "p1.province_kh as province_name","dt1.DName_kh as district_name",
-                    "c1.CName_kh as commune_name"
-                )
-                ->orderByRaw('d.bid DESC')
-                ->get();
-            return view('emr_birth.index',['data'=>$data]);
+
+            $userId = Auth::user()->id;
+            $user = User::where('id',$userId)->take(1)->get();
+            $province = DB::table("province as p")->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+            if ($user[0]->province_id != 0){
+                $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+            }
+            return view('emr_birth.index',[
+                'user'=>$user,
+                'province'=>$province
+            ]);
         }
 
     }
@@ -85,31 +57,24 @@ class EMRBirthController extends Controller
         }
         else{
             $userId = Auth::user()->id;
-            $hf_id = User::where('id',$userId)->first(['hf_id'])->hf_id;
+            $user = User::where('id',$userId)->take(1)->get();
 
             $province = DB::table("province as p")->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+//            if ($user[0]->province_id != 0){
+//                $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
+//            }
             $sex = DB::table("setting_items as s")->where("s.type_id",1)->select("s.item_id","s.name","s.name_kh")->get();
             $birth_info = DB::table("setting_items as s")->where("s.type_id",6)->select("s.item_id","s.name","s.name_kh")->get();
             $birth_type = DB::table("setting_items as s")->where("s.type_id",7)->select("s.item_id","s.name","s.name_kh")->get();
             $attendant_at_delivery = DB::table("setting_items as s")->where("s.type_id",8)->select("s.item_id","s.name","s.name_kh")->get();
 
-            $hfInfo = DB::table("healthfacility as h")
-                ->join("opdistrict as od", function($join){
-                    $join->on("h.od_code", "=", "od.od_code");
-                })
-                ->join("province as p", function($join){
-                    $join->on("od.pro_code", "=", "p.procode");
-                })
-                ->select("h.hfac_label", "h.hfac_name", "h.hfac_namekh", "od.od_name", "od.od_name_kh", "p.province", "p.province_kh")
-                ->where("hfac_code", "=", $hf_id)
-                ->get();
             return view('emr_birth.create',[
-                'hf_info' => $hfInfo,
                 'province'=>$province,
                 'sex'=>$sex,
                 'birth_info'=>$birth_info,
                 'birth_type'=>$birth_type,
                 'attendant_at_delivery'=>$attendant_at_delivery,
+                'user'=>$user
             ]);
         }
 
@@ -159,6 +124,34 @@ class EMRBirthController extends Controller
         ));
     }
 
+    public function getData(Request $request){
+
+        $province = $request->province;
+        $district = $request->district;
+        $hf_code = $request->hf_code;
+        $baby_name = $request->baby_name;
+        $medical_id = $request->medical_id;
+        $birth_no = $request->birth_no;
+        $results = DB::select("SELECT b.bid,b.birth_no,b.medicalid, b.babyname,t6.name_kh as birth_info,t7.name_kh as birth_type
+                ,t1.name_kh as sex,b.dateofbirth,b.time_of_birth,h.HFAC_NAMEKh
+            FROM emr_birth b
+            INNER JOIN healthfacility h ON b.hfac_code = h.HFAC_CODE
+            INNER JOIN opdistrict od ON h.OD_CODE = od.OD_CODE
+            INNER JOIN province p ON od.PRO_CODE = p.PROCODE
+            INNER JOIN setting_items t7 ON b.typeofbirth = t7.item_id AND t7.type_id = 7
+            INNER JOIN setting_items t6 ON b.birth_info = t6.item_id AND t6.type_id = 6
+            INNER JOIN setting_items t1 ON b.sex = t1.item_id AND t1.type_id = 1
+            WHERE b.is_deleted =0
+            AND (p.PROCODE = $province OR $province=0)
+            AND (od.OD_CODE = $district OR $district=0)
+            AND (h.HFAC_CODE = $hf_code OR $hf_code=0)
+            AND b.babyname LIKE '%$baby_name%'
+            AND b.medicalid LIKE '%$medical_id%'
+            AND b.birth_no LIKE '%$birth_no%'
+            ORDER BY b.birth_no DESC LIMIT 100");
+
+        return response()->json($results);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -213,7 +206,7 @@ class EMRBirthController extends Controller
                 })
                 ->select("e.bid","e.birth_no","e.babyname", "e.birth_info", "e.typeofbirth"
                     ,"e.dateofbirth", "e.time_of_birth", "e.sex", "e.abandoned"
-                    ,"medicalid", "e.mStreet",'e.abandoned'
+                    ,"medicalid", "e.mStreet",'e.abandoned','e.Atdelivery','mothername','motherdofbirth','fathername','fatherdofbirth'
                     ,"e.mHouse", "p1.province_kh as mPCode","dt1.DName_kh as mDCode",
                     "c1.CName_kh as mCCode", "v.VName_kh as mVCode")
                 ->where("e.bid", "=", $id)

@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
-                        <label>Attendant at delivery <span class="text-danger">(*)</span></label><br>
+                        <label>សម្រាលដោយ <span class="text-danger">(*)</span></label><br>
                         @foreach($attendant_at_delivery as $attendant_at_delivery)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" id="attendant_at_delivery_{{$attendant_at_delivery->item_id}}" type="radio" name="attendant_at_delivery" value="{{$attendant_at_delivery->item_id}}">
@@ -233,6 +233,12 @@
                 format: 'HH:mm'
             });
 
+
+            @if($user[0]->province_id != 0){
+                $('#txtHF_Province').val({{$user[0]->province_id}}).trigger("change");
+                $('#txtHF_Province').prop("disabled", true);
+            }
+            @endif
             $(".select2").select2();
 
         })
@@ -414,7 +420,11 @@
                     var district = result.district;
                     district.unshift({ id: 0, text:'-- select --'});
                     $('#txtHF_District').select2({data: district, width: '100%'});
-
+                    @if($user[0]->district_id != 0){
+                        $('#txtHF_District').val({{$user[0]->district_id}}).trigger("change");
+                        $('#txtHF_District').prop("disabled", true);
+                    }
+                    @endif
                 }
             });
         }
@@ -431,6 +441,12 @@
                     var HF = result.HF;
                     HF.unshift({ id: 0, text:'-- select --'});
                     $('#hf_code').select2({data: HF, width: '100%'});
+
+                    @if($user[0]->hf_id != 0){
+                        $('#hf_code').val({{$user[0]->hf_id}}).trigger("change");
+                        $('#hf_code').prop("disabled", true);
+                    }
+                    @endif
 
                 }
             });

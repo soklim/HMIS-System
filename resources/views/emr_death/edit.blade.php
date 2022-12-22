@@ -23,7 +23,12 @@
                 <div class="col-md-4">
                     <div class="form-group mb-3">
                         <label>រាជធានី-ខេត្ត <span class="text-danger">(*)</span></label>
-                        <select class="form-select select2" id="txtHF_Province" data-required="0" onchange="GetOD(this.value)"></select>
+                        <select class="form-select select2" id="txtHF_Province" data-required="0" onchange="GetOD(this.value)">
+                            <option value="0">-- select --</option>
+                            @foreach($province as $pro)
+                                <option value="{{$pro->PROCODE}}">{{$pro->PROVINCE_KH}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -37,7 +42,7 @@
                 <div class="col-md-4">
                     <div class="form-group mb-3">
                         <label>មណ្ឌលសុខភាព <span class="text-danger">(*)</span></label>
-                        <select class="form-select select2" id="hmis_code" data-required="0">
+                        <select class="form-select select2" id="hf_code" data-required="0">
                             <option value="0">-- select --</option>
                         </select>
                     </div>
@@ -190,7 +195,6 @@
                     var province = result.province;
                     province.unshift({ id: 0, text:'-- select --'});
                     $('#deceased_province_code').select2({data: province, width: '100%'});
-                    $('#txtHF_Province').select2({data: province, width: '100%'});
                     var gender = result.gender;
                     for(i=0; i<gender.length; i++){
                         var checked="";
@@ -243,6 +247,12 @@
                     $('#txtHF_Province').val({{$hf_info[0]->PRO_CODE}}).trigger("change");
                 }
             });
+
+            @if($user[0]->province_id != 0){
+                $('#txtHF_Province').val({{$user[0]->province_id}}).trigger("change");
+                $('#txtHF_Province').prop("disabled", true);
+            }
+            @endif
         })
 
         function isBaby(checked){
@@ -283,7 +293,6 @@
             }
 
         }
-
         function GetDistrict_Deceased(PCode){
             $.ajax({
                 type:'POST',
@@ -362,10 +371,11 @@
                     var district = result.district;
                     district.unshift({ id: 0, text:'-- select --'});
                     $('#txtHF_District').select2({data: district, width: '100%'});
-                    if(province_code == {{$hf_info[0]->PRO_CODE}}){
-                        $('#txtHF_District').val({{$hf_info[0]->OD_CODE}}).trigger("change");
+                        @if($user[0]->district_id != 0){
+                        $('#txtHF_District').val({{$user[0]->district_id}}).trigger("change");
+                        $('#txtHF_District').prop("disabled", true);
                     }
-
+                    @endif
                 }
             });
         }
@@ -378,19 +388,23 @@
                 },
                 success:function(result){
                     console.log(result);
-                    $('#hmis_code').html("");
+                    $('#hf_code').html("");
                     var HF = result.HF;
                     HF.unshift({ id: 0, text:'-- select --'});
-                    $('#hmis_code').select2({data: HF, width: '100%'});
-                    if(district_code == {{$hf_info[0]->OD_CODE}}){
-                        $('#hmis_code').val({{$hf_info[0]->hfac_label}}).trigger("change");
+                    $('#hf_code').select2({data: HF, width: '100%'});
+
+                        @if($user[0]->hf_id != 0){
+                        $('#hf_code').val({{$user[0]->hf_id}}).trigger("change");
+                        $('#hf_code').prop("disabled", true);
                     }
+                    @endif
+
                 }
             });
         }
         function Save(){
             var death_id = $("#death_id").val();
-            var hmis_code = $("#hmis_code").val();
+            var hf_code = $("#hf_code").val();
             var death_type = $("input[name='death_type']:checked");
             var death_info = $("input[name='death_info']:checked");
             var medical_file_id = $("#medical_file_id").val();
@@ -415,7 +429,7 @@
             }
 
 
-            if(hmis_code == 0){
+            if(hf_code == 0){
                 MSG.Validation("សូមជ្រើសរើស មណ្ឌលសុខភាព !!!");
             }
             else if(death_type.length == 0){
@@ -457,7 +471,7 @@
                     url:"{{ route('emr_death.Save') }}",
                     data:{
                         death_id:death_id,
-                        hmis_code: hmis_code,
+                        hmis_code: hf_code,
                         death_type:death_type[0].value,
                         death_info:death_info[0].value,
                         medical_file_id:medical_file_id,

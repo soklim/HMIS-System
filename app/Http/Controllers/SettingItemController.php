@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SettingType;
 use App\Models\SettingItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use DB;
+use Hash;
 
 class SettingItemController extends Controller
 {
@@ -12,19 +16,48 @@ class SettingItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $rolde_id = Auth::user()->role_id;
+        $module_id = 6;
+        $permission = DB::table('module_permissions')->where('role_id', $rolde_id)->where('module_id', $module_id)->first();
+        if ($permission->a_read != 1){
+            return view('error.error404');
+        }
+        else{
+            $setting_type = SettingType::all();
+            return view('setting_items.index',['setting_type' => $setting_type]);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function Save(Request $request)
     {
-        //
+        if ($request->id == 0){
+            $input['name'] = $request->name;
+            $input['name_kh'] = $request->name;
+            $input['type_id'] = $request->type_id;
+            $input['item_id'] = $request->item_id;
+            $input['active'] = 1;
+            SettingItem::create($input);
+        }
+        else{
+            $input = $request->all();
+            $data = SettingItem::find($request->id);
+            $data->update($input);
+        }
+        return Response()->json(array(
+            'code' => 0,
+        ));
+    }
+    public function  getData(){
+
+        $data = DB::table('setting_items as m')
+            ->join('setting_types as g', 'm.type_id', '=', 'g.id')
+            ->select('m.*', 'g.name_kh as type_name')
+            ->orderByRaw('m.type_id,m.item_id ASC')
+            ->get();
+        return response()->json($data->toArray());
+
     }
 
     /**

@@ -94,7 +94,7 @@
         <table id="tblBody">
             @foreach($hf_info as $item)
                 <tr>
-                    <td style="width: 40%"><p class="small_bold">ឈ្មោះមូលដ្ឋានសុខាភិបាល៖ </p><p class="small_bold" id="hf_name">{{$item->hfac_namekh}}</p></td>
+                    <td style="width: 40%" colspan="2"><p class="small_bold">ឈ្មោះមូលដ្ឋានសុខាភិបាល៖ </p><p class="small_bold" id="hf_name">{{$item->hfac_namekh}}</p></td>
                     <td style="width: 20%">
                         @if($item1->abandoned == 1)
                             <div class="form-check">
@@ -108,7 +108,7 @@
                             </div>
                         @endif
                     </td>
-                    <td style="width: 40%" colspan="2">
+                    <td style="width: 40%">
                         <p class="small_bold">លេខកូដមូលដ្ឋានសុខាភិបាល(HMIS)៖ </p>
                         @foreach(str_split($item->hfac_label) as $value)
                             <span style="border: solid 1px black;width:12px;height: 16px;display: inline-block;
@@ -120,7 +120,7 @@
                 </tr>
             @endforeach
             <tr>
-                <td style="width: 40%"><p class="small_bold">ព័ត៌មានកំណើត៖ </p>
+                <td style="width: 40%" colspan="2"><p class="small_bold">ព័ត៌មានកំណើត៖ </p>
                     @foreach($birth_info as $birth_info)
                         @if($birth_info->item_id == $item1->birth_info)
                             <input class="form-check-input" type="checkbox" checked id="chb_birth_type" disabled>
@@ -131,33 +131,33 @@
                         @endif
                     @endforeach
                 </td>
-                <td colspan="3" style="width: 60%"><p class="small_bold">ទីតាំងមូលដ្ឋានសុខាភិបាល៖ </p>
+                <td colspan="2" style="width: 60%"><p class="small_bold">ទីតាំងមូលដ្ឋានសុខាភិបាល៖ </p>
                     <p class="small">ឃុំ/សង្កាត់: <span class="small_bold"></span></p>
                     <p class="small">ស្រុក/ខណ្ឌ: <span class="small_bold">{{$item->od_name_kh}}</span></p>
                     <p class="small">រាជធានី/ខេត្ត: <span class="small_bold">{{$item->province_kh}}</span></p>
                 </td>
             </tr>
             <tr>
-                <td style="width: 40%" rowspan="2">
-                    <p class="small_bold">ឈ្មោះទារក៖ </p><br>
+                <td style="width: 30%" rowspan="2">
+                    <p class="small_bold">ឈ្មោះទារក៖ </p>
                     <span class="small_bold">{{$item1->babyname}}</span>
                 </td>
-                <td style="width: 40%"><p class="small_bold">ប្រភេទកំណើត៖ </p>
+                <td style="width: 20%"><p class="small_bold">ប្រភេទកំណើត៖ </p>
                     @foreach($birth_type as $birth_type)
                         @if($birth_type->item_id == $item1->typeofbirth )
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" checked id="chb_birth_type" disabled>
                                 <label class="form-check-label small" for="chb_birth_type">{{$birth_type->name_kh}}</label>
-                            </div>
+                            </div><br>
                         @else
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="chb_birth_type" disabled>
                                 <label class="form-check-label small" for="chb_birth_type">{{$birth_type->name_kh}}</label>
-                            </div>
+                            </div><br>
                         @endif
                     @endforeach
                 </td>
-                <td style="width: 20%"><p class="small_bold">Attandant at Delivery៖ </p>
+                <td style="width: 20%"><p class="small_bold">សម្រាលដោយ៖ </p>
                     @foreach($attendant_at_delivery as $attendant_at_delivery)
                         @if($attendant_at_delivery->item_id == $item1->Atdelivery)
                             <div class="form-check">
@@ -172,13 +172,13 @@
                         @endif
                     @endforeach
                 </td>
-                <td style="width: 40%" colspan="2">--}}
+                <td style="width: 30%">
                     <p class="small_bold">ថ្ងៃខែឆ្នាំ កំណើត៖ </p>
                     <span class="small_bold">{{date('d-m-Y', strtotime($item1->dateofbirth ))}}</span>
                 </td>
             </tr>
             <tr>
-                <td style="width: 40%"><p class="small_bold">ភេទ៖ </p>
+                <td style="width: 20%"><p class="small_bold">ភេទ៖ </p>
                     @foreach($sex as $sex)
                         @if($sex->item_id == $item1->sex)
                             <div class="form-check">
@@ -193,26 +193,31 @@
                         @endif
                     @endforeach
                 </td>
-                <td style="width: 40%" colspan="2">--}}
-                    <p class="small_bold">ទម្ងន់ទារក(គិតជាគីឡូ និងក្រាម)៖ </p><br>
-                    <span class="small_bold">{{$item1->}}</span>
+                <td style="width: 20%">
+                    <p class="small_bold">ទម្ងន់ទារក(គិតជាគីឡូ និងក្រាម)៖ </p>
+                    <span class="small_bold">3kg</span>
                 </td>
-                <td style="width: 20%"><p class="small_bold">Attandant at Delivery៖ </p>
-                    @foreach($attendant_at_delivery as $attendant_at_delivery)
-                        @if($attendant_at_delivery->item_id == $item1->Atdelivery)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" checked id="chb_at_delivery" disabled>
-                                <label class="form-check-label small" for="chb_at_delivery">{{$attendant_at_delivery->name_kh}}</label>
-                            </div>
-                        @else
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="chb_at_delivery" disabled>
-                                <label class="form-check-label small" for="chb_at_delivery">{{$attendant_at_delivery->name_kh}}</label>
-                            </div>
-                        @endif
-                    @endforeach
+                <td style="width: 30%"><p class="small_bold">ម៉ោងកើត៖ </p>
+                    <span class="small_bold">{{$item1->time_of_birth}}</span>
                 </td>
-
+            </tr>
+            <tr>
+                <td style="width: 25%">
+                    <p class="small_bold">ឈ្មោះម្ដាយ៖ </p>
+                    <span class="small_bold">{{$item1->mothername}}</span>
+                </td>
+                <td style="width: 25%">
+                    <p class="small_bold">ថ្ងៃខែឆ្នាំ-កំណើត(ម្ដាយ)៖ </p>
+                    <span class="small_bold">{{date('d-m-Y', strtotime($item1->motherdofbirth))}}</span>
+                </td>
+                <td style="width: 25%">
+                    <p class="small_bold">ឈ្មោះឪពុក៖ </p>
+                    <span class="small_bold">{{$item1->mothername}}</span>
+                </td>
+                <td style="width: 25%">
+                    <p class="small_bold">ថ្ងៃខែឆ្នាំ-កំណើត(ម្ដាយ)៖ </p>
+                    <span class="small_bold">{{date('d-m-Y', strtotime($item1->motherdofbirth))}}</span>
+                </td>
             </tr>
 {{--            <tr>--}}
 {{--                <td style="width: 40%">--}}
