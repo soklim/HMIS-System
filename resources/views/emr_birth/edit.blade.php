@@ -15,7 +15,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <input type="hidden" id="bid" value="0" data-required="0">
+            <input type="hidden" id="bid" value="{{$data[0]->bid}}" data-required="0">
             <h6 style="font-weight: bold;text-decoration: underline">ព័ត៌មានមូលដ្ឋានសុខាភិបាល</h6>
             <hr>
             <div class="row">
@@ -49,7 +49,7 @@
                 <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label>លេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control" id="medicalid" data-required="1" maxlength="11">
+                        <input type="text" class="form-control" id="medicalid" data-required="1" value="{{$data[0]->medicalid}}" maxlength="11">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -57,7 +57,11 @@
                         <label>ព័ត៌មានកំណើត <span class="text-danger">(*)</span></label><br>
                         @foreach($birth_info as $birth_info)
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="birth_info_{{$birth_info->item_id}}" type="radio" name="birth_info" value="{{$birth_info->item_id}}">
+                                @if($data[0]->birth_info == $birth_info->item_id)
+                                    <input class="form-check-input" id="birth_info_{{$birth_info->item_id}}" type="radio" checked name="birth_info" value="{{$birth_info->item_id}}">
+                                @else
+                                    <input class="form-check-input" id="birth_info_{{$birth_info->item_id}}" type="radio" name="birth_info" value="{{$birth_info->item_id}}">
+                                @endif
                                 <label class="form-check-label" for="birth_info_{{$birth_info->item_id}}">{{$birth_info->name_kh}}</label>
                             </div>
                         @endforeach
@@ -68,7 +72,11 @@
                         <label>ប្រភេទកំណើត <span class="text-danger">(*)</span></label><br>
                         @foreach($birth_type as $birth_type)
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="birth_type_{{$birth_type->item_id}}" type="radio" name="birth_type" value="{{$birth_type->item_id}}">
+                                @if($data[0]->typeofbirth == $birth_type->item_id)
+                                    <input class="form-check-input" id="birth_type_{{$birth_type->item_id}}" checked type="radio" name="birth_type" value="{{$birth_type->item_id}}">
+                                @else
+                                    <input class="form-check-input" id="birth_type_{{$birth_type->item_id}}" type="radio" name="birth_type" value="{{$birth_type->item_id}}">
+                                @endif
                                 <label class="form-check-label" for="birth_type_{{$birth_type->item_id}}">{{$birth_type->name_kh}}</label>
                             </div>
                         @endforeach
@@ -79,7 +87,11 @@
                         <label>សម្រាលដោយ <span class="text-danger">(*)</span></label><br>
                         @foreach($attendant_at_delivery as $attendant_at_delivery)
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="attendant_at_delivery_{{$attendant_at_delivery->item_id}}" type="radio" name="attendant_at_delivery" value="{{$attendant_at_delivery->item_id}}">
+                                @if($data[0]->Atdelivery == $attendant_at_delivery->item_id)
+                                    <input class="form-check-input" id="attendant_at_delivery_{{$attendant_at_delivery->item_id}}" checked type="radio" name="attendant_at_delivery" value="{{$attendant_at_delivery->item_id}}">
+                                @else
+                                    <input class="form-check-input" id="attendant_at_delivery_{{$attendant_at_delivery->item_id}}" type="radio" name="attendant_at_delivery" value="{{$attendant_at_delivery->item_id}}">
+                                @endif
                                 <label class="form-check-label" for="attendant_at_delivery_{{$attendant_at_delivery->item_id}}">{{$attendant_at_delivery->name_kh}}</label>
                             </div>
                         @endforeach
@@ -88,7 +100,11 @@
                 <div class="col-md-2">
                     <div class="form-group mb-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="abandoned_baby">
+                            @if($data[0]->abandoned == 1)
+                                <input class="form-check-input" checked type="checkbox" id="abandoned_baby">
+                            @else
+                                <input class="form-check-input" type="checkbox" id="abandoned_baby">
+                            @endif
                             <label class="form-check-label" for="abandoned_baby">បោះបង់ចោល</label>
                         </div>
                     </div>
@@ -101,13 +117,17 @@
             <div class="row">
                 <div class="col-md-4">
                     <label>ឈ្មោះ <span class="text-danger">(*)</span></label>
-                    <input type="text" id="baby_name" class="form-control"/>
+                    <input type="text" id="baby_name" value="{{$data[0]->babyname}}" class="form-control"/>
                 </div>
                 <div class="col-md-2">
                     <label>ភេទ <span class="text-danger">(*)</span></label><br>
                     @foreach($sex as $sex)
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" id="sex{{$sex->item_id}}" type="radio" name="sex" value="{{$sex->item_id}}">
+                            @if($data[0]->sex == $sex->item_id)
+                                <input class="form-check-input" id="sex{{$sex->item_id}}" checked type="radio" name="sex" value="{{$sex->item_id}}">
+                            @else
+                                <input class="form-check-input" id="sex{{$sex->item_id}}" type="radio" name="sex" value="{{$sex->item_id}}">
+                            @endif
                             <label class="form-check-label" for="sex{{$sex->item_id}}">{{$sex->name_kh}}</label>
                         </div>
                     @endforeach
@@ -116,51 +136,52 @@
                     <div class="form-group mb-3">
                         <label>ទម្ងន់ទារក <span class="text-danger">(*)</span></label>
                         <div class="input-group">
-                            <input type="number" class="form-control" id="baby_weight" data-required="1">
+                            <input type="number" class="form-control" id="baby_weight" value="{{$data[0]->baby_weight}}" data-required="1">
                             <button type="button" class="btn btn-secondary">Kg</button>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ថ្ងៃខែឆ្នាំ-កំណើត <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control datefield" id="date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
+                        <input type="text" class="form-control datefield" id="date_of_birth" value="{{$data[0]->dateofbirth}}" data-required="1" placeholder="YYYY-MM-DD">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ម៉ោង-កំណើត <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control timefield" id="time_of_birth" data-required="1" placeholder="MM:HH">
+                        <input type="text" class="form-control timefield" id="time_of_birth" value="{{$data[0]->time_of_birth}}" data-required="1" placeholder="MM:HH">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label>ឈ្មោះម្ដាយ <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control" id="mother_name" data-required="1">
+                        <input type="text" class="form-control" value="{{$data[0]->mothername}}" id="mother_name" data-required="1">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ថ្ងៃខែឆ្នាំ-កំណើត(ម្ដាយ) <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control datefield" id="mother_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
+                        <input type="text" class="form-control datefield" value="{{$data[0]->motherdofbirth}}" id="mother_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label>ឈ្មោះឪពុក <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control" id="father_name" data-required="1">
+                        <input type="text" class="form-control" value="{{$data[0]->fathername}}" id="father_name" data-required="1">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ថ្ងៃខែឆ្នាំ-កំណើត(ឪពុក) <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control datefield" id="father_name_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
+                        <input type="text" class="form-control datefield" value="{{$data[0]->fatherdofbirth}}" id="father_name_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ចំនួនកូនដែលធ្លាប់កើតពីមុន <span class="text-danger">(*)</span></label>
-                        <input type="number" maxlength="2" class="form-control" id="numofchildalive" data-required="1">
+                        <input type="number" maxlength="2" class="form-control" id="numofchildalive" value="{{$data[0]->numofchildalive}}" data-required="1">
                     </div>
                 </div>
 
@@ -199,11 +220,11 @@
                 </div>
                 <div class="col-md-2">
                     <label>លេខផ្លូវ</label>
-                    <input type="text" class="form-control" id="mother_street">
+                    <input type="text" class="form-control" value="{{$data[0]->mStreet}}" id="mother_street">
                 </div>
                 <div class="col-md-2">
                     <label>លេខផ្ទះ</label>
-                    <input type="text" class="form-control" id="mother_house">
+                    <input type="text" class="form-control" value="{{$data[0]->mHouse}}" id="mother_house">
                 </div>
             </div>
 
@@ -236,11 +257,13 @@
                 format: 'HH:mm'
             });
 
-
+            $("#mother_province").val({{$data[0]->mPCode}}).trigger("change");
             @if($user[0]->province_id != 0){
                 $('#txtHF_Province').val({{$user[0]->province_id}}).trigger("change");
                 $('#txtHF_Province').prop("disabled", true);
             }
+            @else
+                $('#txtHF_Province').val({{$data[0]->PRO_CODE}}).trigger("change");
             @endif
             $(".select2").select2();
 
@@ -259,9 +282,12 @@
                     var district = result.district;
                     district.unshift({ id: 0, text:'-- select --'});
                     $('#mother_district').select2({data: district, width: '100%'});
-
+                    if(PCode == {{$data[0]->mPCode}}){
+                        $('#mother_district').val({{$data[0]->mDCode}}).trigger("change");
+                    }
                 }
             });
+
         }
         function GetCommune_Mother(DCode){
             $.ajax({
@@ -276,7 +302,9 @@
                     var commune = result.commune;
                     commune.unshift({ id: 0, text:'-- select --'});
                     $('#mother_commune').select2({data: commune, width: '100%'});
-
+                    if(DCode == {{$data[0]->mDCode}}){
+                        $('#mother_commune').val({{$data[0]->mCCode}}).trigger("change");
+                    }
                 }
             });
         }
@@ -293,7 +321,9 @@
                     var village = result.village;
                     village.unshift({ id: 0, text:'-- select --'});
                     $('#mother_village').select2({data: village, width: '100%'});
-
+                    if(CCode == {{$data[0]->mCCode}}){
+                        $('#mother_village').val({{$data[0]->mVCode}}).trigger("change");
+                    }
                 }
             });
         }
@@ -343,12 +373,14 @@
             }
             else if(baby_name == ""){
                 MSG.Validation("សូមបញ្ចូល ឈ្មោះទារក !!!");
+                // $("#baby_name").focus();
             }
             else if(sex.length == 0){
                 MSG.Validation("សូមជ្រើសរើស ភេទ !!!");
             }
             else if(baby_weight == ""){
                 MSG.Validation("សូមបញ្ចូល ទម្ងន់ទារក !!!");
+                // $("#baby_weight").focus();
             }
             else if(date_of_birth == ""){
                 MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំកំណើត !!!");
@@ -380,28 +412,28 @@
                     url:"{{ route('emr_birth.Save') }}",
                     data:{
                         bid:bid,
-                        hf_code: hf_code,
+                        hfac_code: hf_code,
                         medicalid:medicalid,
                         birth_info:birth_info[0].value,
-                        birth_type:birth_type[0].value,
-                        attendant_at_delivery:attendant_at_delivery[0].value,
-                        abandoned_baby:abandoned_baby,
-                        baby_name:baby_name,
+                        typeofbirth:birth_type[0].value,
+                        Atdelivery:attendant_at_delivery[0].value,
+                        abandoned:abandoned_baby,
+                        babyname:baby_name,
                         sex:sex[0].value,
                         baby_weight: baby_weight,
-                        date_of_birth: date_of_birth,
+                        dateofbirth: date_of_birth,
                         time_of_birth: time_of_birth,
-                        mother_name: mother_name,
-                        mother_date_of_birth:mother_date_of_birth,
-                        father_name:father_name,
-                        father_date_of_birth:father_date_of_birth,
+                        mothername: mother_name,
+                        motherdofbirth:mother_date_of_birth,
+                        fathername:father_name,
+                        fatherdofbirth:father_date_of_birth,
                         numofchildalive:numofchildalive,
-                        mother_province:mother_province,
-                        mother_district:mother_district,
-                        mother_commune:mother_commune,
-                        mother_village:mother_village,
-                        mother_street:mother_street,
-                        mother_house:mother_house,
+                        mPCode:mother_province,
+                        mDCode:mother_district,
+                        mCCode:mother_commune,
+                        mVCode:mother_village,
+                        mStreet:mother_street,
+                        mHouse:mother_house,
                     },
                     success:function(result){
                         console.log(result);
@@ -432,6 +464,9 @@
                         $('#txtHF_District').val({{$user[0]->district_id}}).trigger("change");
                         $('#txtHF_District').prop("disabled", true);
                     }
+                    @else{
+                        $('#txtHF_District').val({{$data[0]->OD_CODE}}).trigger("change");
+                    }
                     @endif
                 }
             });
@@ -453,6 +488,9 @@
                     @if($user[0]->hf_id != 0){
                         $('#hf_code').val({{$user[0]->hf_id}}).trigger("change");
                         $('#hf_code').prop("disabled", true);
+                    }
+                    @else{
+                        $('#hf_code').val({{$data[0]->hfac_code}}).trigger("change");
                     }
                     @endif
 

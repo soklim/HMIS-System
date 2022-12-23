@@ -72,7 +72,9 @@
         </div>
         <div class="col-md-6">
             <button type="button" class="btn btn-primary" id="btnSearch" onclick="LoadData()"><i class="bx bx-search-alt"></i> ស្វែងរក</button>
-            <a href="{{route('emr_birth.create')}}" type="button" class="btn btn-primary" id="btnAdd"><i class="bx bx-plus"></i>បន្ថែម</a>
+            @if($permission->a_create == 1)
+                <a href="{{route('emr_birth.create')}}" type="button" class="btn btn-primary" id="btnAdd"><i class="bx bx-plus"></i>បន្ថែម</a>
+            @endif
             <button type="button" class="btn btn-success" id="btnExport" onclick="ExportExcel('xlsx');"><i class="bx bx-download"></i> Export</button>
         </div>
     </div>
@@ -125,6 +127,7 @@
             @endif
             $(".select2").select2();
             LoadData();
+
         })
         function ExportExcel(type) {
 
@@ -196,7 +199,10 @@
                     var item = data;
                     console.log(item);
                     for (var i = 0; i < item.length; i++) {
-                        var btnEdit='<a href="/emr_birth/'+item[i].bid+'/edit" s="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';
+                        var btnEdit="";
+                        @if($permission->a_update == 1)
+                            btnEdit='<a href="/emr_birth/'+item[i].bid+'/edit" s="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';
+                        @endif
                         var btnPrint ='<a href="/emr_birth/'+item[i].bid+'" class="text-warning" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>';
                         $("#bodyBirth").append('<tr>'+
                             '<td class="text-center">'+item[i].birth_no+'</td>'+

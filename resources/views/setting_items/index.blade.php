@@ -66,14 +66,12 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group mb-3">
-                                <input type="hidden" id="txtId" value="0" data-required="0">
                                 <label>Name <span class="text-danger">(*)</span></label>
                                 <input type="text" class="form-control" id="txtName" data-required="1">
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group mb-3">
-                                <input type="hidden" id="txtId" value="0" data-required="0">
                                 <label>Name KH<span class="text-danger">(*)</span></label>
                                 <input type="text" class="form-control" id="txtNameKH" data-required="1">
                             </div>

@@ -371,9 +371,12 @@
                     var district = result.district;
                     district.unshift({ id: 0, text:'-- select --'});
                     $('#txtHF_District').select2({data: district, width: '100%'});
-                        @if($user[0]->district_id != 0){
+                    @if($user[0]->district_id != 0){
                         $('#txtHF_District').val({{$user[0]->district_id}}).trigger("change");
                         $('#txtHF_District').prop("disabled", true);
+                    }
+                    @else{
+                        $('#txtHF_District').val({{$data[0]->OD_CODE}}).trigger("change");
                     }
                     @endif
                 }
@@ -396,6 +399,9 @@
                         @if($user[0]->hf_id != 0){
                         $('#hf_code').val({{$user[0]->hf_id}}).trigger("change");
                         $('#hf_code').prop("disabled", true);
+                    }
+                    @else{
+                        $('#hf_code').val({{$data[0]->hfac_code}}).trigger("change");
                     }
                     @endif
 

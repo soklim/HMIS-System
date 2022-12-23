@@ -12,6 +12,7 @@ use App\Http\Controllers\EMRBirthController;
 use App\Http\Controllers\SettingTypeController;
 use App\Http\Controllers\SettingItemController;
 use App\Http\Controllers\ModulePermissionController;
+use App\Http\Controllers\APIController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -97,4 +98,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/Birth_GetVillage',[EMRBirthController::class, 'getVillage'])->name('emr_birth.getVillage');
     Route::post('/BirthSave',[EMRBirthController::class, 'Save'])->name('emr_birth.Save');
     Route::get('/BirthPrint', [EMRBirthController::class, 'Print'])->name('emr_birth.Print');
+
+    //Setting Type
+    Route::resource('api', APIController::class);
+    Route::get('/APIGetData',[APIController::class, 'getData'])->name('api.GetData');
+    Route::post('/APISave',[APIController::class, 'Save'])->name('api.Save');
 });

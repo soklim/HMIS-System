@@ -35,7 +35,8 @@ class EMRDeathController extends Controller
             }
             return view('emr_death.index',[
                 'user'=>$user,
-                'province'=>$province
+                'province'=>$province,
+                'permission'=>$permission
             ]);
 
         }
@@ -62,7 +63,14 @@ class EMRDeathController extends Controller
             $data = DB::table("emr_death as e")
                 ->select("e.death_id","e.deceased_name", "e.death_info", "e.death_type", "e.date_of_birth", "e.date_of_death", "e.time_of_death", "e.sex", "e.married_status"
                     , "medical_file_id", "e.deceased_province_code", "e.deceased_district_code", "e.deceased_commune_code", "e.deceased_village", "e.deceased_street"
+                    ,"od.PRO_CODE","od.OD_CODE","h.hfac_code"
                     , "e.deceased_house","e.age","e.is_baby")
+                ->join("healthfacility as h", function($join){
+                    $join->on("e.hmis_code", "=", "h.HFAC_CODE");
+                })
+                ->join("opdistrict as od", function($join){
+                    $join->on("h.od_code", "=", "od.od_code");
+                })
                 ->where("e.death_id", "=", $id)
                 ->get();
             $userId = Auth::user()->id;
@@ -184,63 +192,6 @@ class EMRDeathController extends Controller
         }
     }
 
-    public function API(Request $request){
-
-        $api_key='0b3324c4-7ef9-4b6b-85bc-1ef54bc1baa7';
-        if($request->death_id == null || $request->api_key == null){
-            return response()->json(['error'=>'Invalid parameter']);
-        }
-        else if ($request->api_key != $api_key){
-            return response()->json(['error'=>'Invalid API Key']);
-        }
-        else{
-            $data = DB::table("emr_death as d")
-                ->leftJoin("healthfacility as h", function($join){
-                    $join->on("d.hmis_code", "=", "h.hfac_code");
-                })
-                ->leftJoin("province as p1", function($join){
-                    $join->on("d.deceased_province_code", "=", "p1.procode");
-                })
-                ->leftJoin("district as dt1", function($join){
-                    $join->on("d.deceased_district_code", "=", "dt1.dcode");
-                })
-                ->leftJoin("commune as c1", function($join){
-                    $join->on("d.deceased_commune_code", "=", "c1.ccode");
-                })
-                ->leftJoin("village as v", function($join){
-                    $join->on("d.deceased_village", "=", "v.vcode");
-                })
-                ->leftJoin("setting_items as s1", function($join){
-                    $join->on("d.death_info", "=", "s1.item_id")
-                        ->where("s1.type_id", "=", 2);
-                })
-                ->leftJoin("setting_items as s2", function($join){
-                    $join->on("d.death_type", "=", "s2.item_id")
-                        ->where("s2.type_id", "=", 3);
-                })
-                ->leftJoin("setting_items as s3", function($join){
-                    $join->on("d.sex", "=", "s3.item_id")
-                        ->where("s3.type_id", "=", 1);
-                })
-                ->leftJoin("setting_items as s4", function($join){
-                    $join->on("d.married_status", "=", "s4.item_id")
-                        ->where("s4.type_id", "=", 4);
-                })
-                ->leftJoin("healthfacility as hf", function($join){
-                    $join->on("d.hmis_code", "=", "hf.HFAC_CODE");
-                })
-                ->where("d.death_id", $request->death_id)
-                ->select("d.death_id","d.issue_no", "h.hfac_namekh as hfac_label", "s1.name_kh as death_info",
-                    "s2.name_kh as death_type", "s3.name_kh as sex", "s4.name_kh as married_status","d.deceased_name",
-                    "d.medical_file_id", "d.date_of_death", "d.time_of_death",
-                    "p1.province_kh as deceased_province_code","dt1.DName_kh as deceased_district_code",
-                    "c1.CName_kh as deceased_commune_code", "v.VName_kh as deceased_village",
-                    "d.deceased_street", "d.deceased_house",
-                )
-                ->get();
-            return response()->json($data->toArray());
-        }
-    }
 
     public function  getInitPage(){
 
