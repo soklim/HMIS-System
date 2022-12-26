@@ -71,8 +71,9 @@
             width: 100%;
             border-collapse: collapse;
         }
-        input[type='checkbox'] {
-            accent-color: blue;
+        input[type="checkbox"][aria-disabled="true"] {
+            background-color: blue;
+            pointer-events: none;
         }
     </style>
 
@@ -115,7 +116,7 @@
                     <td style="width: 20%">
                         @if($item1->abandoned == 1)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="abandoned_baby" checked disabled>
+                                <input class="form-check-input" type="checkbox" id="abandoned_baby" checked aria-disabled="true">
                                 <label class="form-check-label" for="abandoned_baby"><p class="small_bold">បោះបង់ចោល</p></label>
                             </div>
                         @else
@@ -140,7 +141,7 @@
                 <td style="width: 40%" colspan="2"><p class="small_bold">ព័ត៌មានកំណើត៖ </p>
                     @foreach($birth_info as $birth_info)
                         @if($birth_info->item_id == $item1->birth_info)
-                            <input class="form-check-input" type="checkbox" checked id="chb_birth_type" disabled>
+                            <input class="form-check-input" type="checkbox" checked id="chb_birth_type" aria-disabled="true">
                             <label class="form-check-label small" for="chb_birth_type">{{$birth_info->name_kh}}</label>
                         @else
                             <input class="form-check-input" type="checkbox" id="chb_birth_type" disabled>
@@ -165,7 +166,7 @@
                     <div class="form-check">
                     @foreach($birth_type as $birth_type)
                         @if($birth_type->item_id == $item1->typeofbirth )
-                            <input class="form-check-input" type="checkbox" checked id="chb_birth_type" disabled>
+                            <input class="form-check-input" type="checkbox" checked id="chb_birth_type" aria-disabled="true">
                             <label class="form-check-label small" for="chb_birth_type">{{$birth_type->name_kh}}</label>
                         @else
                             <input class="form-check-input" type="checkbox" id="chb_birth_type" disabled>
@@ -178,7 +179,7 @@
                     @foreach($attendant_at_delivery as $attendant_at_delivery)
                         @if($attendant_at_delivery->item_id == $item1->Atdelivery)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" checked id="chb_at_delivery" disabled>
+                                <input class="form-check-input" type="checkbox" checked id="chb_at_delivery" aria-disabled="true">
                                 <label class="form-check-label small" for="chb_at_delivery">{{$attendant_at_delivery->name_kh}}</label>
                             </div>
                         @else
@@ -199,7 +200,7 @@
                     <div class="form-check">
                     @foreach($sex as $sex)
                         @if($sex->item_id == $item1->sex)
-                            <input class="form-check-input" type="checkbox" checked id="chb_sex" disabled>
+                            <input class="form-check-input" type="checkbox" checked id="chb_sex" aria-disabled="true">
                             <label class="form-check-label small" for="chb_sex">{{$sex->name_kh}}</label>
                         @else
                             <input class="form-check-input" type="checkbox" id="chb_sex" disabled>

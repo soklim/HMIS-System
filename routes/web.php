@@ -13,6 +13,8 @@ use App\Http\Controllers\SettingTypeController;
 use App\Http\Controllers\SettingItemController;
 use App\Http\Controllers\ModulePermissionController;
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\MCCDController;
+use App\Http\Controllers\QuestionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,7 +76,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/SettingTypeGetData',[SettingTypeController::class, 'getData'])->name('setting_types.GetData');
     Route::post('/SettingTypeSave',[SettingTypeController::class, 'Save'])->name('setting_types.Save');
 
-
     //Setting Item
     Route::resource('setting_items', SettingItemController::class);
     Route::get('/SettingItemGetData',[SettingItemController::class, 'getData'])->name('setting_items.GetData');
@@ -99,8 +100,15 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/BirthSave',[EMRBirthController::class, 'Save'])->name('emr_birth.Save');
     Route::get('/BirthPrint', [EMRBirthController::class, 'Print'])->name('emr_birth.Print');
 
-    //Setting Type
+    //MCCD Notification
+    Route::resource('mccd', MCCDController::class);
+    //API
     Route::resource('api', APIController::class);
     Route::get('/APIGetData',[APIController::class, 'getData'])->name('api.GetData');
     Route::post('/APISave',[APIController::class, 'Save'])->name('api.Save');
+
+    //Setting Item
+    Route::resource('questions', QuestionController::class);
+    Route::get('/questionsGetData',[QuestionController::class, 'getData'])->name('questions.GetData');
+    Route::post('/questionsSave',[QuestionController::class, 'Save'])->name('questions.Save');
 });

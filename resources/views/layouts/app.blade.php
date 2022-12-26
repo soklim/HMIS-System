@@ -46,15 +46,16 @@
     <style>
         body {
             font-family: 'Hanuman', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 12px;
+            font-size: 14px;
         }
         .form-select{
-            font-size: 12px;
+            font-size: 14px;
             height: 38px;
         }
 
         .select2-container .select2-selection--single {
             height: 38px !important;
+            font-size: 14px;
         }
         .highlight {
             border: 1px solid red !important;
@@ -76,10 +77,14 @@
     <div class="sidebar-wrapper" data-simplebar="true">
         <div class="sidebar-header">
             <div>
-                <img src="/assets/images/MOH_logo.png" class="logo-icon" alt="logo icon" />
+                <a href="/">
+                    <img src="/assets/images/MOH_logo.png" class="logo-icon" alt="logo icon" />
+                </a>
             </div>
             <div>
-                <h4 class="logo-text text-center text-success" style="font-weight:bold;">HMIS</h4>
+                <a href="/">
+                    <h4 class="logo-text text-center text-success" style="font-weight:bold;">HMIS</h4>
+                </a>
             </div>
             <div class="toggle-icon ms-auto text-success">
                 <i class='bx bx-arrow-to-left'></i>

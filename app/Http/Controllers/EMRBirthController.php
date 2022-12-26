@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Hash;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Crypt;
 
 class EMRBirthController extends Controller
 {
@@ -246,6 +246,7 @@ class EMRBirthController extends Controller
      */
     public function edit($id)
     {
+
         $rolde_id = Auth::user()->role_id;
         $module_id = 11;
         $permission = DB::table('module_permissions')->where('role_id', $rolde_id)->where('module_id', $module_id)->first();

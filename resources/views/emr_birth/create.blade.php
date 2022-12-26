@@ -1,5 +1,12 @@
 @extends('layouts.app')
 @section('content')
+    <style>
+        .medicalid{
+            padding-left: 0px;
+            padding-right: 0px;
+            text-align: center;
+        }
+    </style>
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Transactions</div>
         <div class="ps-3">
@@ -49,7 +56,18 @@
                 <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label>លេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control" id="medicalid" data-required="1" maxlength="11">
+                        <div class="input-group">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -301,7 +319,11 @@
         function Save(){
             var bid = $("#bid").val();
             var hf_code = $("#hf_code").val();
-            var medicalid = $("#medicalid").val();
+            var medicalid ="";
+            var medicalid_list = document.getElementsByName("medicalid");
+            for(i = 0; i < medicalid_list.length; i++){
+                medicalid += medicalid_list[i].value;
+            }
             var birth_info = $("input[name='birth_info']:checked");
             var birth_type = $("input[name='birth_type']:checked");
             var attendant_at_delivery = $("input[name='attendant_at_delivery']:checked");

@@ -21,6 +21,23 @@
     </div>
     <hr />
     <div class="row">
+        <div class="col-md-3">
+            <div class="form-group mb-3">
+                <label>Type</label>
+                <select class="form-select" id="type_filter">
+                    <option value="0">-- select --</option>
+                    @foreach($setting_type as $item)
+                        <option value="{{$item->id}}">{{$item->name_kh}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <br>
+            <button type="button" class="btn btn-primary" id="btnSearch" onclick="LoadData()"><i class="bx bx-search-alt"></i> ស្វែងក</button>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <table class="table table-striped table-bordered table-sm">
                 <thead>
@@ -100,7 +117,9 @@
             $.ajax({
                 type:'GET',
                 url:"{{ route('setting_items.GetData') }}",
-                data:{},
+                data:{
+                    type_id:$("#type_filter").val()
+                },
                 success:function(data){
                     // console.log(data);
                     var item =data;

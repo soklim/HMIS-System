@@ -10,8 +10,28 @@
     </style>
     <style type="text/css">
 
+        @page {
+            size: A4;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                width: 210mm;
+                height: 297mm;
+            }
+        }
+
+        #divBody {
+            width: 210mm;
+        }
+
         .small {
-            font-size: 13pt;
+            font-size: 10pt;
             font-family: 'Hanuman';
             display: inline;
         }
@@ -21,7 +41,7 @@
             display: inline;
         }
         .small_bold {
-            font-size: 13pt;
+            font-size: 10pt;
             font-family: 'Hanuman';
             display: inline;
             font-weight: bold;
@@ -43,9 +63,20 @@
             margin-top: 50px;
             border-collapse: collapse;
         }
+        .tblBody2 td{
+            border: 1px solid;
+            padding: 5px;
+        }
 
-        input[type='checkbox'] {
-            accent-color: blue;
+        .tblBody2 {
+            border: 1px solid;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        input[type="checkbox"][aria-disabled="true"] {
+            background-color: blue;
+            pointer-events: none;
         }
     </style>
     <script>
@@ -61,7 +92,7 @@
     </script>
 </head>
 <body>
-<div style="width:25cm;border:1px solid #fff;margin:0 auto !important;padding-left:48px;padding-right:48px;padding-bottom:20px;">
+<div id="divBody" style="border:1px solid #fff;margin:0 auto !important;">
     <table style="width: 100%" class="header">
         <tbody>
             <tr>
@@ -99,7 +130,7 @@
                 @foreach($death_type as $death_type)
                     @if($death_type->id == $item1->death_type)
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" checked id="chb_death_type" disabled>
+                            <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_death_type">
                             <label class="form-check-label small" for="chb_death_type">{{$death_type->text}}</label>
                         </div>
                     @else
@@ -125,7 +156,7 @@
             <td style="width: 40%"><p class="small_bold">ព័ត៌មានមរណភាព៖ </p>
                 @foreach($death_info as $death_info)
                     @if($death_info->id == $item1->death_info)
-                        <input class="form-check-input" type="checkbox" checked id="chb_death_type" disabled>
+                        <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_death_type">
                         <label class="form-check-label small" for="chb_death_type">{{$death_info->text}}</label>
                     @else
                         <input class="form-check-input" type="checkbox" id="chb_death_type" disabled>
@@ -155,7 +186,7 @@
                 @foreach($sex as $sex)
                     @if($sex->id == $item1->sex)
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" checked id="chb_sex" disabled>
+                            <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_sex">
                             <label class="form-check-label small" for="chb_death_type">{{$sex->text}}</label>
                         </div>
                     @else
@@ -192,7 +223,7 @@
                 @foreach($married_status as $married_status)
                     @if($married_status->id == $item1->married_status)
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" checked id="chb_sex" disabled>
+                            <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_sex">
                             <label class="form-check-label small" for="chb_death_type">{{$married_status->text}}</label>
                         </div>
                     @else
@@ -232,7 +263,7 @@
                 <br><br>
                 <p class="small_bold">
                     ទម្រង់បានចេញនៅ៖
-                </p><br><br>
+                </p><br>
                 <p class="small">
                     កាលបរិច្ឆទជាអក្សរខ្មែរ៖
                 </p>
@@ -244,10 +275,10 @@
             <td style="text-align: left;width: 30%">
                 <p class="small">
                     កាលបរិច្ឆេទ (ថ្ងៃ/ខែ/ឆ្នាំ)៖
-                </p><br><br>
+                </p><br>
                 <p class="small">
                     ឈ្មោះគ្រូពេទ្យ៖
-                </p><br><br>
+                </p><br>
                 <p class="small">
                     ហេត្ថលេខ៖
                 </p>
@@ -255,14 +286,14 @@
         </tr>
         <tr>
             <td colspan="3" style="text-align: left;width: 100%">
-                <br><br>
+                <br>
                 <p class="small_bold">
                     បានឃើញ និង ឯកភាព
-                </p><br><br>
+                </p><br>
                 <p class="small">
                     នាយកមន្ទីរពេទ្យ៖
                 </p>
-                <p class="small"><br><br>
+                <p class="small"><br>
                     ហត្ថលេខនាយកមន្ទីរពេទ្យ៖
                 </p>
             </td>

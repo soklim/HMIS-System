@@ -1,5 +1,12 @@
 @extends('layouts.app')
 @section('content')
+    <style>
+        .medical_file_id{
+            padding-left: 0px;
+            padding-right: 0px;
+            text-align: center;
+        }
+    </style>
     @foreach($data as $item1)
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Transactions</div>
@@ -75,7 +82,16 @@
                 <div class="col-md-4">
                     <div class="form-group mb-3">
                         <label>អត្តលេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control" id="medical_file_id" value="{{$item1->medical_file_id}}" data-required="1">
+                        <div class="input-group">
+                            @foreach(str_split($item1->medical_file_id) as $value)
+                                <input type="text" class="form-control medical_file_id" maxlength="1" value="{{$value}}" name="medical_file_id">
+                            @endforeach
+                            @if(strlen($item1->medical_file_id) < 10)
+                                @for ($i = 0; $i < 10-strlen($item1->medical_file_id); $i++)
+                                    <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                                @endfor
+                            @endif
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -413,7 +429,12 @@
             var hf_code = $("#hf_code").val();
             var death_type = $("input[name='death_type']:checked");
             var death_info = $("input[name='death_info']:checked");
-            var medical_file_id = $("#medical_file_id").val();
+            // var medical_file_id = $("#medical_file_id").val();
+            var medical_file_id ="";
+            var medicalid_list = document.getElementsByName("medical_file_id");
+            for(i = 0; i < medicalid_list.length; i++){
+                medical_file_id += medicalid_list[i].value;
+            }
             var date_of_death = $("#date_of_death").val();
             var time_of_death = $("#time_of_death").val();
             var deceased_name = $("#deceased_name").val();

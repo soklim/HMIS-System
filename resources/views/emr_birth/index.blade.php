@@ -201,7 +201,11 @@
                     for (var i = 0; i < item.length; i++) {
                         var btnEdit="";
                         @if($permission->a_update == 1)
-                            btnEdit='<a href="/emr_birth/'+item[i].bid+'/edit" s="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';
+
+                            var url = '{{route("emr_birth.edit", "id")}}';
+                            url = url.replace('id', item[i].bid);
+                            // btnEdit='<a href="/emr_birth/'+item[i].bid+'/edit" s="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';
+                            btnEdit='<a href="'+url+'" s="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';
                         @endif
                         var btnPrint ='<a href="/emr_birth/'+item[i].bid+'" class="text-warning" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>';
                         $("#bodyBirth").append('<tr>'+

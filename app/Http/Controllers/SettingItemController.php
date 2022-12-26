@@ -34,7 +34,7 @@ class SettingItemController extends Controller
     {
         if ($request->id == 0){
             $input['name'] = $request->name;
-            $input['name_kh'] = $request->name;
+            $input['name_kh'] = $request->name_kh;
             $input['type_id'] = $request->type_id;
             $input['item_id'] = $request->item_id;
             $input['active'] = 1;
@@ -49,10 +49,11 @@ class SettingItemController extends Controller
             'code' => 0,
         ));
     }
-    public function  getData(){
+    public function  getData(Request $request){
 
         $data = DB::table('setting_items as m')
             ->join('setting_types as g', 'm.type_id', '=', 'g.id')
+            ->where('m.type_id', $request->type_id)
             ->select('m.*', 'g.name_kh as type_name')
             ->orderByRaw('m.type_id,m.item_id ASC')
             ->get();
