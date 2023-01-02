@@ -110,7 +110,7 @@ a {
 	left: 250px;
 	right: 0;
 	bottom: 0;
-	position: fixed;
+	/*position: fixed;*/
 	text-align: center;
 	padding: 7px;
 	font-size: 14px;

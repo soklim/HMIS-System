@@ -6,7 +6,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'HMIS') }}</title>
+    <title>{{ config('app.name', 'eNCOD') }}</title>
     <link rel="icon" href="/assets/images/logo.png" type="image/png" />
 
     <!-- Fonts -->
@@ -83,7 +83,7 @@
             </div>
             <div>
                 <a href="/">
-                    <h4 class="logo-text text-center text-success" style="font-weight:bold;">HMIS</h4>
+                    <h4 class="logo-text text-center text-success" style="font-weight:bold;">eNCOD</h4>
                 </a>
             </div>
             <div class="toggle-icon ms-auto text-success">
@@ -228,7 +228,7 @@
     <!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
     <!--End Back To Top Button-->
     <footer class="page-footer">
-        <p class="mb-0">Copyright © All right reserved By HMIS v.1.0.</p>
+        <p class="mb-0">Copyright © All right reserved By eNCOD v.1.0.</p>
     </footer>
     <script type="text/javascript">
         $.ajaxSetup({

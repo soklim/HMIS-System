@@ -34,10 +34,18 @@ class EMRBirthController extends Controller
             if ($user[0]->province_id != 0){
                 $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
             }
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
             return view('emr_birth.index',[
                 'user'=>$user,
                 'province'=>$province,
-                'permission'=>$permission
+                'permission'=>$permission,
+                'module' => $module
             ]);
         }
 
@@ -69,13 +77,22 @@ class EMRBirthController extends Controller
             $birth_type = DB::table("setting_items as s")->where("s.type_id",7)->select("s.item_id","s.name","s.name_kh")->get();
             $attendant_at_delivery = DB::table("setting_items as s")->where("s.type_id",8)->select("s.item_id","s.name","s.name_kh")->get();
 
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
+
             return view('emr_birth.create',[
                 'province'=>$province,
                 'sex'=>$sex,
                 'birth_info'=>$birth_info,
                 'birth_type'=>$birth_type,
                 'attendant_at_delivery'=>$attendant_at_delivery,
-                'user'=>$user
+                'user'=>$user,
+                'module' => $module
             ]);
         }
 
@@ -271,6 +288,14 @@ class EMRBirthController extends Controller
                                     INNER JOIN healthfacility h ON b.hfac_code = h.HFAC_CODE
                                     INNER JOIN opdistrict od ON h.OD_CODE = od.OD_CODE
                                     WHERE b.bid = $id");
+
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
             return view('emr_birth.edit',[
                 'province'=>$province,
                 'sex'=>$sex,
@@ -278,7 +303,8 @@ class EMRBirthController extends Controller
                 'birth_type'=>$birth_type,
                 'attendant_at_delivery'=>$attendant_at_delivery,
                 'user'=>$user,
-                'data'=>$results
+                'data'=>$results,
+                'module' => $module
             ]);
         }
 

@@ -24,6 +24,11 @@
     cursor: default;
     background-color: #ffffff !important;
 }
+
+.picker__input:disabled {
+    cursor: not-allowed;
+    background-color: #e9ecef !important;
+}
 /**
  * When the picker is opened, the input element is “activated”.
  */

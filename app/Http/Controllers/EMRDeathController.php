@@ -33,10 +33,20 @@ class EMRDeathController extends Controller
             if ($user[0]->province_id != 0){
                 $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
             }
+
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
+
             return view('emr_death.index',[
                 'user'=>$user,
                 'province'=>$province,
-                'permission'=>$permission
+                'permission'=>$permission,
+                'module' => $module
             ]);
 
         }
@@ -79,11 +89,21 @@ class EMRDeathController extends Controller
             if ($user[0]->province_id != 0){
                 $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
             }
+
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
+
             return view('emr_death.edit',[
                 'hf_info' => $hfInfo,
                 'data'=>$data,
                 'user'=>$user,
-                'province'=>$province
+                'province'=>$province,
+                'module' => $module
             ]);
         }
     }
@@ -115,10 +135,20 @@ class EMRDeathController extends Controller
             if ($user[0]->province_id != 0){
                 $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
             }
+
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
+
             return view('emr_death.create',[
                 'hf_info' => $hfInfo,
                 'province'=>$province,
-                'user'=>$user
+                'user'=>$user,
+                'module' => $module
             ]);
         }
 

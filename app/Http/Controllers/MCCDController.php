@@ -25,9 +25,18 @@ class MCCDController extends Controller
         }
         else{
 
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
+
             $userId = Auth::user()->id;
             return view('mccd.index',[
                 'permission'=>$permission,
+                'module'=>$module
             ]);
         }
 
@@ -54,10 +63,19 @@ class MCCDController extends Controller
                 ->select("d.issue_no","d.death_id","d.deceased_name")
                 ->where("d.is_deleted",0)
                 ->get();
+
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
             return view('mccd.create',[
                 'permission'=>$permission,
                 'data'=>$data,
-                'death'=>$death
+                'death'=>$death,
+                'module'=>$module
             ]);
         }
     }
