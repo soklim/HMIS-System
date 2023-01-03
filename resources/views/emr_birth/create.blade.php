@@ -8,14 +8,14 @@
         }
     </style>
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">{{$module[0]->group_module_name}}</div>
+        <div class="breadcrumb-title pe-3">Transactions</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
                         <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{$module[0]->module_name}} (បន្ថែមថ្មី)</li>
+                    <li class="breadcrumb-item active" aria-current="page">Birth Notification (Create)</li>
                 </ol>
             </nav>
         </div>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
-                        <label>មូលដ្ឋានសុខាភិបាល <span class="text-danger">(*)</span></label>
+                        <label>មណ្ឌលសុខភាព <span class="text-danger">(*)</span></label>
                         <select class="form-select select2" id="hf_code" data-required="0">
                             <option value="0">-- select --</option>
                         </select>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
-                        <label>អត្តលេខសំណុំឯកសារសេវាសម្រាលកូន <span class="text-danger">(*)</span></label>
+                        <label>លេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
                         <div class="input-group">
                             <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
                             <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
@@ -107,7 +107,7 @@
                     <div class="form-group mb-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="abandoned_baby">
-                            <label class="form-check-label" for="abandoned_baby">ទារកបោះបង់ចោល</label>
+                            <label class="form-check-label" for="abandoned_baby">បោះបង់ចោល</label>
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-4">
-                    <label>ឈ្មោះទារក <span class="text-danger">(*)</span></label>
+                    <label>ឈ្មោះ <span class="text-danger">(*)</span></label>
                     <input type="text" id="baby_name" class="form-control"/>
                 </div>
                 <div class="col-md-2">
@@ -135,7 +135,7 @@
                         <label>ទម្ងន់ទារក <span class="text-danger">(*)</span></label>
                         <div class="input-group">
                             <input type="number" class="form-control" id="baby_weight" data-required="1">
-                            <button type="button" class="btn btn-secondary">ក្រាម</button>
+                            <button type="button" class="btn btn-secondary">Kg</button>
                         </div>
                     </div>
                 </div>
@@ -151,56 +151,33 @@
                         <input type="text" class="form-control timefield" id="time_of_birth" data-required="1" placeholder="MM:HH">
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label>ឈ្មោះម្ដាយ <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control" id="mother_name" data-required="1">
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label><input type="checkbox" onchange="isMotherAge(this.checked)"/> អាយុ</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="motherAge" data-required="1" disabled>
-                                <button type="button" class="btn btn-secondary">ឆ្នាំ</button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label>ថ្ងៃខែឆ្នាំ-កំណើត(ម្ដាយ)</label>
-                                <input type="text" class="form-control datefield" id="mother_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
-                            </div>
-                        </div>
+                <div class="col-md-2">
+                    <div class="form-group mb-3">
+                        <label>ថ្ងៃខែឆ្នាំ-កំណើត(ម្ដាយ) <span class="text-danger">(*)</span></label>
+                        <input type="text" class="form-control datefield" id="mother_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label>ឈ្មោះឪពុក <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control" id="father_name" data-required="1">
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label><input type="checkbox" onchange="isFatherAge(this.checked)"/> អាយុ</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="fatherAge" data-required="1" disabled>
-                                <button type="button" class="btn btn-secondary">ឆ្នាំ</button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label>ថ្ងៃខែឆ្នាំ-កំណើត(ឪពុក)</label>
-                                <input type="text" class="form-control datefield" id="father_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="col-md-2">
                     <div class="form-group mb-3">
-                        <label>ចំនួនកូនកើតរស់ (មកទល់បច្ចុប្បន្ន) <span class="text-danger">(*)</span></label>
+                        <label>ថ្ងៃខែឆ្នាំ-កំណើត(ឪពុក) <span class="text-danger">(*)</span></label>
+                        <input type="text" class="form-control datefield" id="father_name_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group mb-3">
+                        <label>ចំនួនកូនដែលធ្លាប់កើតពីមុន <span class="text-danger">(*)</span></label>
                         <input type="number" maxlength="2" class="form-control" id="numofchildalive" data-required="1">
                     </div>
                 </div>
@@ -287,30 +264,6 @@
 
         })
 
-        function isMotherAge(checked){
-            if(checked == true){
-                $("#motherAge").prop("disabled",false);
-                $("#mother_date_of_birth").prop("disabled",true);
-                $("#mother_date_of_birth").val("");
-            }
-            else{
-                $("#motherAge").prop("disabled",true);
-                $("#mother_date_of_birth").prop("disabled",false);
-            }
-        }
-
-        function isFatherAge(checked){
-            if(checked == true){
-                $("#fatherAge").prop("disabled",false);
-                $("#father_date_of_birth").prop("disabled",true);
-                $("#father_date_of_birth").val("");
-            }
-            else{
-                $("#fatherAge").prop("disabled",true);
-                $("#father_date_of_birth").prop("disabled",false);
-            }
-        }
-
         function GetDistrict_Mother(PCode){
             $.ajax({
                 type:'POST',
@@ -386,7 +339,7 @@
             var mother_name = $("#mother_name").val();
             var mother_date_of_birth = $("#mother_date_of_birth").val();
             var father_name = $("#father_name").val();
-            var father_date_of_birth = $("#father_date_of_birth").val();
+            var father_date_of_birth = $("#father_name_date_of_birth").val();
             var numofchildalive = $("#numofchildalive").val();
             var mother_province = $("#mother_province").val();
             var mother_district = $("#mother_district").val();

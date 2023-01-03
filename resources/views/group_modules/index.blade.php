@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @section('content')
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">{{$module[0]->group_module_name}}</div>
+        <div class="breadcrumb-title pe-3">System Setting</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
                         <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{$module[0]->module_name}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">Group Module</li>
                 </ol>
             </nav>
         </div>

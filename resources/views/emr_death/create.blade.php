@@ -8,14 +8,14 @@
         }
     </style>
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">{{$module[0]->group_module_name}}</div>
+        <div class="breadcrumb-title pe-3">Transactions</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
                         <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{$module[0]->module_name}} (បន្ថែមថ្មី)</li>
+                    <li class="breadcrumb-item active" aria-current="page">Death Notification (Create)</li>
                 </ol>
             </nav>
         </div>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group mb-3">
-                        <label>មូលដ្ឋានសុខាភិបាល <span class="text-danger">(*)</span></label>
+                        <label>មណ្ឌលសុខភាព <span class="text-danger">(*)</span></label>
                         <select class="form-select select2" id="hf_code" data-required="0">
                             <option value="0">-- select --</option>
                         </select>
@@ -75,7 +75,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-4">
-                    <label>ឈ្មោះមរណៈជន <span class="text-danger">(*)</span></label>
+                    <label>ឈ្មោះ <span class="text-danger">(*)</span></label>
                     <input type="text" id="deceased_name" class="form-control"/>
                 </div>
                 <div class="col-md-4">
@@ -110,50 +110,29 @@
                 </div>
             </div>
             <div class="row" style="padding-top: 10px;">
-                <div class="col-md-3">
-                    <div class="form-group mb-3">
-                        <label><input type="checkbox" id="txtCheckAge" onchange="isBaby(this.checked)"/> អាយុ</label>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input age_type" disabled id="age_1" checked type="radio" name="age_type">
-                            <label class="form-check-label" for="age_1">ឆ្នាំ</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input age_type" disabled id="age_2" type="radio" name="age_type">
-                            <label class="form-check-label" for="age_2">ខែ</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input age_type" disabled id="age_3" type="radio" name="age_type">
-                            <label class="form-check-label" for="age_3">ថ្ងៃ</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input age_type" disabled id="age_4" type="radio" name="age_type">
-                            <label class="form-check-label" for="age_4">ម៉ោង</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input age_type" disabled id="age_5" type="radio" name="age_type">
-                            <label class="form-check-label" for="age_5">នាទី</label>
-                        </div>
-                        <input type="text" class="form-control" id="age_year" data-required="1" readonly>
-                        <input type="number" class="form-control" id="age_day" data-required="1" style="display: none">
-                    </div>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label>ថ្ងៃខែឆ្នាំកំណើត <span class="text-danger">(*)</span></label>
                     <input type="text" id="date_of_birth" class="form-control datefield" onchange="getAge()" placeholder="YYYY-MM-DD" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group mb-3">
                         <label>ថ្ងៃខែឆ្នាំ-មរណភាព <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control datefield" id="date_of_death" onchange="getAge()" data-required="1" placeholder="YYYY-MM-DD">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ម៉ោង-មរណភាព <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control timefield" id="time_of_death" data-required="1" placeholder="MM:HH">
                     </div>
                 </div>
-
+                <div class="col-md-2">
+                    <div class="form-group mb-3">
+                        <label>អាយុ <span class="text-danger">(*)</span> <input type="checkbox" id="txtCheckAge" onchange="isBaby(this.checked)"/> ទារក </label>
+                        <input type="text" class="form-control" id="age_year" data-required="1" readonly>
+                        <input type="text" class="form-control timefield" id="age_day" data-required="1" style="display: none">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-12">
@@ -282,16 +261,10 @@
             if(checked == true){
                 $("#age_year").hide();
                 $("#age_day").show();
-                $("#date_of_birth").prop("disabled",true);
-                $("#date_of_birth").val("");
-                $(".age_type").prop("disabled",false);
             }
             else{
                 $("#age_year").show();
                 $("#age_day").hide();
-                $("#date_of_birth").prop("disabled",false);
-                $(".age_type").prop("disabled",true);
-                $("#age_1").prop("checked",true);
             }
 
         }

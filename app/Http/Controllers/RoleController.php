@@ -39,17 +39,7 @@ class RoleController extends Controller
             return view('error.error404');
         }
         else{
-            $module = DB::table("modules as m")
-                ->join("group_modules as g", function($join){
-                    $join->on("m.group_id", "=", "g.id");
-                })
-                ->select("g.name as group_module_name", "m.name as module_name")
-                ->where("m.id", "=", $module_id)
-                ->get();
-
-            return view('roles.index',[
-                'module' => $module
-            ]);
+            return view('roles.index');
         }
     }
 

@@ -172,7 +172,7 @@
         </tr>
         <tr>
             <td style="width: 40%">
-                <p class="small_bold">ឈ្មោះមរណៈជន៖ </p>
+                <p class="small_bold">ឈ្មោះអ្នកស្លាប់៖ </p>
                 <span class="small_bold">{{$item1->deceased_name}}</span>
                 <br><br><br>
                 <p class="smallest">ប្រសិនបើអ្នកស្លាប់ទើបនឹងកើត ដោយគ្មានឈ្មោះ ចូរសរសេរ កូនរបស់ "ឈ្មោះម្ដាយ"</p>

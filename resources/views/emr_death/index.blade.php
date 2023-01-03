@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @section('content')
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">{{$module[0]->group_module_name}}</div>
+        <div class="breadcrumb-title pe-3">Transactions</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
                         <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{$module[0]->module_name}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">Death Notification</li>
                 </ol>
             </nav>
         </div>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group mb-3">
-                        <label>មូលដ្ឋានសុខាភិបាល</label>
+                        <label>មណ្ឌលសុខភាព</label>
                         <select class="form-select select2" id="txtHFCode" data-required="0">
                             <option value="0">-- select --</option>
                         </select>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group mb-3">
-                        <label>លេខចេញ</label>
+                        <label>Issue No</label>
                         <input type="text" class="form-control" id="txtIssueNo" maxlength="11">
                     </div>
                 </div>
@@ -71,7 +71,7 @@
         <div class="col-md-6">
             <button type="button" class="btn btn-primary" id="btnSearch" onclick="LoadData()"><i class="bx bx-search-alt"></i> ស្វែងរក</button>
             @if($permission->a_create == 1)
-                <a href="{{route('emr_death.create')}}" type="button" class="btn btn-primary" id="btnAdd"><i class="bx bx-plus"></i>បន្ថែមថ្មី</a>
+                <a href="{{route('emr_death.create')}}" type="button" class="btn btn-primary" id="btnAdd"><i class="bx bx-plus"></i>បន្ថែម</a>
             @endif
             <button type="button" class="btn btn-success" id="btnExport" onclick="ExportExcel('xlsx');"><i class="bx bx-download"></i> Export</button>
         </div>

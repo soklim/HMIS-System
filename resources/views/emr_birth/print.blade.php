@@ -117,12 +117,12 @@
                         @if($item1->abandoned == 1)
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="abandoned_baby" checked aria-disabled="true">
-                                <label class="form-check-label" for="abandoned_baby"><p class="small_bold">ទារកបោះបង់ចោល</p></label>
+                                <label class="form-check-label" for="abandoned_baby"><p class="small_bold">បោះបង់ចោល</p></label>
                             </div>
                         @else
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="abandoned_baby" disabled>
-                                <label class="form-check-label" for="abandoned_baby"><p class="small_bold">ទារកបោះបង់ចោល</p></label>
+                                <label class="form-check-label" for="abandoned_baby"><p class="small_bold">បោះបង់ចោល</p></label>
                             </div>
                         @endif
                     </td>
@@ -241,11 +241,11 @@
         <table class="tblBody2">
             <tr>
                 <td style="width: 35%;text-align: center;">
-                    <label class="small_bold">ចំនួនកូនកើតរស់ (មកទល់បច្ចុប្បន្ន)៖</label> <br><br>
+                    <label class="small_bold">ចំនួនកូនដែលកើតនៅរស់ដល់បច្ចុប្បន្ន៖</label> <br><br>
                     <label class="small_bold">{{$item1->numofchildalive}} នាក់</label>
                 </td>
                 <td style="width: 65%">
-                    <label class="small_bold">អត្តលេខសំណុំឯកសារសេវាសម្រាលកូន៖</label><br><br>
+                    <label class="small_bold">អត្តលេខឯកសារពេទ្យ៖</label><br><br>
                     <div>
                         @foreach(str_split($item1->medicalid) as $value)
                             <span style="border: solid 1px black;width:20px;height: 30px;display: inline-block;
