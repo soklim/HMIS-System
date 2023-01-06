@@ -26,7 +26,17 @@ class SettingItemController extends Controller
         }
         else{
             $setting_type = SettingType::all();
-            return view('setting_items.index',['setting_type' => $setting_type]);
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
+            return view('setting_items.index',[
+                'module' => $module,
+                'setting_type' => $setting_type
+            ]);
         }
     }
 

@@ -8,14 +8,14 @@
         }
     </style>
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Transactions</div>
+        <div class="breadcrumb-title pe-3">{{$module[0]->group_module_name}}</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
                         <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Birth Notification (Create)</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{$module[0]->module_name}} (បន្ថែមថ្មី)</li>
                 </ol>
             </nav>
         </div>
@@ -26,7 +26,7 @@
             <h6 style="font-weight: bold;text-decoration: underline">ព័ត៌មានមូលដ្ឋានសុខាភិបាល</h6>
             <hr>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>រាជធានី-ខេត្ត <span class="text-danger">(*)</span></label>
                         <select class="form-select select2" id="txtHF_Province" data-required="0" onchange="GetOD(this.value)">
@@ -37,7 +37,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ក្រុង/ស្រុក/ខណ្ឌ <span class="text-danger">(*)</span></label>
                         <select class="form-select select2" id="txtHF_District" data-required="0" onchange="GetHF(this.value)">
@@ -47,16 +47,19 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
-                        <label>មណ្ឌលសុខភាព <span class="text-danger">(*)</span></label>
+                        <label>មូលដ្ឋានសុខាភិបាល <span class="text-danger">(*)</span></label>
                         <select class="form-select select2" id="hf_code" data-required="0">
                             <option value="0">-- select --</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-5">
                     <div class="form-group mb-3">
-                        <label>លេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
+                        <label>អត្តលេខសំណុំឯកសារសេវាសម្រាលកូន <span class="text-danger">(*)</span></label>
                         <div class="input-group">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
                             <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
                             <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
                             <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
@@ -94,7 +97,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group mb-3">
-                        <label>សម្រាលដោយ <span class="text-danger">(*)</span></label><br>
+                        <label>អ្នកផ្ដល់សេវាសម្រាលកូន <span class="text-danger">(*)</span></label><br>
                         @foreach($attendant_at_delivery as $attendant_at_delivery)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" id="attendant_at_delivery_{{$attendant_at_delivery->item_id}}" type="radio" name="attendant_at_delivery" value="{{$attendant_at_delivery->item_id}}">
@@ -107,7 +110,7 @@
                     <div class="form-group mb-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="abandoned_baby">
-                            <label class="form-check-label" for="abandoned_baby">បោះបង់ចោល</label>
+                            <label class="form-check-label" for="abandoned_baby">ទារកបោះបង់ចោល</label>
                         </div>
                     </div>
                 </div>
@@ -117,11 +120,11 @@
             <h6 style="font-weight: bold;text-decoration: underline">ព័ត៌មានទារក</h6>
             <hr>
             <div class="row">
-                <div class="col-md-4">
-                    <label>ឈ្មោះ <span class="text-danger">(*)</span></label>
-                    <input type="text" id="baby_name" class="form-control"/>
+                <div class="col-md-3">
+                    <label>ឈ្មោះទារក <span class="text-danger">(*)</span></label>
+                    <input type="text" id="baby_name" class="form-control" placeholder="គ្មាន"/>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label>ភេទ <span class="text-danger">(*)</span></label><br>
                     @foreach($sex as $sex)
                         <div class="form-check form-check-inline">
@@ -135,53 +138,80 @@
                         <label>ទម្ងន់ទារក <span class="text-danger">(*)</span></label>
                         <div class="input-group">
                             <input type="number" class="form-control" id="baby_weight" data-required="1">
-                            <button type="button" class="btn btn-secondary">Kg</button>
+                            <button type="button" class="btn btn-secondary">ក្រាម</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ថ្ងៃខែឆ្នាំ-កំណើត <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control datefield" id="date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
+                        <input type="text" class="form-control datefield" id="date_of_birth" data-required="1" placeholder="DD-MM-YYYY">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ម៉ោង-កំណើត <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control timefield" id="time_of_birth" data-required="1" placeholder="MM:HH">
+                        <input type="text" class="form-control timefield" id="time_of_birth" data-required="1" placeholder="HH:MM">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ឈ្មោះម្ដាយ <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control" id="mother_name" data-required="1">
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="form-group mb-3">
-                        <label>ថ្ងៃខែឆ្នាំ-កំណើត(ម្ដាយ) <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control datefield" id="mother_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label><input type="checkbox" onchange="isMotherAge(this.checked)"/> អាយុ</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="motherAge" data-required="1" disabled>
+                                <button type="button" class="btn btn-secondary">ឆ្នាំ</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>ថ្ងៃខែឆ្នាំ-កំណើត(ម្ដាយ)</label>
+                                <input type="text" id="mother_date_of_birth" class="form-control datefield" onchange="GetMotherAge(this.value)" placeholder="DD:MM:YYYY" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ឈ្មោះឪពុក <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control" id="father_name" data-required="1">
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="form-group mb-3">
-                        <label>ថ្ងៃខែឆ្នាំ-កំណើត(ឪពុក) <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control datefield" id="father_name_date_of_birth" data-required="1" placeholder="YYYY-MM-DD">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label><input type="checkbox" onchange="isFatherAge(this.checked)"/> អាយុ</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="fatherAge" data-required="1" disabled>
+                                <button type="button" class="btn btn-secondary">ឆ្នាំ</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>ថ្ងៃខែឆ្នាំ-កំណើត(ឪពុក)</label>
+                                <input type="text" id="father_date_of_birth" class="form-control datefield" onchange="GetFatherAge(this.value)" placeholder="DD:MM:YYYY" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-group mb-3">
-                        <label>ចំនួនកូនដែលធ្លាប់កើតពីមុន <span class="text-danger">(*)</span></label>
+                        <label>ចំនួនកូនកើតរស់ (មកទល់បច្ចុប្បន្ន) <span class="text-danger">(*)</span></label>
                         <input type="number" maxlength="2" class="form-control" id="numofchildalive" data-required="1">
                     </div>
                 </div>
-
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label>លេខទូរស័ព្ទទំនាក់ទំនង</label>
+                        <input type="text" maxlength="11" class="form-control" id="contact_phone" data-required="0">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-12">
@@ -217,11 +247,11 @@
                 </div>
                 <div class="col-md-2">
                     <label>លេខផ្លូវ</label>
-                    <input type="text" class="form-control" id="mother_street">
+                    <input type="text" class="form-control" id="mother_street" placeholder="គ្មាន">
                 </div>
                 <div class="col-md-2">
                     <label>លេខផ្ទះ</label>
-                    <input type="text" class="form-control" id="mother_house">
+                    <input type="text" class="form-control" id="mother_house" placeholder="គ្មាន">
                 </div>
             </div>
 
@@ -242,25 +272,12 @@
         var emailList=[];
         var prevEmail ="";
         $(document).ready(function (){
-            $(".datefield").pickadate({
-                selectMonths: true,
-                selectYears: true,
-                format: 'yyyy-mm-dd',
-                hiddenName: true
-            });
-
-            $('.timefield').bootstrapMaterialDatePicker({
-                date: false,
-                format: 'HH:mm'
-            });
-
 
             @if($user[0]->province_id != 0){
                 $('#txtHF_Province').val({{$user[0]->province_id}}).trigger("change");
                 $('#txtHF_Province').prop("disabled", true);
             }
             @endif
-            $(".select2").select2();
 
         })
 
@@ -274,6 +291,8 @@
                 success:function(result){
                     console.log(result);
                     $('#mother_district').html("");
+                    $('#mother_commune').find('option').not(':first').remove();
+                    $('#mother_village').find('option').not(':first').remove();
                     var district = result.district;
                     district.unshift({ id: 0, text:'-- select --'});
                     $('#mother_district').select2({data: district, width: '100%'});
@@ -291,6 +310,7 @@
                 success:function(result){
                     console.log(result);
                     $('#mother_commune').html("");
+                    $('#mother_village').find('option').not(':first').remove();
                     var commune = result.commune;
                     commune.unshift({ id: 0, text:'-- select --'});
                     $('#mother_commune').select2({data: commune, width: '100%'});
@@ -315,127 +335,6 @@
                 }
             });
         }
-
-        function Save(){
-            var bid = $("#bid").val();
-            var hf_code = $("#hf_code").val();
-            var medicalid ="";
-            var medicalid_list = document.getElementsByName("medicalid");
-            for(i = 0; i < medicalid_list.length; i++){
-                medicalid += medicalid_list[i].value;
-            }
-            var birth_info = $("input[name='birth_info']:checked");
-            var birth_type = $("input[name='birth_type']:checked");
-            var attendant_at_delivery = $("input[name='attendant_at_delivery']:checked");
-            var abandoned_baby=0;
-            if ($("#abandoned_baby").is(':checked')) {
-                abandoned_baby =1;
-            }
-            var baby_name = $("#baby_name").val();
-            var sex = $("input[name='sex']:checked");
-            var baby_weight = $("#baby_weight").val();
-            var date_of_birth = $("#date_of_birth").val();
-            var time_of_birth = $("#time_of_birth").val();
-            var mother_name = $("#mother_name").val();
-            var mother_date_of_birth = $("#mother_date_of_birth").val();
-            var father_name = $("#father_name").val();
-            var father_date_of_birth = $("#father_name_date_of_birth").val();
-            var numofchildalive = $("#numofchildalive").val();
-            var mother_province = $("#mother_province").val();
-            var mother_district = $("#mother_district").val();
-            var mother_commune = $("#mother_commune").val();
-            var mother_village = $("#mother_village").val();
-            var mother_street = $("#mother_street").val();
-            var mother_house = $("#mother_house").val();
-
-            if(hf_code == 0){
-                MSG.Validation("សូមជ្រើសរើស មណ្ឌលសុខភាព !!!");
-            }
-            else if(medicalid == ""){
-                MSG.Validation("សូមបញ្ចូល អត្តលេខឯកសារពេទ្យ !!!");
-            }
-            else if(birth_info.length == 0){
-                MSG.Validation("សូមជ្រើសរើស ព័ត៌មានកំណើត !!!");
-            }
-            else if(birth_type.length == 0){
-                MSG.Validation("សូមជ្រើសរើស ប្រភេទកំណើត !!!");
-            }
-            else if(attendant_at_delivery.length == 0){
-                MSG.Validation("សូមជ្រើសរើស attendant_at_delivery !!!");
-            }
-            else if(baby_name == ""){
-                MSG.Validation("សូមបញ្ចូល ឈ្មោះទារក !!!");
-            }
-            else if(sex.length == 0){
-                MSG.Validation("សូមជ្រើសរើស ភេទ !!!");
-            }
-            else if(baby_weight == ""){
-                MSG.Validation("សូមបញ្ចូល ទម្ងន់ទារក !!!");
-            }
-            else if(date_of_birth == ""){
-                MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំកំណើត !!!");
-            }
-            else if(time_of_birth == ""){
-                MSG.Validation("សូមបញ្ចូល ម៉ោងកំណើត !!!");
-            }
-            else if(mother_name == ""){
-                MSG.Validation("សូមបញ្ចូល ឈ្មោះម្ដាយ !!!");
-            }
-            else if(mother_date_of_birth == 0){
-                MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំកំណើត(ម្ដាយ) !!!");
-            }
-            else if(father_name == ""){
-                MSG.Validation("សូមបញ្ចូល ឈ្មោះឪពុក !!!");
-            }
-            else if(father_date_of_birth == 0){
-                MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំកំណើត(ឪពុក) !!!");
-            }
-            else if(numofchildalive == ""){
-                MSG.Validation("សូមបញ្ចូល ចំនួនកូនដែលធ្លាប់កើតពីមុន !!!");
-            }
-            else if(mother_province == ""){
-                MSG.Validation("សូមបញ្ចូល ទីលំនៅប្រក្រតីរបស់ម្ដាយ !!!");
-            }
-            else{
-                $.ajax({
-                    type:'POST',
-                    url:"{{ route('emr_birth.Save') }}",
-                    data:{
-                        bid:bid,
-                        hf_code: hf_code,
-                        medicalid:medicalid,
-                        birth_info:birth_info[0].value,
-                        birth_type:birth_type[0].value,
-                        attendant_at_delivery:attendant_at_delivery[0].value,
-                        abandoned_baby:abandoned_baby,
-                        baby_name:baby_name,
-                        sex:sex[0].value,
-                        baby_weight: baby_weight,
-                        date_of_birth: date_of_birth,
-                        time_of_birth: time_of_birth,
-                        mother_name: mother_name,
-                        mother_date_of_birth:mother_date_of_birth,
-                        father_name:father_name,
-                        father_date_of_birth:father_date_of_birth,
-                        numofchildalive:numofchildalive,
-                        mother_province:mother_province,
-                        mother_district:mother_district,
-                        mother_commune:mother_commune,
-                        mother_village:mother_village,
-                        mother_street:mother_street,
-                        mother_house:mother_house,
-                    },
-                    success:function(result){
-                        console.log(result);
-                        if(result.code == 0){
-                            MSG.Success();
-                            location.href = "{{route('emr_birth.index')}}";
-                        }
-                    }
-                });
-            }
-        }
-
         function GetOD(province_code){
 
             $.ajax({
@@ -447,6 +346,7 @@
                 success:function(result){
                     console.log(result);
                     $('#txtHF_District').html("");
+                    $('#hf_code').find('option').not(':first').remove();
                     var district = result.district;
                     district.unshift({ id: 0, text:'-- select --'});
                     $('#txtHF_District').select2({data: district, width: '100%'});
@@ -481,5 +381,7 @@
                 }
             });
         }
+
     </script>
+    <script src="/assets/js/birth.js?v01"></script>
 @endsection

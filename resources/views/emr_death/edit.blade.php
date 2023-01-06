@@ -9,14 +9,14 @@
     </style>
     @foreach($data as $item1)
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Transactions</div>
+        <div class="breadcrumb-title pe-3">{{$module[0]->group_module_name}}</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
                         <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Death Notification (Edit)</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{$module[0]->module_name}} (កែប្រែ)</li>
                 </ol>
             </nav>
         </div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group mb-3">
-                        <label>មណ្ឌលសុខភាព <span class="text-danger">(*)</span></label>
+                        <label>មូលដ្ឋានសុខាភីបាល <span class="text-danger">(*)</span></label>
                         <select class="form-select select2" id="hf_code" data-required="0">
                             <option value="0">-- select --</option>
                         </select>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group mb-3" style="border: solid 1px black;border-radius: 10px;padding-top:10px;padding-left:10px">
-                        <label>ព័ត៌មានមរណភាព <span class="text-danger">(*)</span></label>
+                        <label>ព័ត៌មានមរណៈភាព <span class="text-danger">(*)</span></label>
                         <div id="div_death_info">
 
                         </div>
@@ -75,19 +75,19 @@
             <h6 style="font-weight: bold;text-decoration: underline">ព័ត៌មានអ្នកស្លាប់</h6>
             <hr>
             <div class="row">
-                <div class="col-md-4">
-                    <label>ឈ្មោះ <span class="text-danger">(*)</span></label>
-                    <input type="text" id="deceased_name" value="{{$item1->deceased_name}}" class="form-control"/>
+                <div class="col-md-3">
+                    <label>ឈ្មោះមរណៈជន <span class="text-danger">(*)</span></label>
+                    <input type="text" id="deceased_name" value="{{$item1->deceased_name}}" class="form-control" placeholder="គ្មាន"/>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <div class="form-group mb-3">
                         <label>អត្តលេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
                         <div class="input-group">
                             @foreach(str_split($item1->medical_file_id) as $value)
                                 <input type="text" class="form-control medical_file_id" maxlength="1" value="{{$value}}" name="medical_file_id">
                             @endforeach
-                            @if(strlen($item1->medical_file_id) < 10)
-                                @for ($i = 0; $i < 10-strlen($item1->medical_file_id); $i++)
+                            @if(strlen($item1->medical_file_id) < 13)
+                                @for ($i = 0; $i < 13-strlen($item1->medical_file_id); $i++)
                                     <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
                                 @endfor
                             @endif
@@ -109,34 +109,47 @@
             </div>
             <div class="row" style="padding-top: 10px;">
                 <div class="col-md-4">
-                    <label>ថ្ងៃខែឆ្នាំកំណើត <span class="text-danger">(*)</span></label>
-                    <input type="text" id="date_of_birth" class="form-control datefield" onchange="getAge()" value="{{$item1->date_of_birth}}"  placeholder="YYYY-MM-DD" />
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group mb-3">
-                        <label>ថ្ងៃខែឆ្នាំ-មរណភាព <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control datefield" id="date_of_death" onchange="getAge()" value="{{$item1->date_of_death}}" data-required="1" placeholder="YYYY-MM-DD">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group mb-3">
-                        <label>ម៉ោង-មរណភាព <span class="text-danger">(*)</span></label>
-                        <input type="text" class="form-control timefield" id="time_of_death" value="{{$item1->time_of_death}}" data-required="1" placeholder="MM:HH">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group mb-3">
-                        @if($item1->is_baby == 0)
-                            <label>អាយុ <span class="text-danger">(*)</span> <input type="checkbox" id="txtCheckAge" onchange="isBaby(this.checked)"/> ទារក </label>
-                            <input type="text" class="form-control" id="age_year" value="{{$item1->age}}" data-required="1" readonly>
-                            <input type="text" class="form-control timefield" id="age_day" data-required="1" style="display: none">
+                    @if($item1->input_age == 0)
+                        <label><input type="checkbox" id="txtCheckAge" onchange="inputAge(this.checked)"/> អាយុ</label>
+                    @else
+                        <label><input type="checkbox" id="txtCheckAge" onchange="inputAge(this.checked)" checked/> អាយុ</label>
+                    @endif
+                    @foreach($age_type as $age_type)
+                        @if($age_type->item_id == $item1->age_type_id)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input age_type" value="{{$age_type->item_id}}" disabled id="age_type_{{$age_type->item_id}}" checked type="radio" name="age_type">
+                                <label class="form-check-label" for="age_type_{{$age_type->item_id}}">{{$age_type->name_kh}}</label>
+                            </div>
                         @else
-                            <label>អាយុ <span class="text-danger">(*)</span> <input type="checkbox" id="txtCheckAge" checked onchange="isBaby(this.checked)"/> ទារក </label>
-                            <input type="text" class="form-control" id="age_year" data-required="1" style="display: none" readonly>
-                            <input type="text" class="form-control timefield" id="age_day" value="{{$item1->age}}" data-required="1">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input age_type" value="{{$age_type->item_id}}" disabled id="age_type_{{$age_type->item_id}}" type="radio" name="age_type">
+                                <label class="form-check-label" for="age_type_{{$age_type->item_id}}">{{$age_type->name_kh}}</label>
+                            </div>
                         @endif
+                    @endforeach
+                    <input type="number" class="form-control" id="age" data-required="1" value="{{$item1->age}}" disabled>
+                </div>
+                <div class="col-md-3">
+                    <label>ថ្ងៃខែឆ្នាំ-កំណើត</label>
+                    @if($item1->date_of_birth != "")
+                        <input type="text" id="date_of_birth" class="form-control datefield" onchange="getAge()" value="{{date('d-m-Y', strtotime($item1->date_of_birth))}}"  placeholder="DD:MM:YYYY" />
+                    @else
+                        <input type="text" id="date_of_birth" class="form-control datefield" onchange="getAge()" placeholder="DD:MM:YYYY" />
+                    @endif
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label>ថ្ងៃខែឆ្នាំ-មរណៈភាព <span class="text-danger">(*)</span></label>
+                        <input type="text" class="form-control datefield" id="date_of_death" onchange="getAge()" value="{{date('d-m-Y', strtotime($item1->date_of_death))}}" data-required="1" placeholder="DD:MM:YYYY">
                     </div>
                 </div>
+                <div class="col-md-2">
+                    <div class="form-group mb-3">
+                        <label>ម៉ោង-មរណៈភាព <span class="text-danger">(*)</span></label>
+                        <input type="text" class="form-control timefield" id="time_of_death" value="{{$item1->time_of_death}}" data-required="1" placeholder="HH:MM">
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="col-md-12">
@@ -166,12 +179,12 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label>លេខផ្លូវ</label>
-                    <input type="text" class="form-control" value="{{$item1->deceased_street}}" id="deceased_street">
+                    <label>ផ្លូវលេខ</label>
+                    <input type="text" class="form-control" value="{{$item1->deceased_street}}" placeholder="គ្មាន" id="deceased_street">
                 </div>
                 <div class="col-md-2">
-                    <label>លេខផ្ទះ</label>
-                    <input type="text" class="form-control" value="{{$item1->deceased_house}}" id="deceased_house">
+                    <label>ផ្ទះលេខ</label>
+                    <input type="text" class="form-control" value="{{$item1->deceased_house}}" placeholder="គ្មាន" id="deceased_house">
                 </div>
             </div>
 
@@ -184,23 +197,8 @@
         </div>
     </div>
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $(document).ready(function (){
-            $(".datefield").pickadate({
-                selectMonths: true,
-                selectYears: true,
-                format: 'yyyy-mm-dd',
-                hiddenName: true
-            });
 
-            $('.timefield').bootstrapMaterialDatePicker({
-                date: false,
-                format: 'HH:mm'
-            });
+        $(document).ready(function (){
 
             $.ajax({
                 type:'GET',
@@ -271,44 +269,6 @@
             @endif
         })
 
-        function isBaby(checked){
-            if(checked == true){
-                $("#age_year").hide();
-                $("#age_day").show();
-            }
-            else{
-                $("#age_year").show();
-                $("#age_day").hide();
-            }
-
-        }
-        function getAge() {
-
-            if($('#date_of_birth').val() != "" && $('#date_of_death').val() != ""){
-
-                var start = new Date($('#date_of_birth').val());
-                var end = new Date($('#date_of_death').val());
-                if(start.getTime() > end.getTime()){
-                    MSG.Error("ថ្ងៃខែឆ្នាំកំណើត មិនអាចធំជាង ថ្ងៃខែឆ្នាំ-មរណភាព បានទេ !!!");
-                    $('#date_of_birth').val("");
-                    $('#date_of_death').val("");
-                    $('#age_year').val("");
-                    return false;
-                }
-                // end - start returns difference in milliseconds
-                var diff = new Date(end - start);
-                // get days
-                var days = diff/1000/60/60/24;
-                var year = Math.floor(days/365)+"ឆ្នាំ ";
-                var month = Math.floor((parseInt(days)%365)/30)+"ខែ ";
-                var day = Math.floor((parseInt(days)%365)%30)+"ថ្ងៃ";
-                $("#age_year").val(year+month+day);
-            }
-            else{
-                $("#age_year").val("");
-            }
-
-        }
         function GetDistrict_Deceased(PCode){
             $.ajax({
                 type:'POST',
@@ -424,111 +384,8 @@
                 }
             });
         }
-        function Save(){
-            var death_id = $("#death_id").val();
-            var hf_code = $("#hf_code").val();
-            var death_type = $("input[name='death_type']:checked");
-            var death_info = $("input[name='death_info']:checked");
-            // var medical_file_id = $("#medical_file_id").val();
-            var medical_file_id ="";
-            var medicalid_list = document.getElementsByName("medical_file_id");
-            for(i = 0; i < medicalid_list.length; i++){
-                medical_file_id += medicalid_list[i].value;
-            }
-            var date_of_death = $("#date_of_death").val();
-            var time_of_death = $("#time_of_death").val();
-            var deceased_name = $("#deceased_name").val();
-            var date_of_birth = $("#date_of_birth").val();
-            var sex = $("input[name='sex']:checked");
-            var married_status = $("input[name='married_status']:checked");
-            var deceased_province_code = $("#deceased_province_code").val();
-            var deceased_district_code = $("#deceased_district_code").val();
-            var deceased_commune_code = $("#deceased_commune_code").val();
-            var deceased_village = $("#deceased_village").val();
-            var deceased_street = $("#deceased_street").val();
-            var deceased_house = $("#deceased_house").val();
 
-            var age = $("#age_year").val();
-            var is_baby =0;
-            if($("#txtCheckAge").is(':checked')){
-                age = $("#age_day").val() +" ម៉ោង:នាទី";
-                is_baby =1;
-            }
-
-
-            if(hf_code == 0){
-                MSG.Validation("សូមជ្រើសរើស មណ្ឌលសុខភាព !!!");
-            }
-            else if(death_type.length == 0){
-                MSG.Validation("សូមបញ្ចូល ករណីស្លាប់ !!!");
-            }
-            else if(death_info.length == 0){
-                MSG.Validation("សូមបញ្ចូល ព័ត៌មានមរណភាព !!!");
-            }
-            else if(deceased_name == ""){
-                MSG.Validation("សូមបញ្ចូល ឈ្មោះអ្នកស្លាប់ !!!");
-            }
-            else if(medical_file_id == ""){
-                MSG.Validation("សូមបញ្ចូល អត្តលេខឯកសារពេទ្យ !!!");
-            }
-            else if(sex.length == 0){
-                MSG.Validation("សូមបញ្ចូល ភេទ !!!");
-            }
-            else if(married_status.length == 0){
-                MSG.Validation("សូមបញ្ចូល ស្ថានភាពគ្រួសារ !!!");
-            }
-            else if(date_of_birth == ""){
-                MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំកំណើត !!!");
-            }
-            else if(date_of_death == ""){
-                MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំ-មរណភាព !!!");
-            }
-            else if(time_of_death == ""){
-                MSG.Validation("សូមបញ្ចូល ម៉ោង-មរណភាព !!!");
-            }
-            else if(deceased_province_code == 0){
-                MSG.Validation("សូមបញ្ចូល រាជធានី-ខេត្ត !!!");
-            }
-            else if(age == ""){
-                MSG.Validation("សូមបញ្ចូល អាយុ !!!");
-            }
-            else{
-                $.ajax({
-                    type:'POST',
-                    url:"{{ route('emr_death.Save') }}",
-                    data:{
-                        death_id:death_id,
-                        hmis_code: hf_code,
-                        death_type:death_type[0].value,
-                        death_info:death_info[0].value,
-                        medical_file_id:medical_file_id,
-                        date_of_death:date_of_death,
-                        time_of_death:time_of_death,
-                        deceased_name:deceased_name,
-                        date_of_birth:date_of_birth,
-                        sex:sex[0].value,
-                        is_baby: is_baby,
-                        age: age,
-                        married_status:married_status[0].value,
-                        deceased_province_code:deceased_province_code,
-                        deceased_district_code:deceased_district_code,
-                        deceased_commune_code:deceased_commune_code,
-                        deceased_village:deceased_village,
-                        deceased_street:deceased_street,
-                        deceased_house:deceased_house,
-                    },
-                    success:function(result){
-                        console.log(result);
-                        if(result.code == 0){
-                            MSG.Success();
-                            location.href = "{{route('emr_death.index')}}";
-                            // $("#frmAddNew").modal('hide');
-                            // LoadData();
-                        }
-                    }
-                });
-            }
-        }
     </script>
+    <script src="/assets/js/death.js?v02"></script>
   @endforeach
 @endsection

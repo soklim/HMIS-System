@@ -34,10 +34,18 @@ class EMRBirthController extends Controller
             if ($user[0]->province_id != 0){
                 $province = DB::table("province as p")->where("p.PROCODE",$user[0]->province_id)->select("p.PROCODE","p.PROVINCE","p.PROVINCE_KH")->get();
             }
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
             return view('emr_birth.index',[
                 'user'=>$user,
                 'province'=>$province,
-                'permission'=>$permission
+                'permission'=>$permission,
+                'module' => $module
             ]);
         }
 
@@ -69,13 +77,22 @@ class EMRBirthController extends Controller
             $birth_type = DB::table("setting_items as s")->where("s.type_id",7)->select("s.item_id","s.name","s.name_kh")->get();
             $attendant_at_delivery = DB::table("setting_items as s")->where("s.type_id",8)->select("s.item_id","s.name","s.name_kh")->get();
 
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
+
             return view('emr_birth.create',[
                 'province'=>$province,
                 'sex'=>$sex,
                 'birth_info'=>$birth_info,
                 'birth_type'=>$birth_type,
                 'attendant_at_delivery'=>$attendant_at_delivery,
-                'user'=>$user
+                'user'=>$user,
+                'module' => $module
             ]);
         }
 
@@ -85,33 +102,34 @@ class EMRBirthController extends Controller
     {
         if ($request->bid == 0){
 
-            $userId = Auth::user()->id;
-
             $birth_no = DB::select( DB::raw("SELECT CONCAT('B',LPAD((SELECT (IFNULL((select max(`bid`) from emr_birth),0)))+1, 10, 0)) as birth_no"));
-            $input['hfac_code'] = $request->hf_code;
-            $input['hfac_label'] = $request->hf_code;
+            $input['hfac_code'] = $request->hfac_code;
+            $input['hfac_label'] = $request->hfac_code;
             $input['birth_no'] = $birth_no[0]->birth_no;
             $input['medicalid'] = $request->medicalid;
             $input['birth_info'] = $request->birth_info;
-            $input['typeofbirth'] = $request->birth_type;
-            $input['Atdelivery'] = $request->attendant_at_delivery;
-            $input['abandoned'] = $request->abandoned_baby;
-            $input['babyname'] = $request->baby_name;
+            $input['typeofbirth'] = $request->typeofbirth;
+            $input['Atdelivery'] = $request->Atdelivery;
+            $input['abandoned'] = $request->abandoned;
+            $input['babyname'] = $request->babyname;
             $input['sex'] = $request->sex;
             $input['baby_weight'] = $request->baby_weight;
-            $input['dateofbirth'] = $request->date_of_birth;
+            $input['dateofbirth'] = $request->dateofbirth;
             $input['time_of_birth'] = $request->time_of_birth;
-            $input['mothername'] = $request->mother_name;
-            $input['motherdofbirth'] = $request->mother_date_of_birth;
-            $input['fathername'] = $request->father_name;
-            $input['fatherdofbirth'] = $request->father_date_of_birth;
+            $input['mothername'] = $request->mothername;
+            $input['motherdofbirth'] = $request->motherdofbirth;
+            $input['motherage'] = $request->motherage;
+            $input['fathername'] = $request->fathername;
+            $input['fatherdofbirth'] = $request->fatherdofbirth;
+            $input['fatherage'] = $request->fatherage;
             $input['numofchildalive'] = $request->numofchildalive;
-            $input['mPCode'] = $request->mother_province;
-            $input['mDCode'] = $request->mother_district;
-            $input['mCCode'] = $request->mother_commune;
-            $input['mVCode'] = $request->mother_village;
-            $input['mStreet'] = $request->mother_street;
-            $input['mHouse'] = $request->mother_house;
+            $input['contact_phone'] = $request->contact_phone;
+            $input['mPCode'] = $request->mPCode;
+            $input['mDCode'] = $request->mDCode;
+            $input['mCCode'] = $request->mCCode;
+            $input['mVCode'] = $request->mVCode;
+            $input['mStreet'] = $request->mStreet;
+            $input['mHouse'] = $request->mHouse;
             $input['creation_user'] = Auth::user()->id;
 
             EMRBirth::create($input);
@@ -147,7 +165,7 @@ class EMRBirthController extends Controller
             AND (p.PROCODE = $province OR $province=0)
             AND (od.OD_CODE = $district OR $district=0)
             AND (h.HFAC_CODE = $hf_code OR $hf_code=0)
-            AND b.babyname LIKE '%$baby_name%'
+            AND IFNULL(b.babyname,'') LIKE '%$baby_name%'
             AND b.medicalid LIKE '%$medical_id%'
             AND b.birth_no LIKE '%$birth_no%'
             ORDER BY b.birth_no DESC LIMIT 100");
@@ -210,13 +228,8 @@ class EMRBirthController extends Controller
                     ,"e.dateofbirth", "e.time_of_birth", "e.sex", "e.abandoned"
                     ,"medicalid", "e.mStreet",'e.abandoned','e.Atdelivery','mothername','motherdofbirth','fathername','fatherdofbirth'
                     ,"e.mHouse", "p1.province_kh as mPCode","dt1.DName_kh as mDCode","e.numofchildalive"
-                    ,"c1.CName_kh as mCCode", "v.VName_kh as mVCode"
-                    ,DB::raw('TIMESTAMPDIFF(YEAR, motherdofbirth, created_at) as mother_year')
-                    ,DB::raw('TIMESTAMPDIFF(MONTH, motherdofbirth, created_at) % 12 as mother_month')
-                    ,DB::raw('FLOOR(TIMESTAMPDIFF(YEAR, motherdofbirth, created_at) % 30.4375) as mother_day')
-                    ,DB::raw('TIMESTAMPDIFF(YEAR, fatherdofbirth, created_at) as father_year')
-                    ,DB::raw('TIMESTAMPDIFF(MONTH, fatherdofbirth, created_at) % 12 as father_month')
-                    ,DB::raw('FLOOR(TIMESTAMPDIFF(YEAR, fatherdofbirth, created_at) % 30.4375) as father_day')
+                    ,"c1.CName_kh as mCCode", "v.VName_kh as mVCode","e.motherage","e.fatherage","e.contact_phone","baby_weight"
+
                 )
                 ->where("e.bid", "=", $id)
                 ->get();
@@ -266,11 +279,19 @@ class EMRBirthController extends Controller
             $results = DB::select("SELECT b.bid,b.birth_no,b.medicalid, b.babyname,b.birth_info,b.typeofbirth,b.Atdelivery,b.abandoned
                                         ,b.sex,b.dateofbirth,b.time_of_birth,h.HFAC_NAMEKh,od.PRO_CODE,h.OD_CODE,b.hfac_code,b.baby_weight
                                         ,b.mothername,b.motherdofbirth,b.fathername,b.fatherdofbirth,b.numofchildalive
-                                        ,b.mPCode,b.mDCode,b.mCCode,b.mVCode,b.mStreet,b.mHouse
+                                        ,b.mPCode,b.mDCode,b.mCCode,b.mVCode,b.mStreet,b.mHouse,b.motherage,b.fatherage,b.contact_phone
                                     FROM emr_birth b
                                     INNER JOIN healthfacility h ON b.hfac_code = h.HFAC_CODE
                                     INNER JOIN opdistrict od ON h.OD_CODE = od.OD_CODE
                                     WHERE b.bid = $id");
+
+            $module = DB::table("modules as m")
+                ->join("group_modules as g", function($join){
+                    $join->on("m.group_id", "=", "g.id");
+                })
+                ->select("g.name as group_module_name", "m.name as module_name")
+                ->where("m.id", "=", $module_id)
+                ->get();
             return view('emr_birth.edit',[
                 'province'=>$province,
                 'sex'=>$sex,
@@ -278,7 +299,8 @@ class EMRBirthController extends Controller
                 'birth_type'=>$birth_type,
                 'attendant_at_delivery'=>$attendant_at_delivery,
                 'user'=>$user,
-                'data'=>$results
+                'data'=>$results,
+                'module' => $module
             ]);
         }
 

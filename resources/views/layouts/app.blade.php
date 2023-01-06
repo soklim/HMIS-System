@@ -76,16 +76,16 @@
     <!--sidebar wrapper -->
     <div class="sidebar-wrapper" data-simplebar="true">
         <div class="sidebar-header">
-            <div>
+            <div style="margin-left: 35%;">
                 <a href="/">
                     <img src="/assets/images/MOH_logo.png" class="logo-icon" alt="logo icon" />
                 </a>
             </div>
-            <div>
-                <a href="/">
-                    <h4 class="logo-text text-center text-success" style="font-weight:bold;">eNCOD</h4>
-                </a>
-            </div>
+{{--            <div>--}}
+{{--                <a href="/">--}}
+{{--                    <h4 class="logo-text text-center text-success" style="font-weight:bold;">eNCOD</h4>--}}
+{{--                </a>--}}
+{{--            </div>--}}
             <div class="toggle-icon ms-auto text-success">
                 <i class='bx bx-arrow-to-left'></i>
             </div>
@@ -155,10 +155,11 @@
                     <i class='bx bx-menu'></i>
                 </div>
                 <div class="search-bar flex-grow-1">
-                    <div class="position-relative search-bar-box">
-                        <input type="text" class="form-control search-control" placeholder="Type to search..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>
-                        <span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>
-                    </div>
+                    <h5 class="text-success"><i class="bx bx-coin-stack"></i><u>ប្រព័ន្ធអេឡិចត្រូនិចស្តីពីការជូនដំណឹង និងកត់ត្រាមរណភាព</u></h5>
+{{--                    <div class="position-relative search-bar-box">--}}
+{{--                        <input type="text" class="form-control search-control" placeholder="Type to search..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>--}}
+{{--                        <span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>--}}
+{{--                    </div>--}}
                 </div>
                 <div class="top-menu ms-auto">
                     <ul class="navbar-nav align-items-center">

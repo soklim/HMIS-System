@@ -78,6 +78,10 @@
             background-color: blue;
             pointer-events: none;
         }
+
+        label[aria-disabled="true"] {
+            pointer-events: none;
+        }
     </style>
     <script>
         $.ajaxSetup({
@@ -131,13 +135,13 @@
                     @if($death_type->id == $item1->death_type)
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_death_type">
-                            <label class="form-check-label small" for="chb_death_type">{{$death_type->text}}</label>
+                            <label class="form-check-label small" aria-disabled="true" for="chb_death_type">{{$death_type->text}}</label>
                         </div>
-                    @else
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="chb_death_type" disabled>
-                            <label class="form-check-label small" for="chb_death_type">{{$death_type->text}}</label>
-                        </div>
+{{--                    @else--}}
+{{--                        <div class="form-check">--}}
+{{--                            <input class="form-check-input" type="checkbox" id="chb_death_type" disabled>--}}
+{{--                            <label class="form-check-label small" for="chb_death_type">{{$death_type->text}}</label>--}}
+{{--                        </div>--}}
                     @endif
                 @endforeach
             </td>
@@ -156,11 +160,11 @@
             <td style="width: 40%"><p class="small_bold">ព័ត៌មានមរណភាព៖ </p>
                 @foreach($death_info as $death_info)
                     @if($death_info->id == $item1->death_info)
-                        <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_death_type">
-                        <label class="form-check-label small" for="chb_death_type">{{$death_info->text}}</label>
-                    @else
-                        <input class="form-check-input" type="checkbox" id="chb_death_type" disabled>
-                        <label class="form-check-label small" for="chb_death_type">{{$death_info->text}}</label>
+                        <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_death_info">
+                        <label class="form-check-label small" aria-disabled="true" for="chb_death_info">{{$death_info->text}}</label>
+{{--                    @else--}}
+{{--                        <input class="form-check-input" type="checkbox" id="chb_death_type" disabled>--}}
+{{--                        <label class="form-check-label small" for="chb_death_type">{{$death_info->text}}</label>--}}
                     @endif
                 @endforeach
             </td>
@@ -172,28 +176,30 @@
         </tr>
         <tr>
             <td style="width: 40%">
-                <p class="small_bold">ឈ្មោះអ្នកស្លាប់៖ </p>
+                <p class="small_bold">ឈ្មោះមរណៈជន៖ </p>
                 <span class="small_bold">{{$item1->deceased_name}}</span>
                 <br><br><br>
                 <p class="smallest">ប្រសិនបើអ្នកស្លាប់ទើបនឹងកើត ដោយគ្មានឈ្មោះ ចូរសរសេរ កូនរបស់ "ឈ្មោះម្ដាយ"</p>
             </td>
             <td style="width: 40%" colspan="2"><p class="small_bold">ថ្ងៃខែឆ្នាំកំណើត៖ </p>
-                <span class="small_bold">{{date('d-m-Y', strtotime($item1->date_of_birth))}}</span>
+                @if($item1->date_of_birth != "")
+                    <span class="small_bold">{{date('d-m-Y', strtotime($item1->date_of_birth))}}</span>
+                @endif
                 <br><br><br>
-                <p class="small_bold">អាយុ៖ <span class="small_bold">{{$item1->age}}</span></p>
+                <p class="small_bold">អាយុ៖ <span class="small_bold">{{$item1->age}} {{$item1->age_type_name}}</span></p>
             </td>
             <td style="width: 20%"><p class="small_bold">ភេទ៖ </p>
                 @foreach($sex as $sex)
                     @if($sex->id == $item1->sex)
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_sex">
-                            <label class="form-check-label small" for="chb_death_type">{{$sex->text}}</label>
+                            <label class="form-check-label small" aria-disabled="true" for="chb_sex">{{$sex->text}}</label>
                         </div>
-                    @else
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="chb_sex" disabled>
-                            <label class="form-check-label small" for="chb_death_type">{{$sex->text}}</label>
-                        </div>
+{{--                    @else--}}
+{{--                        <div class="form-check">--}}
+{{--                            <input class="form-check-input" type="checkbox" id="chb_sex" disabled>--}}
+{{--                            <label class="form-check-label small" for="chb_death_type">{{$sex->text}}</label>--}}
+{{--                        </div>--}}
                     @endif
                 @endforeach
             </td>
@@ -213,24 +219,24 @@
                     <p class="smallest" style="font-style: italic">ប្រសិនបើគ្មាន សូមបំពេញ អត្តលេខអ្នកជំងឺ ឬអត្តលេខ PMRS(របស់ម្ដាយសម្រាប់ទារកទើបតែកើត)</p>
                 </div>
             <td style="width: 40%" colspan="2">
-                <p class="small_bold">ថ្ងៃខែឆ្នាំមរណភាព៖ </p>
+                <p class="small_bold">ថ្ងៃខែឆ្នាំមរណៈភាព៖ </p>
                 <span class="small_bold">{{date('d-m-Y', strtotime($item1->date_of_death))}}</span>
                 <br><br><br>
-                <p class="small_bold">ពេលវេលាមរណភាព៖ </p>
+                <p class="small_bold">ពេលវេលាមរណៈភាព៖ </p>
                 <span class="small_bold">{{$item1->time_of_death}}</span>
             </td>
             <td style="width: 20%"><p class="small_bold">ស្ថានភាពគ្រួសារ៖ </p>
                 @foreach($married_status as $married_status)
                     @if($married_status->id == $item1->married_status)
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_sex">
-                            <label class="form-check-label small" for="chb_death_type">{{$married_status->text}}</label>
+                            <input class="form-check-input" type="checkbox" aria-disabled="true" checked id="chb_married">
+                            <label class="form-check-label small" aria-disabled="true" for="chb_married">{{$married_status->text}}</label>
                         </div>
-                    @else
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="chb_sex" disabled>
-                            <label class="form-check-label small" for="chb_death_type">{{$married_status->text}}</label>
-                        </div>
+{{--                    @else--}}
+{{--                        <div class="form-check">--}}
+{{--                            <input class="form-check-input" type="checkbox" id="chb_sex" disabled>--}}
+{{--                            <label class="form-check-label small" for="chb_death_type">{{$married_status->text}}</label>--}}
+{{--                        </div>--}}
                     @endif
                 @endforeach
             </td>
@@ -243,7 +249,7 @@
                 <span class="small">ផ្ទះលេខ៖<span class="small_bold"> {{$item1->deceased_house}}</span></span>
                 <span class="small">ផ្លូវ៖<span class="small_bold"> {{$item1->deceased_street}}</span></span>
                 <span class="small">ភូមិ៖<span class="small_bold"> {{$item1->deceased_village}}</span></span>
-                <span class="small">ឃុំ/សង្កាត៖<span class="small_bold"> {{$item1->deceased_commune_code}}</span></span>
+                <span class="small">ឃុំ/សង្កាត់៖<span class="small_bold"> {{$item1->deceased_commune_code}}</span></span>
                 <span class="small">ក្រុង/ស្រុក/ខណ្ឌ៖<span class="small_bold"> {{$item1->deceased_district_code}}</span></span>
                 <span class="small">រាជធានី/ខេត្ត៖<span class="small_bold"> {{$item1->deceased_province_code}}</span></span>
             </td>

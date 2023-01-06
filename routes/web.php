@@ -102,6 +102,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     //MCCD Notification
     Route::resource('mccd', MCCDController::class);
+    Route::get('/MCCD_GetData',[MCCDController::class, 'getData'])->name('mccd.GetData');
+    Route::get('/mccd_create/{id}',[MCCDController::class, 'create_new'])->name('mccd.create_new');
     //API
     Route::resource('api', APIController::class);
     Route::get('/APIGetData',[APIController::class, 'getData'])->name('api.GetData');

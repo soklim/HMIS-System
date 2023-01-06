@@ -2,14 +2,14 @@
 @section('content')
 
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Transactions</div>
+        <div class="breadcrumb-title pe-3">{{$module[0]->group_module_name}}</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
                         <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Birth Notification</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{$module[0]->module_name}}</li>
                 </ol>
             </nav>
         </div>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group mb-3">
-                        <label>Issue No</label>
+                        <label>លេខចេញ</label>
                         <input type="text" class="form-control" id="txtIssueNo" maxlength="11">
                     </div>
                 </div>
@@ -73,7 +73,7 @@
         <div class="col-md-6">
             <button type="button" class="btn btn-primary" id="btnSearch" onclick="LoadData()"><i class="bx bx-search-alt"></i> ស្វែងរក</button>
             @if($permission->a_create == 1)
-                <a href="{{route('emr_birth.create')}}" type="button" class="btn btn-primary" id="btnAdd"><i class="bx bx-plus"></i>បន្ថែម</a>
+                <a href="{{route('emr_birth.create')}}" type="button" class="btn btn-primary" id="btnAdd"><i class="bx bx-plus"></i>បន្ថែមថ្មី</a>
             @endif
             <button type="button" class="btn btn-success" id="btnExport" onclick="ExportExcel('xlsx');"><i class="bx bx-download"></i> Export</button>
         </div>
@@ -84,6 +84,7 @@
                 <table class="table table-striped table-bordered table-sm" id="myTable">
                     <tr>
                         <th class="text-center">ល.រ</th>
+                        <th class="text-center">លេខចេញ</th>
                         <th class="text-left">មូលដ្ឋានសុខាភិបាល</th>
                         <th class="text-center">លេខឯកសារពេទ្យ</th>
                         <th class="text-left">ឈ្មោះទារក</th>
@@ -209,6 +210,7 @@
                         @endif
                         var btnPrint ='<a href="/emr_birth/'+item[i].bid+'" class="text-warning" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>';
                         $("#bodyBirth").append('<tr>'+
+                            '<td class="text-center">'+(i+1)+'</td>'+
                             '<td class="text-center">'+item[i].birth_no+'</td>'+
                             '<td class="text-left">'+item[i].HFAC_NAMEKh+'</td>'+
                             '<td class="text-center">'+item[i].medicalid+'</td>'+
