@@ -65,8 +65,10 @@ class MCCDController extends Controller
         else{
 
             $userId = Auth::user()->id;
-            $data = DB::select("CALL SP_MCCD_MEDICAL('')");
+//            $data = DB::select("CALL SP_MCCD_MEDICAL('')");
+            $data = DB::select("SELECT * FROM vw_mccd_medical");
             $death = DB::table("emr_death as d")
+
                 ->select("d.issue_no","d.death_id","d.deceased_name")
                 ->where("d.is_deleted",0)
                 ->get();
