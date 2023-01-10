@@ -104,6 +104,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('mccd', MCCDController::class);
     Route::get('/MCCD_GetData',[MCCDController::class, 'getData'])->name('mccd.GetData');
     Route::get('/mccd_create/{id}',[MCCDController::class, 'create_new'])->name('mccd.create_new');
+    Route::post('/MCCD_Save',[MCCDController::class, 'Save'])->name('mccd.Save');
     //API
     Route::resource('api', APIController::class);
     Route::get('/APIGetData',[APIController::class, 'getData'])->name('api.GetData');

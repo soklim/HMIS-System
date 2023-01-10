@@ -3,7 +3,9 @@ $(document).ready(function (){
         selectMonths: true,
         selectYears: true,
         format: 'dd-mm-yyyy',
-        hiddenName: true
+        hiddenName: true,
+        selectYears: 50,
+        max: true
     });
 
     $('.timefield').bootstrapMaterialDatePicker({

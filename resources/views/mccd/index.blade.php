@@ -70,9 +70,6 @@
         </div>
         <div class="col-md-6">
             <button type="button" class="btn btn-primary" id="btnSearch" onclick="LoadData()"><i class="bx bx-search-alt"></i> ស្វែងរក</button>
-            @if($permission->a_create == 1)
-                <a href="{{route('mccd.create')}}" type="button" class="btn btn-primary" id="btnAdd"><i class="bx bx-plus"></i>បន្ថែមថ្មី</a>
-            @endif
             <button type="button" class="btn btn-success" id="btnExport" onclick="ExportExcel('xlsx');"><i class="bx bx-download"></i> Export</button>
         </div>
     </div>

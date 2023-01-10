@@ -93,7 +93,9 @@ a {
 	padding-left: 30px;
 	padding-right: 30px
 }
-
+.datefield:disabled{
+    background-color: #e9ecef !important;
+}
 .page-wrapper {
 	height: 100%;
 	margin-top: 60px;
