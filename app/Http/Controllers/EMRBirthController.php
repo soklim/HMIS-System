@@ -111,7 +111,8 @@ class EMRBirthController extends Controller
             $input['typeofbirth'] = $request->typeofbirth;
             $input['Atdelivery'] = $request->Atdelivery;
             $input['abandoned'] = $request->abandoned;
-            $input['babyname'] = $request->babyname;
+            $input['baby_last_name'] = $request->baby_last_name;
+            $input['baby_first_name'] = $request->baby_first_name;
             $input['sex'] = $request->sex;
             $input['baby_weight'] = $request->baby_weight;
             $input['dateofbirth'] = $request->dateofbirth;
@@ -152,7 +153,7 @@ class EMRBirthController extends Controller
         $baby_name = $request->baby_name;
         $medical_id = $request->medical_id;
         $birth_no = $request->birth_no;
-        $results = DB::select("SELECT b.bid,b.birth_no,b.medicalid, b.babyname,t6.name_kh as birth_info,t7.name_kh as birth_type
+        $results = DB::select("SELECT b.bid,b.birth_no,b.medicalid, b.baby_first_name,b.baby_last_name,t6.name_kh as birth_info,t7.name_kh as birth_type
                 ,t1.name_kh as sex,b.dateofbirth,b.time_of_birth,h.HFAC_NAMEKh
             FROM emr_birth b
             INNER JOIN healthfacility h ON b.hfac_code = h.HFAC_CODE
@@ -165,7 +166,7 @@ class EMRBirthController extends Controller
             AND (p.PROCODE = $province OR $province=0)
             AND (od.OD_CODE = $district OR $district=0)
             AND (h.HFAC_CODE = $hf_code OR $hf_code=0)
-            AND IFNULL(b.babyname,'') LIKE '%$baby_name%'
+            AND (IFNULL(b.baby_last_name,'') LIKE '%$baby_name%' OR IFNULL(b.baby_first_name,'') LIKE '%$baby_name%')
             AND b.medicalid LIKE '%$medical_id%'
             AND b.birth_no LIKE '%$birth_no%'
             ORDER BY b.birth_no DESC LIMIT 100");
@@ -224,7 +225,7 @@ class EMRBirthController extends Controller
                 ->leftJoin("village as v", function($join){
                     $join->on("e.mVCode", "=", "v.vcode");
                 })
-                ->select("e.bid","e.birth_no","e.babyname", "e.birth_info", "e.typeofbirth"
+                ->select("e.bid","e.birth_no","e.baby_last_name","e.baby_first_name", "e.birth_info", "e.typeofbirth"
                     ,"e.dateofbirth", "e.time_of_birth", "e.sex", "e.abandoned"
                     ,"medicalid", "e.mStreet",'e.abandoned','e.Atdelivery','mothername','motherdofbirth','fathername','fatherdofbirth'
                     ,"e.mHouse", "p1.province_kh as mPCode","dt1.DName_kh as mDCode","e.numofchildalive"
@@ -276,7 +277,7 @@ class EMRBirthController extends Controller
             $birth_info = DB::table("setting_items as s")->where("s.type_id",6)->select("s.item_id","s.name","s.name_kh")->get();
             $birth_type = DB::table("setting_items as s")->where("s.type_id",7)->select("s.item_id","s.name","s.name_kh")->get();
             $attendant_at_delivery = DB::table("setting_items as s")->where("s.type_id",8)->select("s.item_id","s.name","s.name_kh")->get();
-            $results = DB::select("SELECT b.bid,b.birth_no,b.medicalid, b.babyname,b.birth_info,b.typeofbirth,b.Atdelivery,b.abandoned
+            $results = DB::select("SELECT b.bid,b.birth_no,b.medicalid, b.baby_first_name,b.baby_last_name,b.birth_info,b.typeofbirth,b.Atdelivery,b.abandoned
                                         ,b.sex,b.dateofbirth,b.time_of_birth,h.HFAC_NAMEKh,od.PRO_CODE,h.OD_CODE,b.hfac_code,b.baby_weight
                                         ,b.mothername,b.motherdofbirth,b.fathername,b.fatherdofbirth,b.numofchildalive
                                         ,b.mPCode,b.mDCode,b.mCCode,b.mVCode,b.mStreet,b.mHouse,b.motherage,b.fatherage,b.contact_phone

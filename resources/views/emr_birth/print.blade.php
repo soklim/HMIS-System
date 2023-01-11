@@ -160,7 +160,7 @@
             <tr>
                 <td style="width: 20%" rowspan="2">
                     <p class="small_bold">ឈ្មោះទារក៖ </p><br>
-                    <span class="small_bold">{{$item1->babyname}}</span>
+                    <span class="small_bold">{{$item1->baby_last_name}} {{$item1->baby_first_name}}</span>
                 </td>
                 <td style="width: 30%"><p class="small_bold">ប្រភេទកំណើត៖ </p>
                     @foreach($birth_type as $birth_type)

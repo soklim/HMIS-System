@@ -23,40 +23,36 @@ $(document).ready(function (){
 
     $("#txtCheckAge").trigger("change");
 
-    $("#deceased_name").focus(function() {
-        if($("#deceased_name").val() == ""){
-            $("#deceased_name").val("គ្មាន");
-        }
-    });
-
-    $("#deceased_name").focusout(function() {
-        if($("#deceased_name").val() == "គ្មាន"){
-            $("#deceased_name").val("");
-        }
-    });
-
-    $("#deceased_street").focus(function() {
-        if($("#deceased_street").val() == ""){
-            $("#deceased_street").val("គ្មាន");
-        }
-    });
-
-    $("#deceased_street").focusout(function() {
-        if($("#deceased_street").val() == "គ្មាន"){
-            $("#deceased_street").val("");
-        }
-    });
-
-    $("#deceased_house").focus(function() {
-        if($("#deceased_house").val() == ""){
-            $("#deceased_house").val("គ្មាន");
-        }
-    });
-    $("#deceased_house").focusout(function() {
-        if($("#deceased_house").val() == "គ្មាន"){
-            $("#deceased_house").val("");
-        }
-    });
+    // $("#deceased_name").focus(function() {
+    //     $('#deceased_name').addClass('place_holder_color');
+    // });
+    //
+    // $("#deceased_name").focusout(function() {
+    //     $('#deceased_name').removeClass('place_holder_color')
+    // });
+    //
+    // $("#deceased_street").focus(function() {
+    //     if($("#deceased_street").val() == ""){
+    //         $("#deceased_street").val("គ្មាន");
+    //     }
+    // });
+    //
+    // $("#deceased_street").focusout(function() {
+    //     if($("#deceased_street").val() == "គ្មាន"){
+    //         $("#deceased_street").val("");
+    //     }
+    // });
+    //
+    // $("#deceased_house").focus(function() {
+    //     if($("#deceased_house").val() == ""){
+    //         $("#deceased_house").val("គ្មាន");
+    //     }
+    // });
+    // $("#deceased_house").focusout(function() {
+    //     if($("#deceased_house").val() == "គ្មាន"){
+    //         $("#deceased_house").val("");
+    //     }
+    // });
 
 })
 
@@ -130,7 +126,7 @@ function Save(){
     var hf_code = $("#hf_code").val();
     var death_type = $("input[name='death_type']:checked");
     var death_info = $("input[name='death_info']:checked");
-    // var medical_file_id = $("#medical_file_id").val();
+    var contact_phone = $("#contact_phone").val();
     var medical_file_id ="";
     var medicalid_list = document.getElementsByName("medical_file_id");
     for(i = 0; i < medicalid_list.length; i++){
@@ -188,9 +184,7 @@ function Save(){
     else if(married_status.length == 0){
         MSG.Validation("សូមបញ្ចូល ស្ថានភាពគ្រួសារ !!!");
     }
-        // else if(date_of_birth == ""){
-        //     MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំកំណើត !!!");
-    // }
+
     else if(date_of_death == ""){
         MSG.Validation("សូមបញ្ចូល ថ្ងៃខែឆ្នាំ-មរណភាព !!!");
     }
@@ -228,6 +222,7 @@ function Save(){
                 deceased_village:deceased_village,
                 deceased_street:deceased_street,
                 deceased_house:deceased_house,
+                contact_phone:contact_phone
             },
             success:function(result){
                 console.log(result);

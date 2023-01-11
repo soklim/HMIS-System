@@ -82,19 +82,19 @@
                     <div class="form-group mb-3">
                         <label>អត្តលេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
                         <div class="input-group">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
-                            <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
                         </div>
 
                     </div>
@@ -126,11 +126,11 @@
                         <input type="number" class="form-control" id="age" data-required="1" disabled>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label>ថ្ងៃខែឆ្នាំ-កំណើត</label>
                     <input type="text" id="date_of_birth" class="form-control datefield" onchange="getAge()" placeholder="DD:MM:YYYY" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ថ្ងៃខែឆ្នាំ-មរណៈភាព <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control datefield" id="date_of_death" onchange="getAge()" data-required="1" placeholder="DD:MM:YYYY">
@@ -142,7 +142,10 @@
                         <input type="text" class="form-control timefield" id="time_of_death" data-required="1" placeholder="HH:MM">
                     </div>
                 </div>
-
+                <div class="col-md-2">
+                    <label>លេខទូរស័ព្ទទំនាក់ទំនង</label>
+                    <input type="text" onkeypress="return Input.IsNumber(event, this)" maxlength="20" class="form-control" id="contact_phone">
+                </div>
             </div>
         </div>
         <div class="col-md-12">
@@ -192,6 +195,7 @@
     <script type="text/javascript">
 
         $(document).ready(function (){
+
             $.ajax({
                 type:'GET',
                 url:"{{ route('emr_death.GetInitPage') }}",

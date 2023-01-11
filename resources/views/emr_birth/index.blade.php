@@ -209,12 +209,13 @@
                             btnEdit='<a href="'+url+'" s="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';
                         @endif
                         var btnPrint ='<a href="/emr_birth/'+item[i].bid+'" class="text-warning" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>';
+                        var baby_name =''+(item[i].baby_last_name || "")+' '+(item[i].baby_first_name || "")+'';
                         $("#bodyBirth").append('<tr>'+
                             '<td class="text-center">'+(i+1)+'</td>'+
                             '<td class="text-center">'+item[i].birth_no+'</td>'+
                             '<td class="text-left">'+item[i].HFAC_NAMEKh+'</td>'+
                             '<td class="text-center">'+item[i].medicalid+'</td>'+
-                            '<td class="text-left">'+(item[i].babyname  || "")+'</td>'+
+                            '<td class="text-left">'+baby_name+'</td>'+
                             '<td class="text-center">'+(item[i].birth_info)+'</td>'+
                             '<td class="text-center">'+(item[i].birth_type)+'</td>'+
                             '<td class="text-center">'+(item[i].sex)+'</td>'+

@@ -66,6 +66,10 @@
         .table{
             font-size: 13px;
         }
+        .place_holder_color::-webkit-input-placeholder {
+            color: #0d0f12;
+        }
+
     </style>
 
 </head>
@@ -135,8 +139,8 @@
 
                             ?>
                             @foreach($module as $item1)
-
-                            <li> <a href="{{$item1->route_name}}"><i class="bx bx-right-arrow-alt"></i>{{$item1->name}}</a>
+                            <li>
+                                <a href="{{$item1->route_name}}"><i class="bx bx-right-arrow-alt"></i>{{$item1->name}}</a>
                             </li>
                             @endforeach
                         </ul>
@@ -229,7 +233,7 @@
     <!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
     <!--End Back To Top Button-->
     <footer class="page-footer">
-        <p class="mb-0">Copyright © All right reserved By eNCOD v.1.0.</p>
+        <p class="mb-0">©រក្សាសិទ្ធិគ្រប់បែបយ៉ាងដោយ នាយកដ្ឋានផែនការ និងព័ត៌មានសុខាភិបាល នៃក្រសួងសុខាភិបាល</p>
     </footer>
     <script type="text/javascript">
         $.ajaxSetup({

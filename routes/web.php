@@ -15,6 +15,7 @@ use App\Http\Controllers\ModulePermissionController;
 use App\Http\Controllers\APIController;
 use App\Http\Controllers\MCCDController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\CoderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -76,6 +77,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/SettingTypeGetData',[SettingTypeController::class, 'getData'])->name('setting_types.GetData');
     Route::post('/SettingTypeSave',[SettingTypeController::class, 'Save'])->name('setting_types.Save');
 
+    //Coder
+    Route::resource('coders', CoderController::class);
+    Route::get('/CoderGetData',[CoderController::class, 'getData'])->name('coders.GetData');
+    Route::post('/CoderSave',[CoderController::class, 'Save'])->name('coders.Save');
+
     //Setting Item
     Route::resource('setting_items', SettingItemController::class);
     Route::get('/SettingItemGetData',[SettingItemController::class, 'getData'])->name('setting_items.GetData');
@@ -101,10 +107,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/BirthPrint', [EMRBirthController::class, 'Print'])->name('emr_birth.Print');
 
     //MCCD Notification
-    Route::resource('mccd', MCCDController::class);
+//    Route::resource('mccd', MCCDController::class);
+    Route::get('/mccd_list/{type_id}',[MCCDController::class, 'index'])->name('mccd.list');
+    Route::get('/fetal_list/{type_id}',[MCCDController::class, 'index'])->name('fetal.list');
     Route::get('/MCCD_GetData',[MCCDController::class, 'getData'])->name('mccd.GetData');
-    Route::get('/mccd_create/{id}',[MCCDController::class, 'create_new'])->name('mccd.create_new');
+    Route::get('/mccd_create/{type_id}/{id}',[MCCDController::class, 'create_new'])->name('mccd.create_new');
+    Route::get('/fetal_create/{type_id}/{id}',[MCCDController::class, 'create_new'])->name('fetal.create_new');
+    Route::get('/mccd_edit/{type_id}/{id}',[MCCDController::class, 'edits'])->name('mccd.edits');
+    Route::get('/fetal_edit/{type_id}/{id}',[MCCDController::class, 'edits'])->name('fetal.edits');
     Route::post('/MCCD_Save',[MCCDController::class, 'Save'])->name('mccd.Save');
+    Route::post('/MCCD_SaveCoder',[MCCDController::class, 'SaveCoder'])->name('mccd.SaveCoder');
+    Route::get('/addCoder/{type_id}/{mccd_id}',[MCCDController::class, 'addCoder'])->name('mccd.addCoder');
     //API
     Route::resource('api', APIController::class);
     Route::get('/APIGetData',[APIController::class, 'getData'])->name('api.GetData');

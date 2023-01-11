@@ -15,41 +15,41 @@ $(document).ready(function (){
 
     $(".select2").select2();
 
-    $("#baby_name").focus(function() {
-        if($("#baby_name").val() == ""){
-            $("#baby_name").val("គ្មាន");
-        }
-    });
-
-    $("#baby_name").focusout(function() {
-        if($("#baby_name").val() == "គ្មាន"){
-            $("#baby_name").val("");
-        }
-    });
-
-    $("#mother_street").focus(function() {
-        if($("#mother_street").val() == ""){
-            $("#mother_street").val("គ្មាន");
-        }
-    });
-
-    $("#mother_street").focusout(function() {
-        if($("#mother_street").val() == "គ្មាន"){
-            $("#mother_street").val("");
-        }
-    });
-
-    $("#mother_house").focus(function() {
-        if($("#mother_house").val() == ""){
-            $("#mother_house").val("គ្មាន");
-        }
-    });
-
-    $("#mother_house").focusout(function() {
-        if($("#mother_house").val() == "គ្មាន"){
-            $("#mother_house").val("");
-        }
-    });
+    // $("#baby_name").focus(function() {
+    //     if($("#baby_name").val() == ""){
+    //         $("#baby_name").val("គ្មាន");
+    //     }
+    // });
+    //
+    // $("#baby_name").focusout(function() {
+    //     if($("#baby_name").val() == "គ្មាន"){
+    //         $("#baby_name").val("");
+    //     }
+    // });
+    //
+    // $("#mother_street").focus(function() {
+    //     if($("#mother_street").val() == ""){
+    //         $("#mother_street").val("គ្មាន");
+    //     }
+    // });
+    //
+    // $("#mother_street").focusout(function() {
+    //     if($("#mother_street").val() == "គ្មាន"){
+    //         $("#mother_street").val("");
+    //     }
+    // });
+    //
+    // $("#mother_house").focus(function() {
+    //     if($("#mother_house").val() == ""){
+    //         $("#mother_house").val("គ្មាន");
+    //     }
+    // });
+    //
+    // $("#mother_house").focusout(function() {
+    //     if($("#mother_house").val() == "គ្មាន"){
+    //         $("#mother_house").val("");
+    //     }
+    // });
 
 })
 
@@ -117,7 +117,8 @@ function Save(){
     if ($("#abandoned_baby").is(':checked')) {
         abandoned_baby =1;
     }
-    var baby_name = $("#baby_name").val();
+    var baby_last_name = $("#baby_last_name").val();
+    var baby_first_name = $("#baby_first_name").val();
     var sex = $("input[name='sex']:checked");
     var baby_weight = $("#baby_weight").val();
     var dob = $("#date_of_birth").val();
@@ -166,9 +167,6 @@ function Save(){
     else if(attendant_at_delivery.length == 0){
         MSG.Validation("សូមជ្រើសរើស សម្រាលដោយ !!!");
     }
-    // else if(baby_name == ""){
-    //     MSG.Validation("សូមបញ្ចូល ឈ្មោះទារក !!!");
-    // }
     else if(sex.length == 0){
         MSG.Validation("សូមជ្រើសរើស ភេទ !!!");
     }
@@ -211,7 +209,8 @@ function Save(){
                 typeofbirth:birth_type[0].value,
                 Atdelivery:attendant_at_delivery[0].value,
                 abandoned:abandoned_baby,
-                babyname:baby_name,
+                baby_last_name:baby_last_name,
+                baby_first_name:baby_first_name,
                 sex:sex[0].value,
                 baby_weight: baby_weight,
                 dateofbirth: date_of_birth,

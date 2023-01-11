@@ -73,7 +73,7 @@ class EMRDeathController extends Controller
             $data = DB::table("emr_death as e")
                 ->select("e.death_id","e.deceased_name", "e.death_info", "e.death_type", "e.date_of_birth", "e.date_of_death", "e.time_of_death", "e.sex", "e.married_status"
                     , "medical_file_id", "e.deceased_province_code", "e.deceased_district_code", "e.deceased_commune_code", "e.deceased_village", "e.deceased_street"
-                    ,"od.PRO_CODE","od.OD_CODE","h.hfac_code"
+                    ,"od.PRO_CODE","od.OD_CODE","h.hfac_code","e.contact_phone"
                     , "e.deceased_house","e.age","e.input_age","e.age_type_id")
                 ->join("healthfacility as h", function($join){
                     $join->on("e.hmis_code", "=", "h.HFAC_CODE");
@@ -319,8 +319,6 @@ class EMRDeathController extends Controller
     {
         if ($request->death_id == 0){
 
-            $userId = Auth::user()->id;
-            $hf_id = User::where('id',$userId)->first(['hf_id'])->hf_id;
 
             $emr = DB::select( DB::raw("SELECT CONCAT('D',LPAD((SELECT (IFNULL((select max(`death_id`) from emr_death),0)))+1, 10, 0)) as issue_no"));
 
@@ -335,6 +333,7 @@ class EMRDeathController extends Controller
             $input['deceased_village'] = $request->deceased_village;
             $input['deceased_street'] = $request->deceased_street;
             $input['deceased_house'] = $request->deceased_house;
+            $input['contact_phone'] = $request->contact_phone;
             $input['date_of_birth'] = $request->date_of_birth;
             $input['age'] = $request->age;
             $input['input_age'] = $request->input_age;

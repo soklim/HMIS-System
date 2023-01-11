@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MCCD extends Model
+class Coder extends Model
 {
     use HasFactory;
-    protected $table = 'mccd';
+    protected $table = 'coders';
     protected $fillable = [
-        'mccd_id','issue_no','status_id','type_id',
-        'death_id','created_by','created_at','updated_by','updated_at'
+        'name', 'name_kh','description'
     ];
 }

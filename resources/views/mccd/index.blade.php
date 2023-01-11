@@ -1,5 +1,13 @@
 @extends('layouts.app')
 @section('content')
+    <style>
+        #myTable td{
+            vertical-align: middle;
+        }
+        #myTable th{
+            vertical-align: middle;
+        }
+    </style>
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">{{$module[0]->group_module_name}}</div>
         <div class="ps-3">
@@ -85,9 +93,10 @@
                         <th class="text-center">លេខឯកសារពេទ្យ</th>
                         <th class="text-left">ឈ្មោះអ្នកស្លាប់</th>
                         <th class="text-center">ភេទ</th>
-                        <th class="text-center">ស្ថានភាព</th>
+                        <th class="text-center">ស្ថានភាពគ្រួសារ</th>
                         <th class="text-center">អាយុ</th>
                         <th class="text-center">កាលបរិច្ឆេទស្លាប់</th>
+                        <th class="text-center">ស្ថានភាព</th>
                         <th class="text-center"></th>
                     </tr>
                     <tbody id="bodyDeath"></tbody>
@@ -120,6 +129,7 @@
                 type:'GET',
                 url:"{{ route('mccd.GetData') }}",
                 data:{
+                    type_id: {{$type_id}},
                     province: $("#txtHF_Province").val(),
                     district: $("#txtHF_District").val(),
                     hf_code: $("#txtHFCode").val(),
@@ -133,17 +143,48 @@
                     for (var i = 0; i < item.length; i++) {
                         var btnEdit="";
                         var btnPrint="";
+                        var type_id={{$type_id}};
                         if(item[i].mccd_id == 0){
                             @if($permission->a_create == 1)
-                                btnEdit='<a href="/mccd_create/'+item[i].death_id+'" class="text-success" style="font-size:24px" title="Add MCCD"><i class="bx bx-plus"></i></a>';
+                                if(type_id == 1){
+                                    btnEdit='<a href="/mccd_create/'+type_id+'/'+item[i].death_id+'" class="text-success" style="font-size:24px" title="Add MCCD"><i class="bx bx-plus"></i></a>';
+                                }
+                                else{
+                                    btnEdit='<a href="/fetal_create/'+type_id+'/'+item[i].death_id+'" class="text-success" style="font-size:24px" title="Add MCCD"><i class="bx bx-plus"></i></a>';
+                                }
                                 btnPrint="";
                             @endif
                         }
                         else{
+
                             @if($permission->a_update == 1)
-                                btnEdit='<a href="/mccd/'+item[i].mccd_id+'/edit" class="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';
-                                btnPrint ='<a href="/mccd/'+item[i].mccd_id+'" class="text-warning" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>';
+                                if(type_id == 1){
+                                    btnEdit='<a href="/mccd_edit/'+type_id+'/'+item[i].mccd_id+'" class="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';
+                                    btnPrint ='<a href="/mccd/'+item[i].mccd_id+'" class="text-warning" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>';
+                                }
+                                else{
+                                    btnEdit='<a href="/fetal_edit/'+type_id+'/'+item[i].mccd_id+'" class="text-primay" style="font-size:24px" title="Edit"><i class="bx bx-edit"></i></a>';
+                                    btnPrint ='<a href="/mccd/'+item[i].mccd_id+'" class="text-warning" target="_blank" style="font-size:24px"><i class="bx bx-printer"></i></a>';
+                                }
+
                             @endif
+                        }
+                        var status_name ="";
+                        if(item[i].status_id == 1){
+
+                            status_name='<span class="badge bg-primary">No Coder</span>';
+                            if({{$per_coder[0]->a_create}} == 1){
+                                status_name='<span style="cursor: pointer;" onclick="openCoder('+item[i].mccd_id+')" title="click here to add coders" class="badge bg-primary">No Coder</span>';
+                            }
+                        }
+                        else if(item[i].status_id == 2){
+                            status_name='<span class="badge bg-success">Has Coder</span>';
+                            if({{$per_coder[0]->a_update}} == 1){
+                                status_name='<span style="cursor: pointer;" onclick="openCoder('+item[i].mccd_id+')" title="click here to edit coders" class="badge bg-success">Has Coder</span>';
+                            }
+                        }
+                        else{
+                            status_name ="";
                         }
 
                         $("#bodyDeath").append('<tr>'+
@@ -156,6 +197,7 @@
                             '<td class="text-center">'+(item[i].married_status)+'</td>'+
                             '<td class="text-center">'+(item[i].age || "")+ item[i].age_type_name+'</td>'+
                             '<td class="text-center">'+(item[i].date_of_death || "")+' | '+(item[i].time_of_death || "")+'</td>'+
+                            '<td class="text-center">'+status_name+'</td>'+
                             '<td class="text-center">'+btnEdit+btnPrint+'</td>'+
                             '</tr>');
                     }
@@ -163,6 +205,10 @@
             });
         }
 
+        function openCoder(mccd_id){
+            var type_id={{$type_id}};
+            location.href = "/addCoder/"+type_id+"/"+mccd_id;
+        }
         function GetOD(province_code){
 
             $.ajax({

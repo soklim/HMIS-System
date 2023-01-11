@@ -57,19 +57,19 @@
                     <div class="form-group mb-3">
                         <label>អត្តលេខសំណុំឯកសារសេវាសម្រាលកូន <span class="text-danger">(*)</span></label>
                         <div class="input-group">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
-                            <input type="text" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
+                            <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medicalid" maxlength="1" name="medicalid">
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,10 @@
             <div class="row">
                 <div class="col-md-3">
                     <label>ឈ្មោះទារក <span class="text-danger">(*)</span></label>
-                    <input type="text" id="baby_name" class="form-control" placeholder="គ្មាន"/>
+                    <div class="input-group">
+                        <input type="text" id="baby_last_name" class="form-control" placeholder="គោត្តនាម"/>
+                        <input type="text" id="baby_first_name" class="form-control" placeholder="នាមខ្លួន"/>
+                    </div>
                 </div>
                 <div class="col-md-3">
                     <label>ភេទ <span class="text-danger">(*)</span></label><br>
@@ -209,7 +212,7 @@
                 <div class="col-md-3">
                     <div class="form-group mb-3">
                         <label>លេខទូរស័ព្ទទំនាក់ទំនង</label>
-                        <input type="text" maxlength="11" class="form-control" id="contact_phone" data-required="0">
+                        <input type="text" onkeypress="return Input.IsNumber(event, this)" maxlength="20" class="form-control" id="contact_phone" data-required="0">
                     </div>
                 </div>
             </div>

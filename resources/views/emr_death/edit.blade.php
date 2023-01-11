@@ -61,11 +61,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="form-group mb-3" style="border: solid 1px black;border-radius: 10px;padding-top:10px;padding-left:10px">
                         <label>ព័ត៌មានមរណៈភាព <span class="text-danger">(*)</span></label>
                         <div id="div_death_info">
-
                         </div>
                     </div>
                 </div>
@@ -84,11 +83,11 @@
                         <label>អត្តលេខឯកសារពេទ្យ <span class="text-danger">(*)</span></label>
                         <div class="input-group">
                             @foreach(str_split($item1->medical_file_id) as $value)
-                                <input type="text" class="form-control medical_file_id" maxlength="1" value="{{$value}}" name="medical_file_id">
+                                <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" value="{{$value}}" name="medical_file_id">
                             @endforeach
                             @if(strlen($item1->medical_file_id) < 13)
                                 @for ($i = 0; $i < 13-strlen($item1->medical_file_id); $i++)
-                                    <input type="text" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
+                                    <input type="text" onkeypress="return Input.IsNumber(event, this)" class="form-control medical_file_id" maxlength="1" name="medical_file_id">
                                 @endfor
                             @endif
                         </div>
@@ -129,7 +128,7 @@
                     @endforeach
                     <input type="number" class="form-control" id="age" data-required="1" value="{{$item1->age}}" disabled>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label>ថ្ងៃខែឆ្នាំ-កំណើត</label>
                     @if($item1->date_of_birth != "")
                         <input type="text" id="date_of_birth" class="form-control datefield" onchange="getAge()" value="{{date('d-m-Y', strtotime($item1->date_of_birth))}}"  placeholder="DD:MM:YYYY" />
@@ -137,7 +136,7 @@
                         <input type="text" id="date_of_birth" class="form-control datefield" onchange="getAge()" placeholder="DD:MM:YYYY" />
                     @endif
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group mb-3">
                         <label>ថ្ងៃខែឆ្នាំ-មរណៈភាព <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control datefield" id="date_of_death" onchange="getAge()" value="{{date('d-m-Y', strtotime($item1->date_of_death))}}" data-required="1" placeholder="DD:MM:YYYY">
@@ -149,7 +148,10 @@
                         <input type="text" class="form-control timefield" id="time_of_death" value="{{$item1->time_of_death}}" data-required="1" placeholder="HH:MM">
                     </div>
                 </div>
-
+                <div class="col-md-2">
+                    <label>លេខទូរស័ព្ទទំនាក់ទំនង</label>
+                    <input type="text" onkeypress="return Input.IsNumber(event, this)" maxlength="20" class="form-control" id="contact_phone" value="{{$item1->contact_phone}}">
+                </div>
             </div>
         </div>
         <div class="col-md-12">

@@ -22,7 +22,7 @@
                     <li class="breadcrumb-item">
                         <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{$module[0]->module_name}} (បន្ថែមថ្មី)</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{$module[0]->module_name}} (កែប្រែ)</li>
                 </ol>
             </nav>
         </div>
@@ -64,13 +64,24 @@
         @endforeach
     </div>
     <div class="row" style="padding-top: 10px;">
-        <div class="col-md-5"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-2" style="text-align: center">
+            @if($type_id== 1)
+                <a class="btn btn-danger" href="/mccd_list/1" type="button" id="btnBack" style="width: 100%; border-radius: 18px;font-size: 16px">
+                    <i class="bx bx-arrow-back"></i> ត្រឡប់ទៅទំព័រដើម
+                </a>
+            @else
+                <a class="btn btn-danger" href="/fetal_list/2" type="button" id="btnBack" style="width: 100%; border-radius: 18px;font-size: 16px">
+                    <i class="bx bx-arrow-back"></i> ត្រឡប់ទៅទំព័រដើម
+                </a>
+            @endif
+        </div>
         <div class="col-md-2" style="text-align: center;">
             <button class="btn btn-success" type="button" id="btnSave" style="width: 100%; border-radius: 18px;font-size: 16px">
                 <i class="bx bxs-save"></i> រក្សាទុក
             </button>
         </div>
-        <div class="col-md-5"></div>
+        <div class="col-md-4"></div>
     </div>
     <div class="row" style="padding-top: 20px; padding-bottom: 20px;">
         <div class="col-md-12">
@@ -112,7 +123,7 @@
                                         <td style="width: 15%" class="text-center coder">Coder</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 5%" class="text-center">ក</td>
+                                        <td style="width: 5%" class="text-center">ក <input type="hidden" value="{{$section_a[0]->id}}" id="section_a_id_1"></td>
                                         <td style="width: 45%">
                                             <input type="text" class="form-control" value="{{$section_a[0]->death_reason}}" maxlength="500" name="reason" id="reason_1">
                                         </td>
@@ -122,14 +133,11 @@
                                         <td style="width: 15%" class="text-center coder">
                                             <select class="form-select-sm" id="coder_1" name="coder" style="width: 100%">
                                                 <option value="0">-- select --</option>
-                                                @foreach($coder as $item)
-                                                    <option value="{{$item->id}}">{{$item->name_kh}}</option>
-                                                @endforeach
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 5%" class="text-center">ខ</td>
+                                        <td style="width: 5%" class="text-center">ខ <input type="hidden" value="{{$section_a[1]->id}}" id="section_a_id_2"></td>
                                         <td style="width: 45%">
                                             <input type="text" class="form-control" value="{{$section_a[1]->death_reason}}" maxlength="500" name="reason" id="reason_2">
                                         </td>
@@ -139,14 +147,11 @@
                                         <td style="width: 15%" class="text-center coder">
                                             <select class="form-select-sm" id="coder_2" name="coder" style="width: 100%">
                                                 <option value="0">-- select --</option>
-                                                @foreach($coder as $item)
-                                                    <option value="{{$item->id}}">{{$item->name_kh}}</option>
-                                                @endforeach
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 5%" class="text-center">គ</td>
+                                        <td style="width: 5%" class="text-center">គ <input type="hidden" value="{{$section_a[2]->id}}" id="section_a_id_3"></td>
                                         <td style="width: 45%">
                                             <input type="text" class="form-control" value="{{$section_a[2]->death_reason}}" maxlength="500" name="reason" id="reason_3">
                                         </td>
@@ -156,14 +161,11 @@
                                         <td style="width: 15%" class="text-center coder">
                                             <select class="form-select-sm" id="coder_3" name="coder" style="width: 100%">
                                                 <option value="0">-- select --</option>
-                                                @foreach($coder as $item)
-                                                    <option value="{{$item->id}}">{{$item->name_kh}}</option>
-                                                @endforeach
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 5%" class="text-center">ឃ</td>
+                                        <td style="width: 5%" class="text-center">ឃ <input type="hidden" value="{{$section_a[3]->id}}" id="section_a_id_4"></td>
                                         <td style="width: 45%">
                                             <input type="text" class="form-control" value="{{$section_a[3]->death_reason}}" maxlength="500" name="reason" id="reason_4">
                                         </td>
@@ -173,9 +175,6 @@
                                         <td style="width: 15%" class="text-center coder">
                                             <select class="form-select-sm" id="coder_4" name="coder" style="width: 100%">
                                                 <option value="0">-- select --</option>
-                                                @foreach($coder as $item)
-                                                    <option value="{{$item->id}}">{{$item->name_kh}}</option>
-                                                @endforeach
                                             </select>
                                         </td>
                                     </tr>
@@ -205,7 +204,10 @@
                                             $index++;
                                             ?>
                                         <tr id="tr_{{$index}}">
-                                            <td class="text-center">{{$index}}</td>
+                                            <td class="text-center">
+                                                <input type="hidden" id="section_b_id_{{$index}}" value="{{$item->id}}">
+                                                {{$index}}
+                                            </td>
                                             @if($index == 11 || $index == 34)
                                             @else
                                                 @if($item->required == 1)
@@ -273,6 +275,7 @@
     </div>
 
     <script>
+        var GtypeID= {{$type_id}};
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

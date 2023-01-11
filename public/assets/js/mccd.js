@@ -61,6 +61,8 @@ $(document).ready(function (){
         var obj = {
             mccd_id: $("#mccd_id").val(),
             death_id: $("#death_id").val(),
+            status_id:1,
+            type_id:GtypeID,
             mccd_section_a:[],
             mccd_section_b:[]
         };
@@ -73,8 +75,9 @@ $(document).ready(function (){
             var death_reason = $("#reason_"+index_a).val();
             var period = $("#period_"+index_a).val();
             var level_coder = $("#coder_"+index_a).val();
+            var id = $("#section_a_id_"+index_a).val();
             var data = {
-                id:0,
+                id:id,
                 mccd_id: $("#mccd_id").val(),
                 order_no: index_a,
                 death_reason:death_reason,
@@ -135,16 +138,16 @@ $(document).ready(function (){
                     $("#tr_"+index).css('background-color','#ffffff');
                 }
             }
-
+            var id = $("#section_b_id_"+index).val();
             var data ={
-                id:0,
+                id:id,
                 mccd_id: $("#mccd_id").val(),
                 question_id: question_id,
                 question_name: '',
                 question_name_kh: '',
-                answer_type_id: '',
-                setting_type_id: '',
-                order_no: '',
+                answer_type_id: 0,
+                setting_type_id: 0,
+                order_no: 0,
                 answer: answer
             }
             obj.mccd_section_b.push(data);
@@ -161,7 +164,13 @@ $(document).ready(function (){
                     console.log(result);
                     if(result.code == 0){
                         MSG.Success();
-                        location.href = "/mccd";
+                        if(GtypeID == 1){
+                            location.href = "/mccd_list/"+GtypeID;
+                        }
+                        else{
+                            location.href = "/fetal_list/"+GtypeID;
+                        }
+
                     }
                     else{
                         MSG.Error(result.msg);
@@ -171,6 +180,82 @@ $(document).ready(function (){
         }
         else{
             MSG.Validation("សូមបំពេញចម្លើយ ចំពោះសំណួរដែលត្រូវឆ្លើយជាចាំបាច់ !!!");
+        }
+
+    })
+
+    $("#btnSaveCoder").click(function (e){
+
+        var index=0;
+        var obj = {
+            mccd_id: $("#mccd_id").val(),
+            death_id: $("#death_id").val(),
+            status_id:2,
+            type_id:GtypeID,
+            mccd_section_a:[],
+        };
+        var count_requird =0;
+
+        //section_a
+        var index_a = 0;
+        for(i = 0; i < 4; i++){
+            index_a++;
+            var death_reason = $("#reason_"+index_a).val();
+            var period = $("#period_"+index_a).val();
+            var level_coder = $("#coder_"+index_a).val();
+            var id = $("#section_a_id_"+index_a).val();
+            var data = {
+                id:id,
+                mccd_id: $("#mccd_id").val(),
+                order_no: index_a,
+                death_reason:death_reason,
+                period: period,
+                level_coder: level_coder
+            }
+            if(index_a == 1 && death_reason == ""){
+                count_requird++;
+                $("#reason_"+index_a).css("border","solid 1px red");
+            }
+            else{
+                $("#reason_"+index_a).css("border","solid 1px #ced4da");
+            }
+
+            if(level_coder == 0){
+                count_requird++;
+                $("#coder_"+index_a).css("border","solid 1px red");
+            }
+            else{
+                $("#coder_"+index_a).css("border","solid 1px #ced4da");
+            }
+            obj.mccd_section_a.push(data);
+        }
+
+        if(count_requird == 0){
+            console.log(obj);
+            $.ajax({
+                type:'POST',
+                url:"/MCCD_SaveCoder",
+                data:JSON.stringify(obj),
+                success:function(result){
+                    console.log(result);
+                    if(result.code == 0){
+                        MSG.Success();
+                        if(GtypeID == 1){
+                            location.href = "/mccd_list/"+GtypeID;
+                        }
+                        else{
+                            location.href = "/fetal_list/"+GtypeID;
+                        }
+
+                    }
+                    else{
+                        MSG.Error(result.msg);
+                    }
+                }
+            });
+        }
+        else{
+            MSG.Validation("សូមជ្រើសរើស Coder !!!");
         }
 
     })
